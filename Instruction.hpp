@@ -26,11 +26,11 @@ Operation parse_and_create_operation(std::optional<std::string_view> str)
 		throw std::runtime_error("Missing argument");
 
 	auto [arg1, remaning_after_arg1] = get_next_word(*str);
-	if (!remaning_after_arg1)
+	if (!remaning_after_arg1 || remaning_after_arg1->empty())
 		throw std::runtime_error("Missing argument");
 
 	auto [arg2, remaning_after_arg2] = get_next_word(*remaning_after_arg1);
-	if (!remaning_after_arg2)
+	if (!remaning_after_arg2 || remaning_after_arg2->empty())
 		throw std::runtime_error("Missing argument");
 
 	auto [arg3, should_be_empty] = get_next_word(*remaning_after_arg2);
@@ -131,7 +131,7 @@ struct Instruction
 				throw std::runtime_error("Missing argument");
 
 			auto [arg1, remaning_after_arg1] = get_next_word(*remaining_string);
-			if (!remaning_after_arg1)
+			if (!remaning_after_arg1 || remaning_after_arg1->empty())
 				throw std::runtime_error("Missing argument");
 
 			result._variant = Store{ std::string(arg1), parse_and_create_value(remaning_after_arg1) };
@@ -142,7 +142,7 @@ struct Instruction
 				throw std::runtime_error("Missing argument");
 
 			auto [arg1, remaning_after_arg1] = get_next_word(*remaining_string);
-			if (!remaning_after_arg1)
+			if (!remaning_after_arg1 || remaning_after_arg1->empty())
 				throw std::runtime_error("Missing argument");
 
 			auto [arg2, should_be_empty] = get_next_word(*remaning_after_arg1);

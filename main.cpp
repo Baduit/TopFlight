@@ -196,8 +196,8 @@ int main()
 	}
 	{
 		std::cout << "VM with string input as instructions" << std::endl;
-		auto store_a = Instruction::from_string("STORE a INTEGER(5)");
-		auto store_b = Instruction::from_string("STORE b INTEGER(5)");
+		auto store_a = Instruction::from_string("STORE a INTEGER(7)");
+		auto store_b = Instruction::from_string("STORE b INTEGER(8)");
 		auto add_a_b = Instruction::from_string("ADD a b c");
 		auto print_c = Instruction::from_string("PRINT c");
 		auto copy_c_to_copied = Instruction::from_string("COPY c copied");
