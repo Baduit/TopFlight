@@ -194,5 +194,7 @@ int main()
 	}
 	{
 		auto print_c = Instruction::from_string("PRINT c");
+		auto free_c = Instruction::from_string("FREE c");
+		auto copy_c_to_copied = Instruction::from_string("COPY c copied");
 	}
 }

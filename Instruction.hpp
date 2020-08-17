@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "Value.hpp"
 
@@ -102,15 +103,28 @@ struct Instruction
 		}
 		else if (instruction == "COPY")
 		{
+			if (!remaining_string || remaining_string->empty())
+				throw std::runtime_error("Missing argument");
 
+			auto [arg1, remaning_after_arg1] = get_next_word(*remaining_string);
+			if (!remaning_after_arg1)
+				throw std::runtime_error("Missing argument");
+
+			auto [arg2, should_be_empty] = get_next_word(*remaning_after_arg1);
+			if (should_be_empty)
+				throw std::runtime_error("Too much argument");
+
+			result._variant = Free{ std::string(arg1) };
 		}
 		else if (instruction == "FREE")
 		{
 			if (!remaining_string || remaining_string->empty())
 				throw std::runtime_error("Missing argument");
+
 			auto [arg, should_be_empty] = get_next_word(*remaining_string);
 			if (should_be_empty)
 				throw std::runtime_error("Too much argument");
+
 			result._variant = Free{ std::string(arg) };
 		}
 		else if (instruction == "ADD")
@@ -137,9 +151,11 @@ struct Instruction
 		{
 			if (!remaining_string || remaining_string->empty())
 				throw std::runtime_error("Missing argument");
+
 			auto [arg, should_be_empty] = get_next_word(*remaining_string);
 			if (should_be_empty)
 				throw std::runtime_error("Too much argument");
+
 			result._variant = Print{ std::string(arg) };
 		}
 		else

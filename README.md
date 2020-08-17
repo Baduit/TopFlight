@@ -2,8 +2,9 @@
 Top Flight langage specification and virtual machine. Learn it to become a Top Flight developer. The langage is very basic.
 
 # Text format
-## Global
+## Misc
 A program is composed of instruction and comments, each instruction and command are on their own lines.
+Empty lines are discarded without errors, but lines with spaces/tabulations are not consireded empty.
 
 ## Comments
 The line begins with a # without any space or tab before
