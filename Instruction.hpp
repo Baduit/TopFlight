@@ -40,6 +40,13 @@ Operation parse_and_create_operation(std::optional<std::string_view> str)
 	return Operation{ std::string(arg1), std::string(arg2), std::string(arg3) };
 }
 
+inline Value parse_and_create_value(std::optional<std::string_view> str)
+{
+	if (!str || str->empty())
+		throw std::runtime_error("Missing argument");
+	return Integer(5);
+}
+
 struct Instruction
 {
 	struct Store
@@ -120,7 +127,14 @@ struct Instruction
 		auto [instruction, remaining_string] = get_next_word(str);
 		if (instruction == "STORE")
 		{
+			if (!remaining_string || remaining_string->empty())
+				throw std::runtime_error("Missing argument");
 
+			auto [arg1, remaning_after_arg1] = get_next_word(*remaining_string);
+			if (!remaning_after_arg1)
+				throw std::runtime_error("Missing argument");
+
+			result._variant = Store{ std::string(arg1), parse_and_create_value(remaning_after_arg1) };
 		}
 		else if (instruction == "COPY")
 		{

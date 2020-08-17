@@ -174,7 +174,7 @@ class VirtualMachine
 
 int main()
 {
-	{
+/* 	{
 		VirtualMachine vm;
 		vm.store("a", Integer(5));
 		vm.store("b", Integer(3));
@@ -191,11 +191,29 @@ int main()
 		vm.store("numbers", ArrayOfNumber{ { 5.6, 5, 7.3 } });
 		vm.print("numbers");
 		vm.free("numbers");
-	}
+	} */
 	{
-		auto print_c = Instruction::from_string("PRINT c");
-		auto free_c = Instruction::from_string("FREE c");
-		auto copy_c_to_copied = Instruction::from_string("COPY c copied");
+		auto store_a = Instruction::from_string("STORE a INTEGER(5)");
+		auto store_b = Instruction::from_string("STORE b INTEGER(5)");
 		auto add_a_b = Instruction::from_string("ADD a b c");
+		auto print_c = Instruction::from_string("PRINT c");
+		auto copy_c_to_copied = Instruction::from_string("COPY c copied");
+		auto print_copied = Instruction::from_string("PRINT copied");
+		auto free_a = Instruction::from_string("FREE a");
+		auto free_b = Instruction::from_string("FREE b");
+		auto free_c = Instruction::from_string("FREE c");
+		auto free_copied = Instruction::from_string("FREE copied");
+
+		VirtualMachine vm;
+		vm.execute_instruction(store_a);
+		vm.execute_instruction(store_b);
+		vm.execute_instruction(add_a_b);
+		vm.execute_instruction(print_c);
+		vm.execute_instruction(copy_c_to_copied);
+		vm.execute_instruction(print_copied);
+		vm.execute_instruction(free_a);
+		vm.execute_instruction(free_b);
+		vm.execute_instruction(free_c);
+		vm.execute_instruction(free_copied);
 	}
 }
