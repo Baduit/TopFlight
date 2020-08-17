@@ -16,14 +16,14 @@ Write the instruction type followed by its arguments, everything is seperated by
 The values can be arguments has the following syntaxe for single values:
 * TYPE(value)
 
-If the type is an array write it like this:
-* TYPE(value_1 value_2)
+If the type is an array the values are separated by a comma without any space. Like this:
+* TYPE(value_1,value_2)
 
 Strings are delimited by "", " can by escapted with a backslash \
 Examples:
 * INTEGER(3) 
 * NUMBER(5.9)
-* ARRAY_OF_STRING("Hello" ", " "World" "!\n")
+* ARRAY_OF_STRING("Hello"," ","World","!\n")
 
 ## Example of a basic program
 ```
