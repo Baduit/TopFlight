@@ -33,6 +33,9 @@ ADD my_first_var my_second_var result_var
 PRINT result_var
 ```
 
+## Fun fact
+Because the instruction and arguments are seprated by only 1 space, a space can be a valid variable name, same for a tabulation.
+
 # Todo:
 - Make the instruction serializable easily
 - Add a way to store instructions (an instructions set) and call them
@@ -41,3 +44,4 @@ PRINT result_var
 - Make something usefull with arrays
 - Make an interpreter
 - Separate clearly the c++ library (header only, full controll) from the C library (just take a string or a buffer representing the instruction) and the interpreter (basically the same as the C library but it takes a file), also make an interactive interpreter (read from stdin)
+- Handle in the parsing the \ for escaping the " and also for stuff like \n

@@ -174,20 +174,25 @@ class VirtualMachine
 
 int main()
 {
-	VirtualMachine vm;
-	vm.store("a", Integer(5));
-	vm.store("b", Integer(3));
-	vm.do_arithmetic<Operation::ADD>("a", "b", "c");
-	vm.print("c");
-	vm.free("a");
-	vm.free("b");
-	vm.free("c");
+	{
+		VirtualMachine vm;
+		vm.store("a", Integer(5));
+		vm.store("b", Integer(3));
+		vm.do_arithmetic<Operation::ADD>("a", "b", "c");
+		vm.print("c");
+		vm.free("a");
+		vm.free("b");
+		vm.free("c");
 
-	vm.store("str", String("\nYolol\n"));
-	vm.print("str");
-	vm.free("str");
+		vm.store("str", String("\nYolol\n"));
+		vm.print("str");
+		vm.free("str");
 
-	vm.store("numbers", ArrayOfNumber{ { 5.6, 5, 7.3 } });
-	vm.print("numbers");
-	vm.free("numbers");
+		vm.store("numbers", ArrayOfNumber{ { 5.6, 5, 7.3 } });
+		vm.print("numbers");
+		vm.free("numbers");
+	}
+	{
+		auto print_c = Instruction::from_string("PRINT c");
+	}
 }
