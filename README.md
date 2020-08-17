@@ -46,3 +46,4 @@ Because the instruction and arguments are seprated by only 1 space, a space can 
 - Make an interpreter
 - Separate clearly the c++ library (header only, full controll) from the C library (just take a string or a buffer representing the instruction) and the interpreter (basically the same as the C library but it takes a file), also make an interactive interpreter (read from stdin)
 - Handle in the parsing the \ for escaping the " and also for stuff like \n
+- A LOT of refactoring, there a lot of ugly code right know and it will keep getting worse because I'm a lazy ass

@@ -10,13 +10,34 @@
 
 #include "Value.hpp"
 
-auto get_next_word(std::string_view str) -> std::pair<std::string_view, std::optional<std::string_view>>
+inline auto get_next_word(std::string_view str) -> std::pair<std::string_view, std::optional<std::string_view>>
 {
 	auto i = str.find(' ');
 	if (i == std::string_view::npos)
 		return { str, {} };
 	else
 		return { str.substr(0, i), str.substr(i + 1)};
+}
+
+template <typename Operation>
+Operation parse_and_create_operation(std::optional<std::string_view> str)
+{
+	if (!str || str->empty())
+		throw std::runtime_error("Missing argument");
+
+	auto [arg1, remaning_after_arg1] = get_next_word(*str);
+	if (!remaning_after_arg1)
+		throw std::runtime_error("Missing argument");
+
+	auto [arg2, remaning_after_arg2] = get_next_word(*remaning_after_arg1);
+	if (!remaning_after_arg2)
+		throw std::runtime_error("Missing argument");
+
+	auto [arg3, should_be_empty] = get_next_word(*remaning_after_arg2);
+	if (should_be_empty)
+		throw std::runtime_error("Too much argument");
+
+	return Operation{ std::string(arg1), std::string(arg2), std::string(arg3) };
 }
 
 struct Instruction
@@ -114,7 +135,7 @@ struct Instruction
 			if (should_be_empty)
 				throw std::runtime_error("Too much argument");
 
-			result._variant = Free{ std::string(arg1) };
+			result._variant = Copy{ std::string(arg1), std::string(arg2) };
 		}
 		else if (instruction == "FREE")
 		{
@@ -129,23 +150,23 @@ struct Instruction
 		}
 		else if (instruction == "ADD")
 		{
-
+			result._variant = parse_and_create_operation<Add>(remaining_string);
 		}
 		else if (instruction == "SUBSTRACT")
 		{
-
+			result._variant = parse_and_create_operation<Substract>(remaining_string);
 		}
 		else if (instruction == "MULTIPLY")
 		{
-
+			result._variant = parse_and_create_operation<Multiply>(remaining_string);
 		}
 		else if (instruction == "DIVIDE")
 		{
-
+			result._variant = parse_and_create_operation<Divide>(remaining_string);
 		}
 		else if (instruction == "MODULO")
 		{
-
+			result._variant = parse_and_create_operation<Modulo>(remaining_string);
 		}
 		else if (instruction == "PRINT")
 		{
