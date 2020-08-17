@@ -174,7 +174,8 @@ class VirtualMachine
 
 int main()
 {
-/* 	{
+	{
+		std::cout << "VM with direct c++ calls" << std::endl;
 		VirtualMachine vm;
 		vm.store("a", Integer(5));
 		vm.store("b", Integer(3));
@@ -191,8 +192,10 @@ int main()
 		vm.store("numbers", ArrayOfNumber{ { 5.6, 5, 7.3 } });
 		vm.print("numbers");
 		vm.free("numbers");
-	} */
+		std::cout << "\n******** END ******" << std::endl;
+	}
 	{
+		std::cout << "VM with string input as instructions" << std::endl;
 		auto store_a = Instruction::from_string("STORE a INTEGER(5)");
 		auto store_b = Instruction::from_string("STORE b INTEGER(5)");
 		auto add_a_b = Instruction::from_string("ADD a b c");
@@ -215,5 +218,6 @@ int main()
 		vm.execute_instruction(free_b);
 		vm.execute_instruction(free_c);
 		vm.execute_instruction(free_copied);
+		std::cout << "\n******** END ******" << std::endl;
 	}
 }
