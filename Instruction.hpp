@@ -106,7 +106,12 @@ struct Instruction
 		}
 		else if (instruction == "FREE")
 		{
-
+			if (!remaining_string || remaining_string->empty())
+				throw std::runtime_error("Missing argument");
+			auto [arg, should_be_empty] = get_next_word(*remaining_string);
+			if (should_be_empty)
+				throw std::runtime_error("Too much argument");
+			result._variant = Free{ std::string(arg) };
 		}
 		else if (instruction == "ADD")
 		{
