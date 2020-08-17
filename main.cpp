@@ -12,6 +12,7 @@
 #include <concepts>
 
 #include "Value.hpp"
+#include "Instruction.hpp"
 
 class Memory
 {
@@ -69,11 +70,58 @@ class VirtualMachine
 	public:
 		VirtualMachine() = default;
 
+		void execute_instruction(const Instruction& instruction)
+		{
+			instruction.visit(
+				[&](const auto& i)
+				{
+					using T = std::decay_t<decltype(i)>;
+					if constexpr (std::same_as<T, Instruction::Store>)
+					{
+						store(i.dest, i.value);
+					}
+					else if constexpr (std::same_as<T, Instruction::Copy>)
+					{
+						copy(i.input, i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Free>)
+					{
+						free(i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Add>)
+					{
+						do_arithmetic<Operation::ADD>(i.input_a, i.input_b, i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Substract>)
+					{
+						do_arithmetic<Operation::SUBSTRACT>(i.input_a, i.input_b, i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Multiply>)
+					{
+						do_arithmetic<Operation::MUTLIPLY>(i.input_a, i.input_b, i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Divide>)
+					{
+						do_arithmetic<Operation::DIVIDE>(i.input_a, i.input_b, i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Modulo>)
+					{
+						do_arithmetic<Operation::MODULO>(i.input_a, i.input_b, i.dest);
+					}
+					else if constexpr (std::same_as<T, Instruction::Print>)
+					{
+						print(i.input);
+					}
+					// No else possible
+				});
+		}
+
 		void store(std::string_view dest, Value value)
 		{
 			_memory.store(dest, std::move(value));
 		}
 
+		// Not a real instruction, it is only in the C++ API
 		const Value& load(std::string_view input)
 		{
 			return _memory.load(input);
@@ -89,6 +137,7 @@ class VirtualMachine
 			_memory.free(dest);
 		}
 
+		// They are all in this template method to be a bit more organized for now
 		template <Operation operation>
 		void do_arithmetic(std::string_view input_a, std::string_view input_b, std::string_view output)
 		{

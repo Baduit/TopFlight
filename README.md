@@ -2,7 +2,6 @@
 Top Flight langage specification and interpreter. Learn it to become a Top Flight developer.
 
 # Todo:
-- Create an instruction type and add a method in the vm to execute the instruction (basically the instruction is a way to call the other methods)
 - Make the instruction serializable easily (format to define)
 - Add a way to store instructions (an instructions set) and call them
 - Add the boolean type
