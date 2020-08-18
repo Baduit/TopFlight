@@ -2,10 +2,11 @@
 
 #include "Instruction.hpp"
 #include "VirtualMachine.hpp"
+#include "Interpreter.hpp"
 
-int main()
+void old_tests()
 {
-	{
+		{
 		std::cout << "VM with direct c++ calls" << std::endl;
 		VirtualMachine vm;
 		vm.store("a", Integer(5));
@@ -53,4 +54,12 @@ int main()
 		vm.execute_instruction(free_copied);
 		std::cout << "\n******** END ******" << std::endl;
 	}
+}
+
+int main(int argc, char** argv)
+{
+	if (argc <= 1)
+		throw std::invalid_argument("Missing filename");
+
+	Interpreter vm_interpreter(argv[1]);
 }
