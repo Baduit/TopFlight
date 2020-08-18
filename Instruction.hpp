@@ -7,12 +7,15 @@
 #include <optional>
 #include <utility>
 #include <vector>
+#include <cctype>
+#include <charconv>
+#include <sstream>
 
 #include "Value.hpp"
 
-inline auto get_next_word(std::string_view str) -> std::pair<std::string_view, std::optional<std::string_view>>
+inline auto get_next_word(std::string_view str, char delim = ' ') -> std::pair<std::string_view, std::optional<std::string_view>>
 {
-	auto i = str.find(' ');
+	auto i = str.find(delim);
 	if (i == std::string_view::npos)
 		return { str, {} };
 	else
@@ -40,10 +43,85 @@ Operation parse_and_create_operation(std::optional<std::string_view> str)
 	return Operation{ std::string(arg1), std::string(arg2), std::string(arg3) };
 }
 
+inline int to_int(std::string_view str)
+{
+	for (auto c: str)
+		if (std::isdigit(c) == 0)
+			throw std::runtime_error("Invalid integer format");
+	int i;
+	std::stringstream ss;
+	ss << str;
+	ss >> i;
+	if (ss.bad())
+		throw std::runtime_error("Invalid integer format");
+	return i;
+}
+
+inline double to_double(std::string_view str)
+{
+	for (auto c: str)
+		if (std::isdigit(c) == 0 && c != '.')
+			throw std::runtime_error("Invalid integer format");
+	double i;
+	std::stringstream ss;
+	ss << str;
+	ss >> i;
+	if (ss.bad())
+		throw std::runtime_error("Invalid integer format");
+	return i;
+}
+
+inline std::string extract_string(std::string_view str)
+{
+	if (str.size() < 2 || str.front() != '"' || str.back() != '"')
+			throw std::runtime_error("Invalid string format");
+	return std::string(str.substr(1, str.size() - 2));
+}
+
 inline Value parse_and_create_value(std::optional<std::string_view> str)
 {
 	if (!str || str->empty())
 		throw std::runtime_error("Missing argument");
+
+	auto [type, remaning_after_type] = get_next_word(*str, '(');
+	if (!remaning_after_type || remaning_after_type->empty())
+		throw std::runtime_error("Invalid value");
+
+	auto [values, end] = get_next_word(*remaning_after_type, ')');
+	if (values.empty() || !end)
+		throw std::runtime_error("Invalid value");
+	if (!end->empty())
+		throw std::runtime_error("Invalid value :  there should not have elements after the ')'");
+
+	if (type == "INTEGER")
+	{
+		return Integer(to_int(values));
+	}
+	else if (type == "NUMBER")
+	{
+		return Number(to_double(values));
+	}
+	else if (type == "STRING")
+	{
+		return String(extract_string(values));
+	}
+	else if (type == "ARRAY_OF_INTEGER")
+	{
+
+	}
+	else if (type == "ARRAY_OF_NUMBER")
+	{
+
+	}
+	else if (type == "ARRAY_OF_STRING")
+	{
+
+	}
+	else
+	{
+		throw std::runtime_error("Invalid type");
+	}
+	
 	return Integer(5);
 }
 

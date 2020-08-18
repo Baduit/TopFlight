@@ -196,8 +196,8 @@ int main()
 	}
 	{
 		std::cout << "VM with string input as instructions" << std::endl;
-		auto store_a = Instruction::from_string("STORE a INTEGER(7)");
-		auto store_b = Instruction::from_string("STORE b INTEGER(8)");
+		auto store_a = Instruction::from_string("STORE a NUMBER(7)");
+		auto store_b = Instruction::from_string("STORE b NUMBER(8)");
 		auto add_a_b = Instruction::from_string("ADD a b c");
 		auto print_c = Instruction::from_string("PRINT c");
 		auto copy_c_to_copied = Instruction::from_string("COPY c copied");
@@ -212,6 +212,8 @@ int main()
 		vm.execute_instruction(store_b);
 		vm.execute_instruction(add_a_b);
 		vm.execute_instruction(print_c);
+		vm.execute_instruction(Instruction::from_string("STORE str STRING(\"\nthis is a string\n\")"));
+		vm.execute_instruction(Instruction::from_string("PRINT str"));
 		vm.execute_instruction(copy_c_to_copied);
 		vm.execute_instruction(print_copied);
 		vm.execute_instruction(free_a);

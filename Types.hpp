@@ -30,7 +30,7 @@ struct Integer
 		out << value;
 	}
 
-	int value;
+	int value = 0;
 };
 
 struct Number
@@ -58,7 +58,7 @@ struct Number
 		out << value;
 	}
 
-	double value;
+	double value = 0.0;
 };
 
 struct String
