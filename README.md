@@ -38,7 +38,6 @@ PRINT result_var
 Because the instruction and arguments are seprated by only 1 space, a space can be a valid variable name, same for a tabulation.
 
 # Todo:
-- Make the instruction serializable easily
 - Add a way to store instructions (an instructions set) and call them
 - Add the boolean type
 - Add a way to call condionnaly instructions set
