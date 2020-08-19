@@ -1,5 +1,5 @@
 # TopFlight
-Top Flight langage specification and virtual machine. Learn it to become a Top Flight developer. The langage is very basic.
+Top Flight langage implementation and the virtual machine YoloVM. Learn it to become a Top Flight developer. The langage is very basic.
 
 # Text format
 ## Misc

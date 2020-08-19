@@ -5,6 +5,7 @@
 
 #include "Instruction.hpp"
 #include "VirtualMachine.hpp"
+#include "Parser.hpp"
 
 class Interpreter
 {
@@ -31,7 +32,7 @@ class Interpreter
 				if (line.empty())
 					continue;
 
-				_vm.execute_instruction(Instruction::from_string(line));
+				_vm.execute_instruction(Parser::parse_instruction(line));
 			}
 		}
 
