@@ -74,8 +74,47 @@ inline double to_double(std::string_view str)
 inline std::string extract_string(std::string_view str)
 {
 	if (str.size() < 2 || str.front() != '"' || str.back() != '"')
-			throw std::runtime_error("Invalid string format");
-	return std::string(str.substr(1, str.size() - 2));
+		throw std::runtime_error("Invalid string format");
+
+	std::string_view chars = str.substr(1, str.size() - 2);			
+	std::string result;
+	result.reserve(chars.size());
+	std::size_t i = 0;
+	while (i < chars.size())
+	{
+		char c = chars[i];
+		if (c != '\\')
+		{
+			result += c;
+		}
+		else
+		{
+			++i;
+			if (i >= chars.size())
+				throw std::runtime_error("Invalid string format");
+			char c2 = chars[i];
+			if (c2 == '\\' || c2 == '"')
+				result += c2;
+			else if (c2 == '0')
+				result += '\0';
+			else if (c2 == 'b')
+				result += '\b';
+			else if (c2 == 'n')
+				result += '\n';
+			else if (c2 == 'r')
+				result += '\r';
+			else if (c2 == 't')
+				result += '\t';
+			else if (c2 == 'f')
+				result += '\f';
+			else if (c2 == 'v')
+				result += '\v';
+			else
+				throw std::runtime_error("Invalid string format unsupported char after \\");
+		}
+		++i;
+	}
+	return result;
 }
 
 inline Value parse_and_create_value(std::optional<std::string_view> str)
