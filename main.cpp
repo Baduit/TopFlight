@@ -3,6 +3,7 @@
 #include "Instruction.hpp"
 #include "VirtualMachine.hpp"
 #include "Interpreter.hpp"
+#include "Parser.hpp"
 
 void old_tests()
 {
@@ -28,24 +29,24 @@ void old_tests()
 	}
 	{
 		std::cout << "VM with string input as instructions" << std::endl;
-		auto store_a = Instruction::from_string("STORE a NUMBER(7)");
-		auto store_b = Instruction::from_string("STORE b NUMBER(8)");
-		auto add_a_b = Instruction::from_string("ADD a b c");
-		auto print_c = Instruction::from_string("PRINT c");
-		auto copy_c_to_copied = Instruction::from_string("COPY c copied");
-		auto print_copied = Instruction::from_string("PRINT copied");
-		auto free_a = Instruction::from_string("FREE a");
-		auto free_b = Instruction::from_string("FREE b");
-		auto free_c = Instruction::from_string("FREE c");
-		auto free_copied = Instruction::from_string("FREE copied");
+		auto store_a = Parser::parse_instruction("STORE a NUMBER(7)");
+		auto store_b = Parser::parse_instruction("STORE b NUMBER(8)");
+		auto add_a_b = Parser::parse_instruction("ADD a b c");
+		auto print_c = Parser::parse_instruction("PRINT c");
+		auto copy_c_to_copied = Parser::parse_instruction("COPY c copied");
+		auto print_copied = Parser::parse_instruction("PRINT copied");
+		auto free_a = Parser::parse_instruction("FREE a");
+		auto free_b = Parser::parse_instruction("FREE b");
+		auto free_c = Parser::parse_instruction("FREE c");
+		auto free_copied = Parser::parse_instruction("FREE copied");
 
 		VirtualMachine vm;
 		vm.execute_instruction(store_a);
 		vm.execute_instruction(store_b);
 		vm.execute_instruction(add_a_b);
 		vm.execute_instruction(print_c);
-		vm.execute_instruction(Instruction::from_string("STORE str STRING(\"\nthis is a string\n\")"));
-		vm.execute_instruction(Instruction::from_string("PRINT str"));
+		vm.execute_instruction(Parser::parse_instruction("STORE str STRING(\"\nthis is a string\n\")"));
+		vm.execute_instruction(Parser::parse_instruction("PRINT str"));
 		vm.execute_instruction(copy_c_to_copied);
 		vm.execute_instruction(print_copied);
 		vm.execute_instruction(free_a);
