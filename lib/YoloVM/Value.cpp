@@ -1,4 +1,4 @@
-#include "Value.hpp"
+#include <YoloVM/Value.hpp>
 
 Value operator+(const Value& a, const Value& b)
 {

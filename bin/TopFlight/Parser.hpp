@@ -3,7 +3,7 @@
 #include <string_view>
 #include <string>
 
-#include "../../lib/YoloVM/Instruction.hpp"
+#include <YoloVM/Instruction.hpp>
 
 namespace Parser
 {

@@ -6,8 +6,8 @@
 #include <stdexcept>
 #include <concepts>
 
-#include "Types.hpp"
-#include "OperatorConcepts.hpp"
+#include <YoloVM/Types.hpp>
+#include <YoloVM/OperatorConcepts.hpp>
 
 enum class Type
 {

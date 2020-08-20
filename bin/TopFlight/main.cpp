@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "../../lib/YoloVM/Instruction.hpp"
-#include "../../lib/YoloVM/VirtualMachine.hpp"
+#include <YoloVM/Instruction.hpp>
+#include <YoloVM/VirtualMachine.hpp>
 #include "Parser.hpp"
 #include "Interpreter.hpp"
 

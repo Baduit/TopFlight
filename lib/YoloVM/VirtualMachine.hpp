@@ -14,9 +14,9 @@
 #include <concepts>
 #include <algorithm>
 
-#include "Value.hpp"
-#include "Instruction.hpp"
-#include "Routine.hpp"
+#include <YoloVM/Value.hpp>
+#include <YoloVM/Instruction.hpp>
+#include <YoloVM/Routine.hpp>
 
 class Memory
 {

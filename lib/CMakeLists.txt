@@ -12,6 +12,4 @@ target_compile_options(YoloVM
                        $<$<CXX_COMPILER_ID:MSVC>:/W3 /permissive- /TP>
                        $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wextra -Wall -Wsign-conversion -Wfloat-equal -pedantic -Wredundant-decls -Wshadow -Wpointer-arith -O3>)
 
-target_include_directories(YoloVM
-                           PUBLIC
-                           .)
+target_include_directories(YoloVM PUBLIC ${CMAKE_CURRENT_LIST_DIR})

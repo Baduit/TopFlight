@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "Instruction.hpp"
+#include <YoloVM/Instruction.hpp>
 
 struct Routine
 {

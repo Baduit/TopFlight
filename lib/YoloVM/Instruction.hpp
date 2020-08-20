@@ -11,9 +11,7 @@
 #include <charconv>
 #include <sstream>
 
-#include "Value.hpp"
-
-
+#include <YoloVM/Value.hpp>
 
 struct Instruction
 {
