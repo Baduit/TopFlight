@@ -12,9 +12,11 @@
 #include <utility>
 #include <stdexcept>
 #include <concepts>
+#include <algorithm>
 
 #include "Value.hpp"
 #include "Instruction.hpp"
+#include "Routine.hpp"
 
 class Memory
 {
@@ -64,7 +66,6 @@ enum class Operation
 	MODULO
 	// Todo: complete with logic and binary arithm
 };
-
 
 
 class VirtualMachine
@@ -170,6 +171,45 @@ class VirtualMachine
 			_memory.load(input).print(std::cout);
 		}
 
+		void add_routine(Routine routine)
+		{
+			auto it = std::find_if(_routines.begin(), _routines.end(),
+				[&](const auto& r)
+				{
+					return r.name == routine.name;
+				});
+			if (it != _routines.end())
+				it->instructions = std::move(routine.instructions);
+			else
+				_routines.push_back(std::move(routine));
+		}
+
+		void remove_routine(std::string_view routine_name)
+		{
+			auto it = std::find_if(_routines.begin(), _routines.end(),
+				[&](const auto& r)
+				{
+					return r.name == routine_name;
+				});
+			if (it != _routines.end())
+				_routines.erase(it);
+		}
+
+		void execute_routine(std::string_view routine_name)
+		{
+			auto it = std::find_if(_routines.begin(), _routines.end(),
+				[&](const auto& r)
+				{
+					return r.name == routine_name;
+				});
+			if (it == _routines.end())
+				throw std::runtime_error("Routine not found");
+			
+			for (const auto& instruction: it->instructions)
+				execute_instruction(instruction);
+		}
+
 	private:
 		Memory _memory;
+		std::vector<Routine> _routines;
 };
