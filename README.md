@@ -68,10 +68,16 @@ Because the instruction and arguments are seprated by only 1 space, a space can 
 ## Why is there no unit tests ?
 It is a pet project for fun, unit tests are very important but not fun to write most of the time and I want to have fun during my free time else there's no point doing my pet projects.
 
+# Portability
+I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and 10.1.0.
+The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon
+
 # Todo:
 - Add the boolean type
 - Add a way to call condionnaly instructions set
 - Make something usefull with arrays
 - Make a cool interactive interpreter and a C library
 - Proper exception and not just throw some std::runtime_error like a moron
+- Support msvc
+- Support clang
 - A LOT of refactoring, there a lot of ugly code right know and it will keep getting worse because I'm a lazy ass
