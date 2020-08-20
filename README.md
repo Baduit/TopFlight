@@ -1,5 +1,6 @@
 # TopFlight
 Top Flight langage implementation and the virtual machine YoloVM. Learn it to become a Top Flight developer. The langage is very basic, not really coherent but I'm having a lot of fun creating it.
+It does not aim to be fast or usable in a real project, it has only an entertaining purpose.
 
 # Top flight specifications
 ## Misc
