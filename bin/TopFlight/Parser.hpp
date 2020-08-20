@@ -2,10 +2,14 @@
 
 #include <string_view>
 #include <string>
+#include <stdexcept>
 
 #include <YoloVM/Instruction.hpp>
 
 namespace Parser
+{
+
+namespace Impl
 {
 
 inline auto get_next_word(std::string_view str, char delim = ' ') -> std::pair<std::string_view, std::optional<std::string_view>>
@@ -159,31 +163,46 @@ inline Value parse_and_create_value(std::optional<std::string_view> str)
 	return Integer(5);
 }
 
+inline void check_routine_name(std::string_view routine_name)
+{
+	if (routine_name.empty())
+		throw std::runtime_error("Empty routine name is not possible");
+
+	for (char c: routine_name)
+	{
+		if (std::isalnum(c) == 0 && c != '_')
+			throw std::runtime_error("Routine can only contain alphanumerics character or _ : " + std::string(routine_name));
+	}
+}
+
+
+} // namespace Impl
+
 Instruction parse_instruction(std::string_view str)
 {
     Instruction result;
-    auto [instruction, remaining_string] = get_next_word(str);
+    auto [instruction, remaining_string] = Impl::get_next_word(str);
     if (instruction == "STORE")
     {
         if (!remaining_string || remaining_string->empty())
             throw std::runtime_error("Missing argument");
 
-        auto [arg1, remaning_after_arg1] = get_next_word(*remaining_string);
+        auto [arg1, remaning_after_arg1] = Impl::get_next_word(*remaining_string);
         if (!remaning_after_arg1 || remaning_after_arg1->empty())
             throw std::runtime_error("Missing argument");
 
-        result._variant = Instruction::Store{ std::string(arg1), parse_and_create_value(remaning_after_arg1) };
+        result._variant = Instruction::Store{ std::string(arg1), Impl::parse_and_create_value(remaning_after_arg1) };
     }
     else if (instruction == "COPY")
     {
         if (!remaining_string || remaining_string->empty())
             throw std::runtime_error("Missing argument");
 
-        auto [arg1, remaning_after_arg1] = get_next_word(*remaining_string);
+        auto [arg1, remaning_after_arg1] = Impl::get_next_word(*remaining_string);
         if (!remaning_after_arg1 || remaning_after_arg1->empty())
             throw std::runtime_error("Missing argument");
 
-        auto [arg2, should_be_empty] = get_next_word(*remaning_after_arg1);
+        auto [arg2, should_be_empty] = Impl::get_next_word(*remaning_after_arg1);
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
@@ -194,7 +213,7 @@ Instruction parse_instruction(std::string_view str)
         if (!remaining_string || remaining_string->empty())
             throw std::runtime_error("Missing argument");
 
-        auto [arg, should_be_empty] = get_next_word(*remaining_string);
+        auto [arg, should_be_empty] = Impl::get_next_word(*remaining_string);
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
@@ -202,40 +221,91 @@ Instruction parse_instruction(std::string_view str)
     }
     else if (instruction == "ADD")
     {
-        result._variant = parse_and_create_operation<Instruction::Add>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<Instruction::Add>(remaining_string);
     }
     else if (instruction == "SUBSTRACT")
     {
-        result._variant = parse_and_create_operation<Instruction::Substract>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<Instruction::Substract>(remaining_string);
     }
     else if (instruction == "MULTIPLY")
     {
-        result._variant = parse_and_create_operation<Instruction::Multiply>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<Instruction::Multiply>(remaining_string);
     }
     else if (instruction == "DIVIDE")
     {
-        result._variant = parse_and_create_operation<Instruction::Divide>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<Instruction::Divide>(remaining_string);
     }
     else if (instruction == "MODULO")
     {
-        result._variant = parse_and_create_operation<Instruction::Modulo>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<Instruction::Modulo>(remaining_string);
     }
     else if (instruction == "PRINT")
     {
         if (!remaining_string || remaining_string->empty())
             throw std::runtime_error("Missing argument");
 
-        auto [arg, should_be_empty] = get_next_word(*remaining_string);
+        auto [arg, should_be_empty] = Impl::get_next_word(*remaining_string);
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
         result._variant = Instruction::Print{ std::string(arg) };
+    }
+	else if (instruction == "CALL")
+    {
+        if (!remaining_string || remaining_string->empty())
+            throw std::runtime_error("Missing argument");
+
+        auto [arg, should_be_empty] = Impl::get_next_word(*remaining_string);
+        if (should_be_empty)
+            throw std::runtime_error("Too much argument");
+
+        result._variant = Instruction::Call{ std::string(arg) };
     }
     else
     {
         throw std::runtime_error("Error while parsing unknwown instruction");
     }
     return result;
+}
+
+inline bool is_line_a_routine_command(std::string_view line)
+{
+	return line.front() == '<' && line.back() == '>';
+}
+
+
+struct RoutineCommand
+{
+	enum class Type
+	{
+		BEGIN,
+		END
+	};
+
+	std::string name;
+	Type type;
+};
+
+inline std::optional<RoutineCommand> get_routine_command(std::string_view line)
+{
+	if (line.size() < 2)
+		return {};
+
+	if (line.front() != '<' || line.back() != '>')
+		return {};
+
+	if (line[1] == '/')
+	{
+		RoutineCommand cmd { std::string(line.substr(2, line.size() - 3)), RoutineCommand::Type::END};
+		Impl::check_routine_name(cmd.name);
+		return cmd;
+	}
+	else
+	{
+		RoutineCommand cmd { std::string(line.substr(1, line.size() - 2)), RoutineCommand::Type::BEGIN};
+		std::cout << cmd.name << std::endl;
+		return cmd;
+	}
 }
 
 } // namespace Parser

@@ -1,0 +1,10 @@
+STORE test STRING("salut\n")
+PRINT test
+
+<Routine>
+STORE test_the_routine STRING("Hey from a routine\n")
+PRINT test_the_routine
+FREE test_the_routine
+</Routine>
+
+CALL Routine

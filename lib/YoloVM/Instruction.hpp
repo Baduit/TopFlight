@@ -72,7 +72,12 @@ struct Instruction
 		std::string input;
 	};
 
-	using Variant = std::variant<Store, Copy, Free, Add, Substract, Multiply, Divide, Modulo, Print>;
+	struct Call
+	{
+		std::string routine_name;
+	};
+
+	using Variant = std::variant<Store, Copy, Free, Add, Substract, Multiply, Divide, Modulo, Print, Call>;
 
 	template <typename T>
 	Instruction(T i):

@@ -115,6 +115,10 @@ class VirtualMachine
 					{
 						print(i.input);
 					}
+					else if constexpr (std::same_as<T, Instruction::Call>)
+					{
+						execute_routine(i.routine_name);
+					}
 					// No else possible
 				});
 		}

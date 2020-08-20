@@ -30,16 +30,28 @@ Examples:
 A routine is a set of instruction you can call later. The syntaxe to declare a routine is a line with the name of the routine between <> like example:
 * \<MyAwesomeRoutine>
 
-A routine end with a line beginning by <\ followed by the name of the routine and ending with a >:
-* \<\MyAwesomeRoutine>
+A routine end with a line beginning by </ followed by the name of the routine and ending with a >:
+* \</MyAwesomeRoutine>
 
 ```
 <MyRoutine>
 STORE str STRING("this is a string\n")
 PRINT str
 FREE str
-<\MyRoutine>
+</MyRoutine>
 ```
+
+A routine cannot contain another routine.
+
+To call a routine the instruction is CALL followed by the routine name example:
+<MyRoutine>
+STORE str STRING("this is a string\n")
+PRINT str
+FREE str
+</MyRoutine>
+CALL MyRoutine
+```
+A routine name can only contain alphanumeric character only or _ 
 
 ## Example of a basic program
 ```
@@ -53,8 +65,10 @@ There are more example in the folder TopFlightExamples of this repository.
 ## Fun fact
 Because the instruction and arguments are seprated by only 1 space, a space can be a valid variable name, same for a tabulation.
 
+## Why is there no unit tests ?
+It is a pet project for fun, unit tests are very important but not fun to write most of the time and I want to have fun during my free time else there's no point doing my pet projects.
+
 # Todo:
-- Add a way to store instructions (an instructions set) and call them
 - Add the boolean type
 - Add a way to call condionnaly instructions set
 - Make something usefull with arrays
