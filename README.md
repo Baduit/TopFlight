@@ -63,6 +63,10 @@ PRINT result_var
 ```
 There are more example in the folder TopFlightExamples of this repository.
 
+## Notes
+* It is possible to overwrite values or routines
+* It is possible to have routine and values with the same name
+
 ## Fun fact
 Because the instruction and arguments are seprated by only 1 space, a space can be a valid variable name, same for a tabulation.
 
