@@ -26,6 +26,21 @@ Examples:
 * NUMBER(5.9)
 * ARRAY_OF_STRING("Hello"," ","World","!\n")
 
+## Routine
+A routine is a set of instruction you can call later. The syntaxe to declare a routine is a line with the name of the routine between <> like example:
+* \<MyAwesomeRoutine>
+
+A routine end with a line beginning by <\ followed by the name of the routine and ending with a >:
+* \<\MyAwesomeRoutine>
+
+```
+<MyRoutine>
+STORE str STRING("this is a string\n")
+PRINT str
+FREE str
+<\MyRoutine>
+```
+
 ## Example of a basic program
 ```
 STORE my_first_var INTEGER(5)
@@ -33,6 +48,7 @@ STORE my_second_var INTEGER(9)
 ADD my_first_var my_second_var result_var
 PRINT result_var
 ```
+There are more example in the folder TopFlightExamples of this repository.
 
 ## Fun fact
 Because the instruction and arguments are seprated by only 1 space, a space can be a valid variable name, same for a tabulation.
@@ -43,4 +59,5 @@ Because the instruction and arguments are seprated by only 1 space, a space can 
 - Add a way to call condionnaly instructions set
 - Make something usefull with arrays
 - Make a cool interactive interpreter and a C library
+- Proper exception and not just throw some std::runtime_error like a moron
 - A LOT of refactoring, there a lot of ugly code right know and it will keep getting worse because I'm a lazy ass

@@ -21,19 +21,29 @@ class Interpreter
 		{
 			std::ifstream file(filename);
 			std::string line;
+			unsigned int line_id = 0;
 			while (std::getline(file, line))
 			{
-				if (line.empty() || line.front() == '#')
-					continue;
+				++line_id;
+				try
+				{
+					if (line.empty() || line.front() == '#')
+						continue;
 
-				if (line.back() == '\r')
-					line.pop_back();
+					if (line.back() == '\r')
+						line.pop_back();
 
-				// In case it becomes empty after the removal of the '\r' if there is one
-				if (line.empty())
-					continue;
+					// In case it becomes empty after the removal of the '\r' if there is one
+					if (line.empty())
+						continue;
 
-				_vm.execute_instruction(Parser::parse_instruction(line));
+					_vm.execute_instruction(Parser::parse_instruction(line));
+				}
+				catch (std::exception& e)
+				{
+					std::cout << "Error on line number : " << line_id << "\n" << line << std::endl;
+					break;
+				}
 			}
 		}
 
