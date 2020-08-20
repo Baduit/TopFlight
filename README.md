@@ -42,5 +42,5 @@ Because the instruction and arguments are seprated by only 1 space, a space can 
 - Add the boolean type
 - Add a way to call condionnaly instructions set
 - Make something usefull with arrays
-- Separate clearly the c++ library (header only, full controll) from the C library (just take a string or a buffer representing the instruction) and the interpreter (basically the same as the C library but it takes a file), also make an interactive interpreter (read from stdin)
+- Make a cool interactive interpreter and a C library
 - A LOT of refactoring, there a lot of ugly code right know and it will keep getting worse because I'm a lazy ass
