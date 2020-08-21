@@ -1,5 +1,7 @@
 set(SRCS
     ./YoloVM/Value.cpp
+    ./YoloVM/VirtualMachine.cpp
+    ./YoloVM/Memory.cpp
   )
 
 
