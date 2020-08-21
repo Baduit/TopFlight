@@ -21,14 +21,13 @@
 namespace YololVM
 {
 
-enum class Operation
+enum class ArithmeticOperation
 {
 	ADD,
 	SUBSTRACT,
 	MUTLIPLY,
 	DIVIDE,
 	MODULO
-	// Todo: complete with logic and binary arithm
 };
 
 class VirtualMachine
@@ -43,35 +42,16 @@ class VirtualMachine
 		void copy(std::string_view input, std::string_view dest);
 		void free(std::string_view dest);
 		void print(std::string_view input);
+		
 		void add_routine(Routine routine);
 		void remove_routine(std::string_view routine_name);
 		void execute_routine(std::string_view routine_name);
 
-		// They are all in this template method to be a bit more organized for now
-		template <Operation operation>
-		void do_arithmetic(std::string_view input_a, std::string_view input_b, std::string_view output)
-		{
-			if constexpr (operation == Operation::ADD)
-			{
-				_memory.store(output, _memory.load(input_a) + _memory.load(input_b));
-			}
-			else if constexpr (operation == Operation::SUBSTRACT)
-			{
-				_memory.store(output, _memory.load(input_a) - _memory.load(input_b));
-			}
-			else if constexpr (operation == Operation::MUTLIPLY)
-			{
-				_memory.store(output, _memory.load(input_a) * _memory.load(input_b));
-			}
-			else if constexpr (operation == Operation::DIVIDE)
-			{
-				_memory.store(output, _memory.load(input_a) / _memory.load(input_b));
-			}
-			else if constexpr (operation == Operation::MODULO)
-			{
-				_memory.store(output, _memory.load(input_a) % _memory.load(input_b));
-			}
-		}
+		void add(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void substract(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void multiply(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void divide(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void modulo(std::string_view input_a, std::string_view input_b, std::string_view output);
 
 	private:
 		Memory _memory;

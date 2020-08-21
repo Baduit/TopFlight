@@ -23,23 +23,23 @@ void VirtualMachine::execute_instruction(const Instruction& instruction)
 			}
 			else if constexpr (std::same_as<T, Instruction::Add>)
 			{
-				do_arithmetic<Operation::ADD>(i.input_a, i.input_b, i.dest);
+				add(i.input_a, i.input_b, i.dest);
 			}
 			else if constexpr (std::same_as<T, Instruction::Substract>)
 			{
-				do_arithmetic<Operation::SUBSTRACT>(i.input_a, i.input_b, i.dest);
+				substract(i.input_a, i.input_b, i.dest);
 			}
 			else if constexpr (std::same_as<T, Instruction::Multiply>)
 			{
-				do_arithmetic<Operation::MUTLIPLY>(i.input_a, i.input_b, i.dest);
+				multiply(i.input_a, i.input_b, i.dest);
 			}
 			else if constexpr (std::same_as<T, Instruction::Divide>)
 			{
-				do_arithmetic<Operation::DIVIDE>(i.input_a, i.input_b, i.dest);
+				divide(i.input_a, i.input_b, i.dest);
 			}
 			else if constexpr (std::same_as<T, Instruction::Modulo>)
 			{
-				do_arithmetic<Operation::MODULO>(i.input_a, i.input_b, i.dest);
+				modulo(i.input_a, i.input_b, i.dest);
 			}
 			else if constexpr (std::same_as<T, Instruction::Print>)
 			{
@@ -117,5 +117,31 @@ void VirtualMachine::execute_routine(std::string_view routine_name)
 	for (const auto& instruction: it->instructions)
 		execute_instruction(instruction);
 }
+
+void VirtualMachine::add(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) + _memory.load(input_b));
+}
+
+void VirtualMachine::substract(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) - _memory.load(input_b));
+}
+
+void VirtualMachine::multiply(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) * _memory.load(input_b));
+}
+
+void VirtualMachine::divide(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) / _memory.load(input_b));
+}
+
+void VirtualMachine::modulo(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) % _memory.load(input_b));
+}
+
 
 } // YololVM
