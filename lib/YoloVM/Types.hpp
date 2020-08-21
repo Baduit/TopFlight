@@ -120,6 +120,7 @@ struct Boolean
 
 	friend constexpr Boolean operator&&(Boolean a, Boolean b) { return a.value && b.value; }
 	friend constexpr Boolean operator||(Boolean a, Boolean b) { return a.value && b.value; }
+	constexpr Boolean operator!() const { return Boolean(!value); }
 
 	bool value = true;
 };
