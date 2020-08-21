@@ -18,6 +18,9 @@ namespace YololVM
 
 struct Instruction
 {
+	/*
+	** Misc
+	*/
 	struct Store
 	{
 		std::string dest;
@@ -35,6 +38,19 @@ struct Instruction
 		std::string dest;
 	};
 
+	struct Print
+	{
+		std::string input;
+	};
+
+	struct Call
+	{
+		std::string routine_name;
+	};
+
+	/*
+	** Arithmetic
+	*/
 	struct Add
 	{
 		std::string input_a;
@@ -70,17 +86,82 @@ struct Instruction
 		std::string dest;
 	};
 
-	struct Print
+	/*
+	** Logical
+	*/
+	struct LogicalAnd
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	struct LogicalOr
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	struct LogicalNot
 	{
 		std::string input;
+		std::string dest;
 	};
 
-	struct Call
+	/*
+	** Comparaison
+	*/
+	struct CompareEqual
 	{
-		std::string routine_name;
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
 	};
 
-	using Variant = std::variant<Store, Copy, Free, Add, Substract, Multiply, Divide, Modulo, Print, Call>;
+	struct CompareDifferent
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	struct CompareLess
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	struct CompareLessOrEqual
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	struct CompareGreater
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	struct CompareGreaterOrEqual
+	{
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
+
+	using Variant =
+		std::variant
+			<
+				Store, Copy, Free, Print, Call,
+				Add, Substract, Multiply, Divide, Modulo,
+				LogicalAnd, LogicalOr, LogicalNot,
+				CompareEqual, CompareDifferent, CompareLess, CompareLessOrEqual, CompareGreater, CompareGreaterOrEqual
+			>;
 
 	template <typename T>
 	Instruction(T i):
