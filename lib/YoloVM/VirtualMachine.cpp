@@ -49,7 +49,47 @@ void VirtualMachine::execute_instruction(const Instruction& instruction)
 			{
 				execute_routine(i.routine_name);
 			}
-			// No else possible
+			else if constexpr (std::same_as<T, Instruction::LogicalAnd>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::LogicalOr>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::LogicalNot>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::CompareEqual>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::CompareDifferent>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::CompareLess>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::CompareLessOrEqual>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::CompareGreater>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else if constexpr (std::same_as<T, Instruction::CompareGreaterOrEqual>)
+			{
+				throw std::runtime_error("Instruction not implemented.");
+			}
+			else
+			{
+				throw std::runtime_error("Instruction unknown or not implemented.");
+			}
+			
 		});
 }
 
