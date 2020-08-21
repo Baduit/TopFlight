@@ -87,3 +87,8 @@ The code uses c++ 20 (concepts essentially), It probably needs few adjustements 
 - Support msvc
 - Support clang
 - A LOT of refactoring, there a lot of ugly code right know and it will keep getting worse because I'm a lazy ass
+- Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull
+- Compile it to wasm (need clang support)
+- Make a website to try it online (if wasm compilation did not work or is not done, just make a rest api to compile/run/return the result of the program)
+- ???
+- Profit
