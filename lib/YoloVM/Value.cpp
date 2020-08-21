@@ -168,6 +168,22 @@ Value operator%(const Value& a, const Value& b)
 		}, a._variant);
 }
 
+bool operator==(const Value& a, const Value& b)
+{
+	// operator == of the variant check this but only returns false, I'm much more severe on this, the vm is very strongly typed
+	if (a._variant.index() != b._variant.index())
+		throw std::runtime_error("Can't compare variables of differents types");
+	return a._variant == b._variant;
+}
+
+std::strong_ordering operator<=>(const Value& a, const Value& b)
+{
+	// operator == of the variant check this but only returns false, I'm much more severe on this, the vm is very strongly typed
+	if (a._variant.index() != b._variant.index())
+		throw std::runtime_error("Can't compare variables of differents types");
+	return a._variant <=> b._variant;
+}
+
 void Value::print(std::ostream& out) const
 {
 	return std::visit(

@@ -85,8 +85,8 @@ struct String
 	String(String&&) = default;
 	String& operator=(String&&) = default;
 
-	friend constexpr bool operator==(String a, String b) = default;
-	friend constexpr std::strong_ordering operator<=>(String a, String b) = default;
+	friend bool operator==(String a, String b) = default;
+	friend std::strong_ordering operator<=>(String a, String b) = default;
 
 	void print(std::ostream& out) const
 	{
@@ -140,8 +140,8 @@ struct ArrayOf
 	ArrayOf(ArrayOf&&) = default;
 	ArrayOf& operator=(ArrayOf&&) = default;
 
-	friend constexpr bool operator==(ArrayOf a, ArrayOf b) = default;
-	friend constexpr std::strong_ordering operator<=>(ArrayOf a, ArrayOf b) = default;
+	friend bool operator==(ArrayOf a, ArrayOf b) = default;
+	friend std::strong_ordering operator<=>(ArrayOf a, ArrayOf b) = default;
 
 	void print(std::ostream& out) const
 	{

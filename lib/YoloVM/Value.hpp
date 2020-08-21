@@ -5,6 +5,7 @@
 #include <utility>
 #include <stdexcept>
 #include <concepts>
+#include <compare>
 
 #include <YoloVM/Types.hpp>
 #include <YoloVM/OperatorConcepts.hpp>
@@ -45,6 +46,9 @@ class Value
 		friend Value operator*(const Value& a, const Value& b);
 		friend Value operator/(const Value& a, const Value& b);
 		friend Value operator%(const Value& a, const Value& b);
+
+		friend bool operator==(const Value& a, const Value& b);
+		friend std::strong_ordering operator<=>(const Value& a, const Value& b);
 
 		void print(std::ostream& out) const;
 
