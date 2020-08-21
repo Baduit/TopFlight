@@ -83,6 +83,31 @@ struct String
 	std::string value;
 };
 
+struct Boolean
+{
+	constexpr Boolean(bool v):
+		value(std::move(v))
+	{}
+
+	constexpr Boolean() = default;
+
+	constexpr Boolean(const Boolean&) = default;
+	constexpr Boolean& operator=(const Boolean&) = default;
+
+	constexpr Boolean(Boolean&&) = default;
+	constexpr Boolean& operator=(Boolean&&) = default;
+
+	void print(std::ostream& out) const
+	{
+		out << (value ? "true" : "false");
+	}
+
+	friend constexpr Boolean operator&&(Boolean a, Boolean b) { return a.value && b.value; }
+	friend constexpr Boolean operator||(Boolean a, Boolean b) { return a.value && b.value; }
+
+	bool value = true;
+};
+
 
 template <typename T>
 struct ArrayOf
@@ -117,4 +142,5 @@ struct ArrayOf
 using ArrayOfInteger = ArrayOf<Integer>;
 using ArrayOfNumber = ArrayOf<Number>;
 using ArrayOfString = ArrayOf<String>;
+using ArrayOfBoolean = ArrayOf<Boolean>;
 

@@ -22,7 +22,7 @@ enum class Type
 
 class Value
 {
-	using Variant = std::variant<Integer, Number, String, ArrayOfInteger, ArrayOfNumber, ArrayOfString>;
+	using Variant = std::variant<Integer, Number, String, Boolean, ArrayOfInteger, ArrayOfNumber, ArrayOfString, ArrayOfBoolean>;
 	public:
 		template <typename T>
 		Value(T value):

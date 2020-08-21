@@ -116,6 +116,16 @@ inline std::string extract_string(std::string_view str)
 	return result;
 }
 
+inline bool to_bool(std::string_view str)
+{
+	if (str == "true")
+		return true;
+	else if (str == "false")
+		return false;
+	else
+		throw std::runtime_error("Invalid bool parameter");
+}
+
 inline Value parse_and_create_value(std::optional<std::string_view> str)
 {
 	if (!str || str->empty())
@@ -143,17 +153,25 @@ inline Value parse_and_create_value(std::optional<std::string_view> str)
 	{
 		return String(extract_string(values));
 	}
+	else if (type == "BOOLEAN")
+	{
+		return Boolean(to_bool(values));
+	}
 	else if (type == "ARRAY_OF_INTEGER")
 	{
-
+		throw std::runtime_error("Not supported yet");
 	}
 	else if (type == "ARRAY_OF_NUMBER")
 	{
-
+		throw std::runtime_error("Not supported yet");
 	}
 	else if (type == "ARRAY_OF_STRING")
 	{
-
+		throw std::runtime_error("Not supported yet");
+	}
+	else if (type == "ARRAY_OF_BOOLEAN")
+	{
+		throw std::runtime_error("Not supported yet");
 	}
 	else
 	{
