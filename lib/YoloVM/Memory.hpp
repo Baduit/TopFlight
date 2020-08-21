@@ -6,6 +6,9 @@
 
 #include <YoloVM/Value.hpp>
 
+namespace YololVM
+{
+
 class Memory
 {
 	public:
@@ -21,3 +24,5 @@ class Memory
 	private:
 		std::map<std::string, Value, std::less<>> _data;
 };
+
+} // YololVM

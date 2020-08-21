@@ -13,6 +13,9 @@
 
 #include <YoloVM/Value.hpp>
 
+namespace YololVM
+{
+
 struct Instruction
 {
 	struct Store
@@ -100,3 +103,5 @@ struct Instruction
 
 	Variant _variant;
 };
+
+} // YololVM

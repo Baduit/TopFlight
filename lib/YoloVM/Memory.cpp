@@ -1,5 +1,9 @@
 #include <YoloVM/Memory.hpp>
 
+namespace YololVM
+{
+
+
 void Memory::store(std::string_view name, Value value)
 {
 	// std::map really sucks ! Use a vector of pair ?
@@ -26,3 +30,5 @@ void Memory::free(std::string_view name)
 	if (it != _data.end())
 		_data.erase(it);
 }
+
+} // YololVM

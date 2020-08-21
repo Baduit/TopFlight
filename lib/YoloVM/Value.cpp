@@ -1,5 +1,8 @@
 #include <YoloVM/Value.hpp>
 
+namespace YololVM
+{
+
 Value operator+(const Value& a, const Value& b)
 {
 	return std::visit(
@@ -173,3 +176,5 @@ void Value::print(std::ostream& out) const
 			value.print(out);
 		}, _variant);
 }
+
+} // YololVM

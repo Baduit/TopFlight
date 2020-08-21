@@ -2,6 +2,9 @@
 
 #include <concepts>
 
+namespace YololVM
+{
+
 template <typename T>
 concept Addable = requires(const T& a, const T& b)
 	{
@@ -31,3 +34,5 @@ concept Modulable = requires(const T& a, const T& b)
 	{
 		{ a % b } -> std::same_as<T>;
 	};
+	
+} // YololVM

@@ -8,6 +8,9 @@
 
 #include "Parser.hpp"
 
+namespace TopFlight
+{
+
 class Interpreter
 {
 	public:
@@ -22,7 +25,7 @@ class Interpreter
 			std::ifstream file(filename);
 			std::string line;
 			unsigned int line_id = 0;
-			std::optional<Routine> current_routine;
+			std::optional<YololVM::Routine> current_routine;
 			while (std::getline(file, line))
 			{
 				++line_id;
@@ -45,7 +48,7 @@ class Interpreter
 						{
 							if (current_routine)
 								throw std::runtime_error("It is not possible to have a routine inside a routine");
-							current_routine = Routine{ routine_cmd->name, {} };
+							current_routine = YololVM::Routine{ routine_cmd->name, {} };
 						}
 						else
 						{
@@ -72,5 +75,7 @@ class Interpreter
 		}
 
 	private:
-		VirtualMachine _vm;
+		YololVM::VirtualMachine _vm;
 };
+
+} // namespace TopFlight

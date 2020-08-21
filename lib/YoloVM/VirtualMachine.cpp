@@ -1,5 +1,8 @@
 #include <YoloVM/VirtualMachine.hpp>
 
+namespace YololVM
+{
+
 void VirtualMachine::execute_instruction(const Instruction& instruction)
 {
 	instruction.visit(
@@ -114,3 +117,5 @@ void VirtualMachine::execute_routine(std::string_view routine_name)
 	for (const auto& instruction: it->instructions)
 		execute_instruction(instruction);
 }
+
+} // YololVM

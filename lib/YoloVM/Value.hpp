@@ -9,6 +9,9 @@
 #include <YoloVM/Types.hpp>
 #include <YoloVM/OperatorConcepts.hpp>
 
+namespace YololVM
+{
+
 enum class Type
 {
 	// Value are used as index in a variant
@@ -48,3 +51,5 @@ class Value
 	private:
 		Variant _variant;
 };
+
+} // YololVM

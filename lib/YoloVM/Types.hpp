@@ -5,6 +5,9 @@
 #include <string>
 #include <iostream>
 
+namespace YololVM
+{
+
 struct Integer
 {
 	constexpr Integer(int v):
@@ -144,3 +147,4 @@ using ArrayOfNumber = ArrayOf<Number>;
 using ArrayOfString = ArrayOf<String>;
 using ArrayOfBoolean = ArrayOf<Boolean>;
 
+} // YololVM

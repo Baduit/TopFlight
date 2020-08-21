@@ -18,7 +18,8 @@
 #include <YoloVM/Routine.hpp>
 #include <YoloVM/Memory.hpp>
 
-
+namespace YololVM
+{
 
 enum class Operation
 {
@@ -76,3 +77,5 @@ class VirtualMachine
 		Memory _memory;
 		std::vector<Routine> _routines;
 };
+
+} // YololVM
