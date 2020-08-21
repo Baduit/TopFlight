@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <compare>
 
 namespace YololVM
 {
@@ -27,6 +28,9 @@ struct Integer
 	friend constexpr Integer operator*(Integer a, Integer b) { return Integer{ a.value * b.value }; }
 	friend constexpr Integer operator/(Integer a, Integer b) { return Integer{ a.value / b.value }; }
 	friend constexpr Integer operator%(Integer a, Integer b) { return Integer{ a.value % b.value }; }
+
+	friend constexpr bool operator==(Integer a, Integer b) = default;
+	friend constexpr std::strong_ordering operator<=>(Integer a, Integer b) = default;
 
 	void print(std::ostream& out) const
 	{
@@ -56,6 +60,9 @@ struct Number
 	friend constexpr Number operator/(Number a, Number b) { return Number{ a.value / b.value }; }
 	// No modulo
 
+	friend constexpr bool operator==(Number a, Number b) = default;
+	friend constexpr std::strong_ordering operator<=>(Number a, Number b) = default;
+
 	void print(std::ostream& out) const
 	{
 		out << value;
@@ -77,6 +84,9 @@ struct String
 
 	String(String&&) = default;
 	String& operator=(String&&) = default;
+
+	friend constexpr bool operator==(String a, String b) = default;
+	friend constexpr std::strong_ordering operator<=>(String a, String b) = default;
 
 	void print(std::ostream& out) const
 	{
@@ -105,6 +115,9 @@ struct Boolean
 		out << (value ? "true" : "false");
 	}
 
+	friend constexpr bool operator==(Boolean a, Boolean b) = default;
+	friend constexpr std::strong_ordering operator<=>(Boolean a, Boolean b) = default;
+
 	friend constexpr Boolean operator&&(Boolean a, Boolean b) { return a.value && b.value; }
 	friend constexpr Boolean operator||(Boolean a, Boolean b) { return a.value && b.value; }
 
@@ -126,6 +139,9 @@ struct ArrayOf
 
 	ArrayOf(ArrayOf&&) = default;
 	ArrayOf& operator=(ArrayOf&&) = default;
+
+	friend constexpr bool operator==(ArrayOf a, ArrayOf b) = default;
+	friend constexpr std::strong_ordering operator<=>(ArrayOf a, ArrayOf b) = default;
 
 	void print(std::ostream& out) const
 	{
