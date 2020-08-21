@@ -42,16 +42,30 @@ class VirtualMachine
 		void copy(std::string_view input, std::string_view dest);
 		void free(std::string_view dest);
 		void print(std::string_view input);
-		
+
 		void add_routine(Routine routine);
 		void remove_routine(std::string_view routine_name);
 		void execute_routine(std::string_view routine_name);
+		void execute_routine_if(std::string_view routine_name, std::string_view boolean_input); // TODO
 
 		void add(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void substract(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void multiply(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void divide(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void modulo(std::string_view input_a, std::string_view input_b, std::string_view output);
+
+		// TODO 3 above
+		void logical_and(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void logical_or(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void logical_not(std::string_view input, std::string_view output);
+
+		// TODO 5 above
+		void compare_equal(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void compare_different(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void compare_less(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void compare_less_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void compare_greater(std::string_view input_a, std::string_view input_b, std::string_view output);
+		void compare_greater_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output);
 
 	private:
 		Memory _memory;
