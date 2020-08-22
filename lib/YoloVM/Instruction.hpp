@@ -204,7 +204,7 @@ struct Instruction
 	};
 
 	using InstructionTypes = brigand::list<
-				Store, Copy, Free, Print, Call,
+				Store, Copy, Free, Print, Call, CallIf,
 				Add, Substract, Multiply, Divide, Modulo,
 				LogicalAnd, LogicalOr, LogicalNot,
 				CompareEqual, CompareDifferent, CompareLess, CompareLessOrEqual, CompareGreater, CompareGreaterOrEqual
