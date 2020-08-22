@@ -172,95 +172,6 @@ void check_routine_name(std::string_view routine_name)
 
 } // namespace Impl
 
-YoloVM::Instruction parse_instruction(std::string_view str)
-{
-    YoloVM::Instruction result;
-    auto [instruction, remaining_string] = Impl::get_next_word(str);
-    if (instruction == "STORE")
-    {
-        if (!remaining_string || remaining_string->empty())
-            throw std::runtime_error("Missing argument");
-
-        auto [arg1, remaning_after_arg1] = Impl::get_next_word(*remaining_string);
-        if (!remaning_after_arg1 || remaning_after_arg1->empty())
-            throw std::runtime_error("Missing argument");
-
-        result._variant = YoloVM::Instruction::Store{ std::string(arg1), Impl::parse_and_create_value(remaning_after_arg1) };
-    }
-    else if (instruction == "COPY")
-    {
-        if (!remaining_string || remaining_string->empty())
-            throw std::runtime_error("Missing argument");
-
-        auto [arg1, remaning_after_arg1] = Impl::get_next_word(*remaining_string);
-        if (!remaning_after_arg1 || remaning_after_arg1->empty())
-            throw std::runtime_error("Missing argument");
-
-        auto [arg2, should_be_empty] = Impl::get_next_word(*remaning_after_arg1);
-        if (should_be_empty)
-            throw std::runtime_error("Too much argument");
-
-        result._variant = YoloVM::Instruction::Copy{ std::string(arg1), std::string(arg2) };
-    }
-    else if (instruction == "FREE")
-    {
-        if (!remaining_string || remaining_string->empty())
-            throw std::runtime_error("Missing argument");
-
-        auto [arg, should_be_empty] = Impl::get_next_word(*remaining_string);
-        if (should_be_empty)
-            throw std::runtime_error("Too much argument");
-
-        result._variant = YoloVM::Instruction::Free{ std::string(arg) };
-    }
-    else if (instruction == "ADD")
-    {
-        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Add>(remaining_string);
-    }
-    else if (instruction == "SUBSTRACT")
-    {
-        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Substract>(remaining_string);
-    }
-    else if (instruction == "MULTIPLY")
-    {
-        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Multiply>(remaining_string);
-    }
-    else if (instruction == "DIVIDE")
-    {
-        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Divide>(remaining_string);
-    }
-    else if (instruction == "MODULO")
-    {
-        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Modulo>(remaining_string);
-    }
-    else if (instruction == "PRINT")
-    {
-        if (!remaining_string || remaining_string->empty())
-            throw std::runtime_error("Missing argument");
-
-        auto [arg, should_be_empty] = Impl::get_next_word(*remaining_string);
-        if (should_be_empty)
-            throw std::runtime_error("Too much argument");
-
-        result._variant = YoloVM::Instruction::Print{ std::string(arg) };
-    }
-	else if (instruction == "CALL")
-    {
-        if (!remaining_string || remaining_string->empty())
-            throw std::runtime_error("Missing argument");
-
-        auto [arg, should_be_empty] = Impl::get_next_word(*remaining_string);
-        if (should_be_empty)
-            throw std::runtime_error("Too much argument");
-
-        result._variant = YoloVM::Instruction::Call{ std::string(arg) };
-    }
-    else
-    {
-        throw std::runtime_error("Error while parsing unknwown instruction");
-    }
-    return result;
-}
 
 bool is_line_a_routine_command(std::string_view line)
 {
@@ -289,5 +200,29 @@ std::optional<RoutineCommand> get_routine_command(std::string_view line)
 }
 
 } // namespace Parser
+
+
+YoloVM::Instruction InstructionParser::parse(std::string_view str)
+{
+	std::optional<YoloVM::Instruction> result;
+	auto [instruction, remaining_string] = Parser::Impl::get_next_word(str);
+
+	brigand::for_each<YoloVM::Instruction::InstructionTypes>(
+		[&](auto type)
+		{
+			using InstructionType = decltype(type)::type;
+			constexpr auto type_name = InstructionType::NAME;
+			if (type_name == instruction)
+			{
+				result = construct_instruction<0, InstructionType>(remaining_string);
+			}
+		});
+	if (!result)
+		throw std::runtime_error("Error while parsing unknwown instruction");
+
+	// Check for no extra arguments
+	return *result;
+}
+
 
 } // namespace TopFlight
