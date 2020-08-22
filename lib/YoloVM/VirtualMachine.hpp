@@ -48,7 +48,7 @@ class VirtualMachine
 		void add_routine(Routine routine);
 		void remove_routine(std::string_view routine_name);
 		void execute_routine(std::string_view routine_name);
-		void execute_routine_if(std::string_view routine_name, std::string_view boolean_input); // TODO
+		void execute_routine_if(std::string_view routine_name, std::string_view boolean_input);
 
 		void add(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void substract(std::string_view input_a, std::string_view input_b, std::string_view output);

@@ -61,6 +61,14 @@ struct Instruction
 		std::string routine_name;
 	};
 
+	struct CallIf
+	{
+		static constexpr std::string_view NAME = "CALL_IF";
+		
+		std::string routine_name;
+		std::string boolean_input;
+	};
+
 	/*
 	** Arithmetic
 	*/

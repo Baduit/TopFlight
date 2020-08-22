@@ -49,6 +49,10 @@ void VirtualMachine::execute_instruction(Instruction instruction)
 			{
 				call_helper(&VirtualMachine::execute_routine, std::move(i));
 			}
+			else if constexpr (std::same_as<T, Instruction::CallIf>)
+			{
+				call_helper(&VirtualMachine::execute_routine_if, std::move(i));
+			}
 			else if constexpr (std::same_as<T, Instruction::LogicalAnd>)
 			{
 				call_helper(&VirtualMachine::logical_and, std::move(i));
@@ -146,6 +150,23 @@ void VirtualMachine::remove_routine(std::string_view routine_name)
 
 void VirtualMachine::execute_routine(std::string_view routine_name)
 {
+	auto it = std::find_if(_routines.begin(), _routines.end(),
+		[&](const auto& r)
+		{
+			return r.name == routine_name;
+		});
+	if (it == _routines.end())
+		throw std::runtime_error("Routine not found");
+	
+	for (const auto& instruction: it->instructions)
+		execute_instruction(instruction);
+}
+
+void VirtualMachine::execute_routine_if(std::string_view routine_name, std::string_view boolean_input)
+{
+	if (load(boolean_input) != Boolean(true))
+		return;
+
 	auto it = std::find_if(_routines.begin(), _routines.end(),
 		[&](const auto& r)
 		{
