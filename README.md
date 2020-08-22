@@ -28,6 +28,7 @@ Strings are delimited by `""`
 Examples:
 * `INTEGER(3)` 
 * `NUMBER(5.9)`
+* `BOOLEAN(true)`
 * `ARRAY_OF_STRING("Hello"," ","World","!\n")`
 
 ## Routine
@@ -57,6 +58,23 @@ FREE str
 CALL MyRoutine
 ```
 A routine name can only contain alphanumeric character only or `_` 
+
+## Condition
+With the instruction `CALL_IF` you can call only if a `BOOLEAN` is `true`. Example:
+```
+<hello_world>
+STORE hi STRING("hello world")
+PRINT hi
+</hello_world>
+
+STORE b_true BOOLEAN(true)
+STORE b_false BOOLEAN(false)
+
+# This call happends
+CALL_IF hello_world b_true
+# This call does not happend
+CALL_IF hello_world b_false
+```
 
 ## Example of a basic program
 ```
