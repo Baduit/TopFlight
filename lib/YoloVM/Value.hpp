@@ -47,6 +47,11 @@ class Value
 		friend Value operator/(const Value& a, const Value& b);
 		friend Value operator%(const Value& a, const Value& b);
 
+
+		friend Value operator&&(Value a, Value b);
+		friend Value operator||(Value a, Value b);
+		Value operator!() const;
+
 		friend bool operator==(const Value& a, const Value& b);
 		friend std::strong_ordering operator<=>(const Value& a, const Value& b);
 
