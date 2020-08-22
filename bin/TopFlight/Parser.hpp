@@ -6,7 +6,7 @@
 #include <tuple>
 
 #include <external/brigand/brigand.hpp>
-#include "external/aggreget/aggreget.hpp"
+#include <external/aggreget/aggreget.hpp>
 
 #include <YoloVM/Instruction.hpp>
 

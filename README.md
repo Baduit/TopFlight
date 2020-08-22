@@ -77,6 +77,12 @@ Because the instruction and arguments are seprated by only 1 space, a space can 
 ## Why is there no unit tests ?
 It is a pet project for fun, unit tests are very important but not fun to write most of the time and I want to have fun during my free time else there's no point doing my pet projects.
 
+# Dependencies
+There are 2 depencies:
+* [Aggreget](https://github.com/Baduit/Aggreget): my own library to use aggregates types as tuple
+* [Brigand](https://github.com/edouarda/brigand): a meta programmation library I use to compute list of types
+Both library are header-only and already in the repos
+
 # Portability
 I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and 10.1.0.
 The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon

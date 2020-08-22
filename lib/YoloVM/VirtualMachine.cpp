@@ -3,7 +3,7 @@
 namespace YoloVM
 {
 
-void VirtualMachine::execute_instruction(const Instruction& instruction)
+void VirtualMachine::execute_instruction(Instruction instruction)
 {
 	instruction.visit(
 		[&](const auto& i)
@@ -11,79 +11,79 @@ void VirtualMachine::execute_instruction(const Instruction& instruction)
 			using T = std::decay_t<decltype(i)>;
 			if constexpr (std::same_as<T, Instruction::Store>)
 			{
-				store(i.dest, i.value);
+				call_helper(&VirtualMachine::store, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Copy>)
 			{
-				copy(i.input, i.dest);
+				call_helper(&VirtualMachine::copy, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Free>)
 			{
-				free(i.dest);
+				call_helper(&VirtualMachine::free, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Add>)
 			{
-				add(i.input_a, i.input_b, i.dest);
+				call_helper(&VirtualMachine::add, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Substract>)
 			{
-				substract(i.input_a, i.input_b, i.dest);
+				call_helper(&VirtualMachine::substract, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Multiply>)
 			{
-				multiply(i.input_a, i.input_b, i.dest);
+				call_helper(&VirtualMachine::multiply, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Divide>)
 			{
-				divide(i.input_a, i.input_b, i.dest);
+				call_helper(&VirtualMachine::divide, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Modulo>)
 			{
-				modulo(i.input_a, i.input_b, i.dest);
+				call_helper(&VirtualMachine::modulo, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Print>)
 			{
-				print(i.input);
+				call_helper(&VirtualMachine::print, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::Call>)
 			{
-				execute_routine(i.routine_name);
+				call_helper(&VirtualMachine::execute_routine, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::LogicalAnd>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::logical_and, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::LogicalOr>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::logical_or, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::LogicalNot>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::logical_not, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::CompareEqual>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::compare_equal, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::CompareDifferent>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::compare_different, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::CompareLess>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::compare_less, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::CompareLessOrEqual>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::compare_less_or_equal, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::CompareGreater>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::compare_greater, std::move(i));
 			}
 			else if constexpr (std::same_as<T, Instruction::CompareGreaterOrEqual>)
 			{
-				throw std::runtime_error("Instruction not implemented.");
+				call_helper(&VirtualMachine::compare_greater_or_equal, std::move(i));
 			}
 			else
 			{
@@ -181,6 +181,51 @@ void VirtualMachine::divide(std::string_view input_a, std::string_view input_b, 
 void VirtualMachine::modulo(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
 	_memory.store(output, _memory.load(input_a) % _memory.load(input_b));
+}
+
+void VirtualMachine::logical_and(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) && _memory.load(input_b));
+}
+
+void VirtualMachine::logical_or(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, _memory.load(input_a) || _memory.load(input_b));
+}
+
+void VirtualMachine::logical_not(std::string_view input, std::string_view output)
+{
+	_memory.store(output, !(_memory.load(input)));
+}
+
+void VirtualMachine::compare_equal(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, Boolean(_memory.load(input_a) == _memory.load(input_b)));
+}
+
+void VirtualMachine::compare_different(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, Boolean(_memory.load(input_a) != _memory.load(input_b)));
+}
+
+void VirtualMachine::compare_less(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, Boolean(_memory.load(input_a) < _memory.load(input_b)));
+}
+
+void VirtualMachine::compare_less_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, Boolean(_memory.load(input_a) <= _memory.load(input_b)));
+}
+
+void VirtualMachine::compare_greater(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, Boolean(_memory.load(input_a) > _memory.load(input_b)));
+}
+
+void VirtualMachine::compare_greater_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output)
+{
+	_memory.store(output, Boolean(_memory.load(input_a) >= _memory.load(input_b)));
 }
 
 
