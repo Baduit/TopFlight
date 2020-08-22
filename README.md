@@ -88,9 +88,7 @@ I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and 1
 The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon
 
 # Todo:
-- Add the boolean type and add instructions to use them (comparaison operations)
-- Add comparaison operations
-- Add a way to call condionnaly instructions set
+- Add an instruction to read user input
 - Make something usefull with arrays and strings (which are basically arrays of chars)
 - Make a cool interactive interpreter and a C library
 - Proper exception and not just throw some std::runtime_error like a moron
