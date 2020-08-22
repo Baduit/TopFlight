@@ -102,7 +102,7 @@ bool to_bool(std::string_view str)
 		throw std::runtime_error("Invalid bool parameter");
 }
 
-YololVM::Value parse_and_create_value(std::optional<std::string_view> str)
+YoloVM::Value parse_and_create_value(std::optional<std::string_view> str)
 {
 	if (!str || str->empty())
 		throw std::runtime_error("Missing argument");
@@ -119,19 +119,19 @@ YololVM::Value parse_and_create_value(std::optional<std::string_view> str)
 
 	if (type == "INTEGER")
 	{
-		return YololVM::Integer(to_int(values));
+		return YoloVM::Integer(to_int(values));
 	}
 	else if (type == "NUMBER")
 	{
-		return YololVM::Number(to_double(values));
+		return YoloVM::Number(to_double(values));
 	}
 	else if (type == "STRING")
 	{
-		return YololVM::String(extract_string(values));
+		return YoloVM::String(extract_string(values));
 	}
 	else if (type == "BOOLEAN")
 	{
-		return YololVM::Boolean(to_bool(values));
+		return YoloVM::Boolean(to_bool(values));
 	}
 	else if (type == "ARRAY_OF_INTEGER")
 	{
@@ -172,9 +172,9 @@ void check_routine_name(std::string_view routine_name)
 
 } // namespace Impl
 
-YololVM::Instruction parse_instruction(std::string_view str)
+YoloVM::Instruction parse_instruction(std::string_view str)
 {
-    YololVM::Instruction result;
+    YoloVM::Instruction result;
     auto [instruction, remaining_string] = Impl::get_next_word(str);
     if (instruction == "STORE")
     {
@@ -185,7 +185,7 @@ YololVM::Instruction parse_instruction(std::string_view str)
         if (!remaning_after_arg1 || remaning_after_arg1->empty())
             throw std::runtime_error("Missing argument");
 
-        result._variant = YololVM::Instruction::Store{ std::string(arg1), Impl::parse_and_create_value(remaning_after_arg1) };
+        result._variant = YoloVM::Instruction::Store{ std::string(arg1), Impl::parse_and_create_value(remaning_after_arg1) };
     }
     else if (instruction == "COPY")
     {
@@ -200,7 +200,7 @@ YololVM::Instruction parse_instruction(std::string_view str)
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
-        result._variant = YololVM::Instruction::Copy{ std::string(arg1), std::string(arg2) };
+        result._variant = YoloVM::Instruction::Copy{ std::string(arg1), std::string(arg2) };
     }
     else if (instruction == "FREE")
     {
@@ -211,27 +211,27 @@ YololVM::Instruction parse_instruction(std::string_view str)
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
-        result._variant = YololVM::Instruction::Free{ std::string(arg) };
+        result._variant = YoloVM::Instruction::Free{ std::string(arg) };
     }
     else if (instruction == "ADD")
     {
-        result._variant = Impl::parse_and_create_operation<YololVM::Instruction::Add>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Add>(remaining_string);
     }
     else if (instruction == "SUBSTRACT")
     {
-        result._variant = Impl::parse_and_create_operation<YololVM::Instruction::Substract>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Substract>(remaining_string);
     }
     else if (instruction == "MULTIPLY")
     {
-        result._variant = Impl::parse_and_create_operation<YololVM::Instruction::Multiply>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Multiply>(remaining_string);
     }
     else if (instruction == "DIVIDE")
     {
-        result._variant = Impl::parse_and_create_operation<YololVM::Instruction::Divide>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Divide>(remaining_string);
     }
     else if (instruction == "MODULO")
     {
-        result._variant = Impl::parse_and_create_operation<YololVM::Instruction::Modulo>(remaining_string);
+        result._variant = Impl::parse_and_create_operation<YoloVM::Instruction::Modulo>(remaining_string);
     }
     else if (instruction == "PRINT")
     {
@@ -242,7 +242,7 @@ YololVM::Instruction parse_instruction(std::string_view str)
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
-        result._variant = YololVM::Instruction::Print{ std::string(arg) };
+        result._variant = YoloVM::Instruction::Print{ std::string(arg) };
     }
 	else if (instruction == "CALL")
     {
@@ -253,7 +253,7 @@ YololVM::Instruction parse_instruction(std::string_view str)
         if (should_be_empty)
             throw std::runtime_error("Too much argument");
 
-        result._variant = YololVM::Instruction::Call{ std::string(arg) };
+        result._variant = YoloVM::Instruction::Call{ std::string(arg) };
     }
     else
     {
@@ -284,7 +284,6 @@ std::optional<RoutineCommand> get_routine_command(std::string_view line)
 	else
 	{
 		RoutineCommand cmd { std::string(line.substr(1, line.size() - 2)), RoutineCommand::Type::BEGIN};
-		std::cout << cmd.name << std::endl;
 		return cmd;
 	}
 }

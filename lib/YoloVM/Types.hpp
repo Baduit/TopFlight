@@ -6,7 +6,7 @@
 #include <iostream>
 #include <compare>
 
-namespace YololVM
+namespace YoloVM
 {
 
 struct Integer
@@ -164,4 +164,4 @@ using ArrayOfNumber = ArrayOf<Number>;
 using ArrayOfString = ArrayOf<String>;
 using ArrayOfBoolean = ArrayOf<Boolean>;
 
-} // YololVM
+} // YoloVM

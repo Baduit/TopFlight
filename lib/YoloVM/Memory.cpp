@@ -1,6 +1,6 @@
 #include <YoloVM/Memory.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 
@@ -31,4 +31,4 @@ void Memory::free(std::string_view name)
 		_data.erase(it);
 }
 
-} // YololVM
+} // YoloVM

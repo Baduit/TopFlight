@@ -11,9 +11,12 @@
 #include <charconv>
 #include <sstream>
 
+#include <external/brigand/brigand.hpp>
+#include <YoloVM/BrigandExtension.hpp>
+
 #include <YoloVM/Value.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 struct Instruction
@@ -23,28 +26,38 @@ struct Instruction
 	*/
 	struct Store
 	{
+		static constexpr std::string_view NAME = "STORE";
+
 		std::string dest;
 		Value value;
 	};
 
 	struct Copy
 	{
+		static constexpr std::string_view NAME = "COPY";
+
 		std::string input;
 		std::string dest;
 	};
 
 	struct Free
 	{
+		static constexpr std::string_view NAME = "FREE";
+		
 		std::string dest;
 	};
 
 	struct Print
 	{
+		static constexpr std::string_view NAME = "PRINT";
+		
 		std::string input;
 	};
 
 	struct Call
 	{
+		static constexpr std::string_view NAME = "CALL";
+		
 		std::string routine_name;
 	};
 
@@ -53,6 +66,8 @@ struct Instruction
 	*/
 	struct Add
 	{
+		static constexpr std::string_view NAME = "ADD";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -60,6 +75,8 @@ struct Instruction
 
 	struct Substract
 	{
+		static constexpr std::string_view NAME = "SUBSTRACT";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -67,6 +84,8 @@ struct Instruction
 
 	struct Multiply
 	{
+		static constexpr std::string_view NAME = "MULTIPLY";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -74,6 +93,8 @@ struct Instruction
 
 	struct Divide
 	{
+		static constexpr std::string_view NAME = "DIVIDE";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -81,6 +102,8 @@ struct Instruction
 
 	struct Modulo
 	{
+		static constexpr std::string_view NAME = "MODULO";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -91,6 +114,8 @@ struct Instruction
 	*/
 	struct LogicalAnd
 	{
+		static constexpr std::string_view NAME = "LOGICAL_AND";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -98,6 +123,8 @@ struct Instruction
 
 	struct LogicalOr
 	{
+		static constexpr std::string_view NAME = "LOGICAL_OR";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -105,6 +132,8 @@ struct Instruction
 
 	struct LogicalNot
 	{
+		static constexpr std::string_view NAME = "LOGICAL_NOT";
+		
 		std::string input;
 		std::string dest;
 	};
@@ -114,6 +143,8 @@ struct Instruction
 	*/
 	struct CompareEqual
 	{
+		static constexpr std::string_view NAME = "COMPARE_EQUAL";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -121,6 +152,8 @@ struct Instruction
 
 	struct CompareDifferent
 	{
+		static constexpr std::string_view NAME = "COMPARE_DIFFERENT";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -128,6 +161,8 @@ struct Instruction
 
 	struct CompareLess
 	{
+		static constexpr std::string_view NAME = "COMPARE_LESS";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -135,6 +170,8 @@ struct Instruction
 
 	struct CompareLessOrEqual
 	{
+		static constexpr std::string_view NAME = "COMPARE_LESS_OR_EQUAL";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -142,6 +179,8 @@ struct Instruction
 
 	struct CompareGreater
 	{
+		static constexpr std::string_view NAME = "COMPARE_GREATER";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
@@ -149,19 +188,21 @@ struct Instruction
 
 	struct CompareGreaterOrEqual
 	{
+		static constexpr std::string_view NAME = "COMPARE_GREATER_OR_EQUAL";
+		
 		std::string input_a;
 		std::string input_b;
 		std::string dest;
 	};
 
-	using Variant =
-		std::variant
-			<
+	using InstructionTypes = brigand::list<
 				Store, Copy, Free, Print, Call,
 				Add, Substract, Multiply, Divide, Modulo,
 				LogicalAnd, LogicalOr, LogicalNot,
 				CompareEqual, CompareDifferent, CompareLess, CompareLessOrEqual, CompareGreater, CompareGreaterOrEqual
 			>;
+
+	using Variant = brigand_list_as_variant<InstructionTypes>;
 
 	template <typename T>
 	Instruction(T i):
@@ -185,4 +226,4 @@ struct Instruction
 	Variant _variant;
 };
 
-} // YololVM
+} // YoloVM

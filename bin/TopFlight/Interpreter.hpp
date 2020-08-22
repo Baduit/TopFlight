@@ -20,7 +20,7 @@ class Interpreter
 		void load_file(const std::string& filename);
 
 	private:
-		YololVM::VirtualMachine _vm;
+		YoloVM::VirtualMachine _vm;
 };
 
 } // namespace TopFlight

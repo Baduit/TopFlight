@@ -10,10 +10,11 @@ Interpreter::Interpreter(const std::string& filename)
 
 void Interpreter::load_file(const std::string& filename)
 {
+	
 	std::ifstream file(filename);
 	std::string line;
 	unsigned int line_id = 0;
-	std::optional<YololVM::Routine> current_routine;
+	std::optional<YoloVM::Routine> current_routine;
 	while (std::getline(file, line))
 	{
 		++line_id;
@@ -36,7 +37,7 @@ void Interpreter::load_file(const std::string& filename)
 				{
 					if (current_routine)
 						throw std::runtime_error("It is not possible to have a routine inside a routine");
-					current_routine = YololVM::Routine{ routine_cmd->name, {} };
+					current_routine = YoloVM::Routine{ routine_cmd->name, {} };
 				}
 				else
 				{
@@ -49,9 +50,9 @@ void Interpreter::load_file(const std::string& filename)
 			else
 			{
 				if (current_routine)
-					current_routine->instructions.push_back(Parser::parse_instruction(line));
+					current_routine->instructions.push_back(InstructionParser::parse(line));
 				else
-					_vm.execute_instruction(Parser::parse_instruction(line));
+					_vm.execute_instruction(InstructionParser::parse(line));
 			}
 		}
 		catch (std::exception& e)

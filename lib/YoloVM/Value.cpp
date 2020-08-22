@@ -1,6 +1,6 @@
 #include <YoloVM/Value.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 Value operator+(const Value& a, const Value& b)
@@ -193,4 +193,4 @@ void Value::print(std::ostream& out) const
 		}, _variant);
 }
 
-} // YololVM
+} // YoloVM

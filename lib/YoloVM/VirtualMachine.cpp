@@ -1,6 +1,6 @@
 #include <YoloVM/VirtualMachine.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 void VirtualMachine::execute_instruction(const Instruction& instruction)
@@ -184,4 +184,4 @@ void VirtualMachine::modulo(std::string_view input_a, std::string_view input_b, 
 }
 
 
-} // YololVM
+} // YoloVM

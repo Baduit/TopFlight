@@ -2,7 +2,7 @@
 
 #include <concepts>
 
-namespace YololVM
+namespace YoloVM
 {
 
 template <typename T>
@@ -35,4 +35,4 @@ concept Modulable = requires(const T& a, const T& b)
 		{ a % b } -> std::same_as<T>;
 	};
 	
-} // YololVM
+} // YoloVM

@@ -10,7 +10,7 @@
 #include <YoloVM/Types.hpp>
 #include <YoloVM/OperatorConcepts.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 enum class Type
@@ -56,4 +56,4 @@ class Value
 		Variant _variant;
 };
 
-} // YololVM
+} // YoloVM

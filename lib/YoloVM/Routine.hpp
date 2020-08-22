@@ -5,7 +5,7 @@
 
 #include <YoloVM/Instruction.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 struct Routine
@@ -14,4 +14,4 @@ struct Routine
 	std::vector<Instruction> instructions;
 };
 
-} // YololVM
+} // YoloVM

@@ -18,7 +18,7 @@
 #include <YoloVM/Routine.hpp>
 #include <YoloVM/Memory.hpp>
 
-namespace YololVM
+namespace YoloVM
 {
 
 enum class ArithmeticOperation
@@ -72,4 +72,4 @@ class VirtualMachine
 		std::vector<Routine> _routines;
 };
 
-} // YololVM
+} // YoloVM
