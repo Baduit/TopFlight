@@ -8,31 +8,34 @@ A program is composed of instruction and comments, each instruction and command 
 Empty lines are discarded without errors, but lines with spaces/tabulations are not consireded empty.
 
 ## Comments
-The line begins with a # without any space or tab before
+The line begins with a `#` without any space or tab before
 
 ## Instruction
 Write the instruction type followed by its arguments, everything is seperated by space
-- INSTRUCTION_TYPE ARG1 ARG2 
+- `INSTRUCTION_TYPE ARG1 ARG2`
 
 ## Values
 The values can be arguments has the following syntaxe for single values:
-* TYPE(value)
+* `TYPE(value)`
 
 If the type is an array the values are separated by a comma without any space. Like this:
-* TYPE(value_1,value_2)
+* `TYPE(value_1,value_2)`
 
-Strings are delimited by "", " can by escapted with a backslash \
+Strings are delimited by `""`
+
+`"` can by escapted with a backslash `\`
+
 Examples:
-* INTEGER(3) 
-* NUMBER(5.9)
-* ARRAY_OF_STRING("Hello"," ","World","!\n")
+* `INTEGER(3)` 
+* `NUMBER(5.9)`
+* `ARRAY_OF_STRING("Hello"," ","World","!\n")`
 
 ## Routine
 A routine is a set of instruction you can call later. The syntaxe to declare a routine is a line with the name of the routine between <> like example:
-* \<MyAwesomeRoutine>
+* `<MyAwesomeRoutine>`
 
 A routine end with a line beginning by </ followed by the name of the routine and ending with a >:
-* \</MyAwesomeRoutine>
+* `</MyAwesomeRoutine>`
 
 ```
 <MyRoutine>
@@ -44,7 +47,8 @@ FREE str
 
 A routine cannot contain another routine.
 
-To call a routine the instruction is CALL followed by the routine name example:
+To call a routine the instruction is `CALL` followed by the routine name example:
+```
 <MyRoutine>
 STORE str STRING("this is a string\n")
 PRINT str
@@ -52,7 +56,7 @@ FREE str
 </MyRoutine>
 CALL MyRoutine
 ```
-A routine name can only contain alphanumeric character only or _ 
+A routine name can only contain alphanumeric character only or `_` 
 
 ## Example of a basic program
 ```
@@ -86,7 +90,7 @@ The code uses c++ 20 (concepts essentially), It probably needs few adjustements 
 - Proper exception and not just throw some std::runtime_error like a moron
 - Support msvc
 - Support clang
-- A LOT of refactoring, there a lot of ugly code right know and it will keep getting worse because I'm a lazy ass
+- A LOT of refactoring, there a lot of ugly code right now and it will keep getting worse because I'm a lazy ass
 - Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull
 - Compile it to wasm (need clang support)
 - Make a website to try it online (if wasm compilation did not work or is not done, just make a rest api to compile/run/return the result of the program)
