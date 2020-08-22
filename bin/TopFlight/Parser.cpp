@@ -102,36 +102,37 @@ bool to_bool(std::string_view str)
 		throw std::runtime_error("Invalid bool parameter");
 }
 
-YoloVM::Value parse_and_create_value(std::optional<std::string_view> str)
+auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, std::optional<std::string_view>>
 {
-	if (!str || str->empty())
-		throw std::runtime_error("Missing argument");
-
-	auto [type, remaning_after_type] = get_next_word(*str, '(');
+	auto [type, remaning_after_type] = get_next_word(str, '(');
 	if (!remaning_after_type || remaning_after_type->empty())
 		throw std::runtime_error("Invalid value");
 
 	auto [values, end] = get_next_word(*remaning_after_type, ')');
 	if (values.empty() || !end)
 		throw std::runtime_error("Invalid value");
+
+	std::optional<std::string_view> remaining_string;
 	if (!end->empty())
-		throw std::runtime_error("Invalid value :  there should not have elements after the ')'");
+	{
+		remaining_string = end->substr(1);
+	}
 
 	if (type == "INTEGER")
 	{
-		return YoloVM::Integer(to_int(values));
+		return { YoloVM::Integer(to_int(values)), remaining_string };
 	}
 	else if (type == "NUMBER")
 	{
-		return YoloVM::Number(to_double(values));
+		return { YoloVM::Number(to_double(values)), remaining_string };
 	}
 	else if (type == "STRING")
 	{
-		return YoloVM::String(extract_string(values));
+		return { YoloVM::String(extract_string(values)), remaining_string };
 	}
 	else if (type == "BOOLEAN")
 	{
-		return YoloVM::Boolean(to_bool(values));
+		return { YoloVM::Boolean(to_bool(values)), remaining_string };
 	}
 	else if (type == "ARRAY_OF_INTEGER")
 	{

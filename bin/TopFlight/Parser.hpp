@@ -25,7 +25,7 @@ int to_int(std::string_view str);
 double to_double(std::string_view str);
 std::string extract_string(std::string_view str);
 bool to_bool(std::string_view str);
-YoloVM::Value parse_and_create_value(std::optional<std::string_view> str);
+auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, std::optional<std::string_view>>;
 void check_routine_name(std::string_view routine_name);
 
 } // namespace Impl
@@ -67,12 +67,15 @@ constexpr auto construct_instruction(std::optional<std::string_view> remaining_s
 		else if constexpr (std::same_as<AttrType, YoloVM::Value>)
 		{
 			// Works because it is always in last pos but rework needed
-			YoloVM::Value v = Parser::Impl::parse_and_create_value(remaining_string);
-			return construct_instruction<I + 1, InstructionType>(remaining_string, args..., v);
+			auto [v, remaining_after_arg] = Parser::Impl::parse_and_create_value(*remaining_string);
+			remaining_string = remaining_after_arg;
+			return construct_instruction<I + 1, InstructionType>(remaining_string, args..., std::move(v));
 		}
 	}
 	else
 	{
+		if (remaining_string)
+			throw std::runtime_error("Too many arguments");
 		return InstructionType{ args... };
 	}
 }
