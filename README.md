@@ -2,7 +2,7 @@
 Top Flight langage implementation and the virtual machine YoloVM. Learn it to become a Top Flight developer. The langage is very basic, not really coherent but I'm having a lot of fun creating it.
 It does not aim to be fast or usable in a real project, it has only an entertaining purpose.
 
-# Top flight specifications
+# Top flight overview
 ## Misc
 A program is composed of instruction and comments, each instruction and command are on their own lines.
 Empty lines are discarded without errors, but lines with spaces/tabulations are not consireded empty.
