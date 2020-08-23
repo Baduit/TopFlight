@@ -293,7 +293,7 @@ concept Has24attr =
 */
 
 template <Has0attr T>
-constexpr auto to_tuple_impl_cref(const T& t)
+constexpr auto to_tuple_impl_cref(const T&)
 {
 	return std::tuple();
 }
@@ -471,7 +471,7 @@ constexpr auto to_tuple_impl_cref(const T& t)
 */
 
 template <Has0attr T>
-constexpr auto to_tuple_impl_fref(T&& t)
+constexpr auto to_tuple_impl_fref(T&&)
 {
 	return std::tuple();
 }
