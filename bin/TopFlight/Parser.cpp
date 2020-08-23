@@ -211,7 +211,7 @@ YoloVM::Instruction InstructionParser::parse(std::string_view str)
 	brigand::for_each<YoloVM::Instruction::InstructionTypes>(
 		[&](auto type)
 		{
-			using InstructionType = decltype(type)::type;
+			using InstructionType = typename decltype(type)::type;
 			constexpr auto type_name = InstructionType::NAME;
 			if (type_name == instruction)
 			{
