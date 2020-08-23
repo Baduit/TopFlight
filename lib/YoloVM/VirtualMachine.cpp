@@ -167,16 +167,7 @@ void VirtualMachine::execute_routine_if(std::string_view routine_name, std::stri
 	if (load(boolean_input) != Boolean(true))
 		return;
 
-	auto it = std::find_if(_routines.begin(), _routines.end(),
-		[&](const auto& r)
-		{
-			return r.name == routine_name;
-		});
-	if (it == _routines.end())
-		throw std::runtime_error("Routine not found");
-	
-	for (const auto& instruction: it->instructions)
-		execute_instruction(instruction);
+	execute_routine(routine_name);
 }
 
 void VirtualMachine::add(std::string_view input_a, std::string_view input_b, std::string_view output)
