@@ -34,3 +34,6 @@
 .vscode
 
 build
+build_gcc
+build_clang
+build_msvc
