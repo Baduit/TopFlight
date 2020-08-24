@@ -103,7 +103,7 @@ There are 2 depencies:
 Both library are header-only and already in the repos
 
 # Portability
-I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and 10.1.0.
+I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and gcc 10.1.0.
 The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon
 
 # Todo:
