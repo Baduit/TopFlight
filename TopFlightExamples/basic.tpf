@@ -1,6 +1,6 @@
 # My awesome basic program
-STORE a NUMBER(7)
-STORE b NUMBER(8)
+STORE a NUMBER(7.3)
+STORE b NUMBER(8.333)
 ADD a b c
 FREE a
 FREE b

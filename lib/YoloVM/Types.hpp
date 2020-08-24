@@ -60,8 +60,20 @@ struct Number
 	friend constexpr Number operator/(Number a, Number b) { return Number{ a.value / b.value }; }
 	// No modulo
 
-	friend constexpr bool operator==(Number a, Number b) = default;
-	friend constexpr std::strong_ordering operator<=>(Number a, Number b) = default;
+	friend constexpr bool operator==(Number a, Number b)
+	{
+		return (a.value + 0.0001 >= b.value) && (a.value - 0.0001 <= b.value);
+	}
+
+	friend constexpr std::strong_ordering operator<=>(Number a, Number b)
+	{
+		if (a == b)
+			return std::strong_ordering::equal;
+		else if (a.value > b.value)
+			return std::strong_ordering::less;
+		else
+			return std::strong_ordering::greater;
+	}
 
 	void print(std::ostream& out) const
 	{

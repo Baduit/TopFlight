@@ -1,3 +1,5 @@
+#include <typeinfo>
+
 #include <YoloVM/Value.hpp>
 
 namespace YoloVM
@@ -8,10 +10,10 @@ Value operator+(const Value& a, const Value& b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)
@@ -41,10 +43,10 @@ Value operator-(const Value& a, const Value& b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)
@@ -74,10 +76,10 @@ Value operator*(const Value& a, const Value& b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)
@@ -107,10 +109,10 @@ Value operator/(const Value& a, const Value& b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)
@@ -140,10 +142,10 @@ Value operator%(const Value& a, const Value& b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)
@@ -181,10 +183,10 @@ Value operator&&(Value a, Value b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)
@@ -214,10 +216,10 @@ Value operator||(Value a, Value b)
 	return std::visit(
 		[&](const auto& a_value)
 		{
+			using A = std::decay_t<decltype(a_value)>;
 			return std::visit(
 				[&](const auto& b_value)
 				{
-					using A = std::decay_t<decltype(a_value)>;
 					using B = std::decay_t<decltype(b_value)>;
 
 					if constexpr (!std::same_as<A, B>)

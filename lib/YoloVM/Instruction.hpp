@@ -12,6 +12,8 @@
 #include <sstream>
 
 #include <external/brigand/brigand.hpp>
+#include <external/aggreget/aggreget.hpp>
+
 #include <YoloVM/BrigandExtension.hpp>
 
 #include <YoloVM/Value.hpp>
@@ -232,6 +234,39 @@ struct Instruction
 	}
 
 	Variant _variant;
+
+	inline friend std::ostream& operator<<(std::ostream& os, const Instruction& instr)
+	{
+		instr.visit(
+			[&](const auto& i)
+			{
+				using InstructionType = std::decay_t<decltype(i)>;
+				constexpr auto type_name = InstructionType::NAME;
+				os << type_name << " => ";
+
+				aggreget::foreach(i,
+					[&](const auto& attr)
+					{
+						using AttrType = std::decay_t<decltype(attr)>;
+						if constexpr (std::same_as<AttrType, std::string>)
+						{
+							os << "String: " << attr << " ";
+						}
+						else if constexpr (std::same_as<AttrType, YoloVM::Value>)
+						{
+							os << "Value: ";
+							attr.print(os);
+							os << " ";
+						}
+						else
+						{
+							os << "wtf";
+						}
+					});
+			});
+		return os;
+	}
 };
+
 
 } // YoloVM
