@@ -104,7 +104,7 @@ Both library are header-only and already in the repos
 
 # Portability
 I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and gcc 10.1.0.
-The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon
+It also works with a recent version of msvc, it works with the one shipped with Visual Studio 16.7.1 and a cmake version 3.18.1
 
 # Todo:
 - Put program arguments in an array of string
