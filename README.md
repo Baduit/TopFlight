@@ -106,6 +106,9 @@ Both library are header-only and already in the repos
 I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and gcc 10.1.0.
 It also works with a recent version of msvc, it works with the one shipped with Visual Studio 16.7.1 and a cmake version 3.18.1
 
+# Play with it wihtout the toolchain
+There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
+
 # Todo:
 - Put program arguments in an array of string
 - Make something usefull with arrays and strings (which are basically arrays of chars)
