@@ -99,10 +99,11 @@ It is a pet project for fun, unit tests are very important but not fun to write 
 There are 2 depencies:
 * [Aggreget](https://github.com/Baduit/Aggreget): my own library to use aggregates types as tuple
 * [Brigand](https://github.com/edouarda/brigand): a meta programmation library I use to compute list of types
+
 Both library are header-only and already in the repos
 
 # Portability
-I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and 10.1.0.
+I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and gcc 10.1.0.
 The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon
 
 # Todo:
