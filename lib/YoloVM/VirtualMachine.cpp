@@ -5,6 +5,8 @@ namespace YoloVM
 
 void VirtualMachine::execute_instruction(Instruction instruction)
 {
+	//std::cout << instruction << std::endl;
+
 	instruction.visit(
 		[&](const auto& i)
 		{
