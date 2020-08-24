@@ -107,13 +107,11 @@ I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and g
 The code uses c++ 20 (concepts essentially), It probably needs few adjustements to compile with msvc, but I will do it soon
 
 # Todo:
-- Add an instruction to read user input
+- Put program arguments in an array of string
 - Make something usefull with arrays and strings (which are basically arrays of chars)
-- Make a cool interactive interpreter and a C library
+- Make a cool interactive interpreter
 - Proper exception and not just throw some std::runtime_error like a moron
-- Support msvc
 - Support clang
-- A LOT of refactoring, there a lot of ugly code right now and it will keep getting worse because I'm a lazy ass
 - Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull
 - Compile it to wasm (need clang support)
 - Make a website to try it online (if wasm compilation did not work or is not done, just make a rest api to compile/run/return the result of the program)
