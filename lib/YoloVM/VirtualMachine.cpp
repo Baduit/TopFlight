@@ -129,7 +129,7 @@ void VirtualMachine::free(std::string_view dest)
 
 void VirtualMachine::print(std::string_view input)
 {
-	_memory.load(input).print(std::cout);
+	_memory.load(input).print(_output_stream);
 }
 
 void VirtualMachine::add_routine(Routine routine)
