@@ -3,6 +3,12 @@
 namespace YoloVM
 {
 
+VirtualMachine::VirtualMachine(std::ostream& output_stream):
+	_output_stream(output_stream)
+{
+
+}
+
 void VirtualMachine::execute_instruction(Instruction instruction)
 {
 	//std::cout << instruction << std::endl;

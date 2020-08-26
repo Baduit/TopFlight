@@ -35,7 +35,7 @@ enum class ArithmeticOperation
 class VirtualMachine
 {
 	public:
-		VirtualMachine() = default;
+		VirtualMachine(std::ostream& output_stream = std::cout);
 
 		void execute_instruction(Instruction instruction);
 
@@ -78,6 +78,7 @@ class VirtualMachine
 		}
 
 	private:
+		std::ostream& _output_stream;
 		Memory _memory;
 		std::vector<Routine> _routines;
 };

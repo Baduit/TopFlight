@@ -1,21 +1,32 @@
+#include <fstream>
+
 #include "Interpreter.hpp"
 
 namespace TopFlight
 {
 
-Interpreter::Interpreter(const std::string& filename)
+Interpreter::Interpreter(std::ostream& output_stream):
+	_vm(output_stream)
+{}
+
+Interpreter::Interpreter(const std::string& filename, std::ostream& output_stream):
+	_vm(output_stream)
 {
 	load_file(filename);
 }
 
 void Interpreter::load_file(const std::string& filename)
 {
-	
 	std::ifstream file(filename);
+	process_stream(file);
+}
+
+void Interpreter::process_stream(std::istream& stream)
+{
 	std::string line;
 	unsigned int line_id = 0;
 	std::optional<YoloVM::Routine> current_routine;
-	while (std::getline(file, line))
+	while (std::getline(stream, line))
 	{
 		++line_id;
 		try
@@ -62,6 +73,5 @@ void Interpreter::load_file(const std::string& filename)
 		}
 	}
 }
-
 
 } // namespace TopFlight

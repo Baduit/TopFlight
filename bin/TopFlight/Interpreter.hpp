@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <fstream>
+#include <iostream>
 
 #include <YoloVM/Instruction.hpp>
 #include <YoloVM/VirtualMachine.hpp>
@@ -14,10 +14,11 @@ namespace TopFlight
 class Interpreter
 {
 	public:
-		Interpreter() = default;
-		Interpreter(const std::string& filename);
+		Interpreter(std::ostream& output_stream = std::cout);
+		Interpreter(const std::string& filename, std::ostream& output_stream = std::cout);
 
 		void load_file(const std::string& filename);
+		void process_stream(std::istream& stream);
 
 	private:
 		YoloVM::VirtualMachine _vm;
