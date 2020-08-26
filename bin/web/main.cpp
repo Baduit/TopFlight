@@ -17,7 +17,6 @@ int main()
 		{
 			res.set_content("Make a POST request on /execute with your code as a raw text in the body to execute your program", "text/plain");
 			res.set_header("Access-Control-Allow-Origin", "*");
-			std::clog << "Received something" << "\n";
 		});
 
 	server.Post("/execute",
@@ -29,7 +28,6 @@ int main()
 			res.set_content(program_output.str(), "text/plain");
 			res.set_header("Access-Control-Allow-Origin", "*");
 			program_output.str("");
-			std::clog << "Received something" << "\n";
 		});
 
 	server.listen("localhost", 7890);
