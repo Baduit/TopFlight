@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="utf-8" http-equiv="encoding" />
+    <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <title>TopFlight Online</title>
+  </head>
+  <body>
+    <div id="app" tabindex="0">
+      <div id="yololText">
+        <textarea
+          id="yololInput"
+          placeholder="Entrer le texte à yololiser"
+        ></textarea>
+		<textarea
+		  id="yololOutput"
+		  readonly
+        ></textarea>
+		<a
+			onclick="ask_nicely_the_api_to_run_the_code()"
+          	><img id="runButton" width="100px" src="assets/icons/run.png"
+        /></a>
+      </div>
+    </div>
+    <div id="footer" class="noselect">
+      <a href="https://github.com/Baduit/TopFlight"
+        ><img width="30px" src="assets/icons/github.svg"
+      /></a>
+	</div>
+	<script>
+		function ask_nicely_the_api_to_run_the_code() {
+			const options = {
+				method: 'POST',
+				body: document.getElementById("yololInput").value,
+				headers: {
+					'Content-Type': 'text/plain'
+				}
+			}
+			fetch("http://127.0.0.1:7890/execute", options)
+				.then(function (response) {
+					return response.text();
+				})
+				.then(function (myText) {
+					console.log(myText);
+					document.getElementById("yololOutput").value = myText
+				})
+				.catch(function (error) {
+					console.log("Error: " + error);
+				});
+		}
+	</script>
+  </body>
+</html>
