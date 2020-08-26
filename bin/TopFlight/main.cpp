@@ -2,8 +2,7 @@
 
 #include <YoloVM/Instruction.hpp>
 #include <YoloVM/VirtualMachine.hpp>
-#include "Parser.hpp"
-#include "Interpreter.hpp"
+#include <Interpreter/Interpreter.hpp>
 
 int main(int argc, char** argv)
 {

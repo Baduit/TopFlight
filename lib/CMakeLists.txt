@@ -2,6 +2,8 @@ set(SRCS
     ./YoloVM/Value.cpp
     ./YoloVM/VirtualMachine.cpp
     ./YoloVM/Memory.cpp
+    ./Interpreter/Interpreter.cpp
+    ./Interpreter/Parser.cpp
   )
 
 

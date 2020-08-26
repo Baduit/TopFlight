@@ -4,10 +4,7 @@ project(TopFlightProject VERSION 0.1 DESCRIPTION "A card topflight")
 
 add_subdirectory(lib)
 
-add_executable(topflight
-               ./bin/TopFlight/main.cpp
-               ./bin/TopFlight/Interpreter.cpp
-               ./bin/TopFlight/Parser.cpp)
+add_executable(topflight ./bin/TopFlight/main.cpp)
 target_compile_features(topflight PRIVATE cxx_std_20)
 target_compile_options(topflight
                        PRIVATE
