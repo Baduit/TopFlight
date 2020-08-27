@@ -30,5 +30,8 @@ int main()
 			program_output.str("");
 		});
 
+
+	server.set_mount_point("/editor", "../website/");
+
 	server.listen("localhost", 7890);
 }
