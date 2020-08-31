@@ -32,6 +32,13 @@ enum class ArithmeticOperation
 	MODULO
 };
 
+template <typename Visitor>
+concept RoutineVisitor = 
+	requires(Visitor&& visitor, const Routine& routine)
+	{
+		{ visitor(routine) };
+	};
+
 class VirtualMachine
 {
 	public:
@@ -81,6 +88,13 @@ class VirtualMachine
 		void visit_variables(Visitor&& visitor)
 		{
 			_memory.visit(std::forward<Visitor>(visitor));
+		}
+
+		template <RoutineVisitor Visitor>
+		void visit_routines(Visitor&& visitor)
+		{
+			for (const auto& routine: _routines)
+				visitor(routine);
 		}
 
 	private:
