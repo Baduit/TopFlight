@@ -3,11 +3,19 @@
 #include <map>
 #include <string>
 #include <string_view>
+#include <algorithm>
 
 #include <YoloVM/Value.hpp>
 
 namespace YoloVM
 {
+
+template <typename Visitor>
+concept MemoryVisitor = 
+	requires(Visitor&& visitor, std::string_view name, const Value& value)
+	{
+		{ visitor(name, value) };
+	};
 
 class Memory
 {
@@ -20,6 +28,12 @@ class Memory
 		const Value& load(std::string_view name);
 		void free(std::string_view name);
 
+		template <MemoryVisitor Visitor>
+		void visit(Visitor&& visitor)
+		{
+			for (const auto& [name, value]: _data)
+				visitor(name, value);
+		}
 
 	private:
 		std::map<std::string, Value, std::less<>> _data;

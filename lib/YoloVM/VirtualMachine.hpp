@@ -77,6 +77,12 @@ class VirtualMachine
 				}, aggreget::to_tuple(arg));
 		}
 
+		template <MemoryVisitor Visitor>
+		void visit_variables(Visitor&& visitor)
+		{
+			_memory.visit(std::forward<Visitor>(visitor));
+		}
+
 	private:
 		std::ostream& _output_stream;
 		Memory _memory;
