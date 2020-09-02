@@ -29,8 +29,5 @@ int main()
 			res.set_header("Access-Control-Allow-Origin", "*");
 		});
 
-
-	server.set_mount_point("/editor", "../website/");
-
 	server.listen("localhost", 7890);
 }
