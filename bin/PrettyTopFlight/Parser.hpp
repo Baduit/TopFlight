@@ -77,10 +77,26 @@ class Parser
 			else
 			{
 				// TODO : instruction stuff
-				auto [word, remaining_string] = TopFlight::Parser::Impl::get_next_word(line);
+				auto [instruction, remaining_string] = TopFlight::Parser::Impl::get_next_word(line);
 				if (remaining_string)
 				{
-
+					bool is_instruction_correct = false;
+					brigand::for_each<YoloVM::Instruction::InstructionTypes>(
+						[&](auto type)
+						{
+							using InstructionType = typename decltype(type)::type;
+							constexpr auto type_name = InstructionType::NAME;
+							if (type_name == instruction)
+							{
+								elements.push_back(LineElement{LineElement::Type::INSTRUCTION_NAME, 0, instruction.size()});
+								is_instruction_correct = true;
+							}
+						});
+					if (!is_instruction_correct)
+					{
+						elements.push_back(LineElement{LineElement::Type::INVALID_ELEMENT, 0, line.size()});
+						return elements;
+					}
 				}
 				return elements;
 			}

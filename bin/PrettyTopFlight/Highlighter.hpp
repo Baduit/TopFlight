@@ -24,6 +24,7 @@ class Highlighter
 			_colors_by_line_type[LineElement::Type::NUMERIC_VALUE] = Color::YELLOW;
 			_colors_by_line_type[LineElement::Type::STRING] = Color::BLUE;
 			_colors_by_line_type[LineElement::Type::ARRAY_DELIMITER] = Color::BRIGHTGREEN;
+			_colors_by_line_type[LineElement::Type::INSTRUCTION_NAME] = Color::BRIGHTCYAN;
 			_colors_by_line_type[LineElement::Type::INVALID_ELEMENT] = Color::RED;
 		}
 
