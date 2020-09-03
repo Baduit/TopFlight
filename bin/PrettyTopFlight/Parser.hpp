@@ -7,12 +7,17 @@
 #include <stdexcept>
 
 #include <Interpreter/Parser.hpp>
+#include <Interpreter/Interpreter.hpp>
 
 #include "LineElement.hpp"
 
 class Parser
 {
 	public:
+		Parser(TopFlight::Interpreter& interpreter):
+			_interpreter(interpreter)
+		{}
+
 		std::vector<LineElement> parse_line(std::string_view line)
 		{
 			std::vector<LineElement> elements;
@@ -46,16 +51,20 @@ class Parser
 						
 						if (line[1] != '/')
 						{
-							elements.push_back(LineElement{LineElement::Type::ROUTINE_NAME, begin, i});
-							_last_beginned_routine_name = std::string(line.substr(begin, i));
-						}
-						else
-						{
-							std::string_view routine_name = line.substr(begin, i);
-							if (_last_beginned_routine_name && routine_name == *_last_beginned_routine_name)
+							if (!_interpreter.get_current_routine())
 								elements.push_back(LineElement{LineElement::Type::ROUTINE_NAME, begin, i});
 							else
 								elements.push_back(LineElement{LineElement::Type::INVALID_ELEMENT, begin, i});
+						}
+						else
+						{
+							std::string_view routine_name = line.substr(begin, i - begin);
+							if (_interpreter.get_current_routine() && routine_name == _interpreter.get_current_routine()->name)
+								elements.push_back(LineElement{LineElement::Type::ROUTINE_NAME, begin, i});
+							else
+							{
+								elements.push_back(LineElement{LineElement::Type::INVALID_ELEMENT, begin, i});
+							}
 						}
 						break;
 					}
@@ -68,10 +77,15 @@ class Parser
 			else
 			{
 				// TODO : instruction stuff
+				auto [word, remaining_string] = TopFlight::Parser::Impl::get_next_word(line);
+				if (remaining_string)
+				{
+
+				}
 				return elements;
 			}
 		}
 
 	private:
-		std::optional<std::string> _last_beginned_routine_name;
+		TopFlight::Interpreter& _interpreter;
 };

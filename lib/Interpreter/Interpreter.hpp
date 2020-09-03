@@ -20,6 +20,10 @@ class Interpreter
 		void load_file(const std::string& filename);
 		void process_stream(std::istream& stream);
 
+		const YoloVM::VirtualMachine& get_vm() const { return _vm; }
+		const std::optional<YoloVM::Routine>& get_current_routine() const { return current_routine; }
+
+
 	private:
 		YoloVM::VirtualMachine _vm;
 		std::optional<YoloVM::Routine> current_routine;

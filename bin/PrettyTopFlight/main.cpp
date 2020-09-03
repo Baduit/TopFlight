@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 		TopFlight::Interpreter vm_interpreter;
 
 		replxx::Replxx rx;
-		Highlighter highlighter;
+		Highlighter highlighter(vm_interpreter);
 		rx.set_highlighter_callback(highlighter);
 		while (true)
 		{

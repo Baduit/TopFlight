@@ -13,7 +13,8 @@ class Highlighter
 {
 	using Color = replxx::Replxx::Color;
 	public:
-		Highlighter()
+		Highlighter(TopFlight::Interpreter& interpreter):
+			_parser(interpreter)
 		{
 			_colors_by_line_type[LineElement::Type::COMMENT] = Color::GREEN;
 			_colors_by_line_type[LineElement::Type::ROUTINE_DELIMITER] = Color::BROWN;
@@ -43,7 +44,7 @@ class Highlighter
 		}
 
 	private:
-		std::map<LineElement::Type, replxx::Replxx::Color> _colors_by_line_type;
 		Parser _parser;
+		std::map<LineElement::Type, replxx::Replxx::Color> _colors_by_line_type;
 };
 
