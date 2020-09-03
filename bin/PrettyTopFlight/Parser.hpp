@@ -76,7 +76,6 @@ class Parser
 			}
 			else
 			{
-				// TODO : instruction stuff
 				auto [instruction, remaining_string] = TopFlight::Parser::Impl::get_next_word(line);
 				if (remaining_string)
 				{
