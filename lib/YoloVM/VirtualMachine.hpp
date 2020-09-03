@@ -23,15 +23,6 @@
 namespace YoloVM
 {
 
-enum class ArithmeticOperation
-{
-	ADD,
-	SUBSTRACT,
-	MUTLIPLY,
-	DIVIDE,
-	MODULO
-};
-
 template <typename Visitor>
 concept RoutineVisitor = 
 	requires(Visitor&& visitor, const Routine& routine)
