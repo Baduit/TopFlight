@@ -25,7 +25,6 @@ void Interpreter::process_stream(std::istream& stream)
 {
 	std::string line;
 	unsigned int line_id = 0;
-	std::optional<YoloVM::Routine> current_routine;
 	while (std::getline(stream, line))
 	{
 		++line_id;

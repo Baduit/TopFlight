@@ -40,7 +40,6 @@ class Highlighter
 				for (auto i = e.begin; i < e.end; ++i)
 					colors.at(i) = _colors_by_line_type[e.type];
 			}
-			(void) colors;
 		}
 
 	private:

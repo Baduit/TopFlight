@@ -22,6 +22,7 @@ class Interpreter
 
 	private:
 		YoloVM::VirtualMachine _vm;
+		std::optional<YoloVM::Routine> current_routine;
 };
 
 } // namespace TopFlight
