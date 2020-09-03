@@ -4,6 +4,7 @@
 #include <string_view>
 #include <vector>
 #include <optional>
+#include <stdexcept>
 
 #include <Interpreter/Parser.hpp>
 
@@ -40,17 +41,18 @@ class Parser
 				{
 					if (line[i] == '>')
 					{
+						elements.push_back(LineElement{LineElement::Type::ROUTINE_DELIMITER, i, i + 1});
 						is_line_complete = true;
+						
 						if (line[1] != '/')
 						{
-							elements.push_back(LineElement{LineElement::Type::ROUTINE_DELIMITER, i, i + 1});
 							elements.push_back(LineElement{LineElement::Type::ROUTINE_NAME, begin, i});
-							_last_beginned_routine_name = std::string(line.substr(i, i + 1));
+							_last_beginned_routine_name = std::string(line.substr(begin, i));
 						}
 						else
 						{
-							std::string_view routine_name = line.substr(i, i + 1);
-							if (routine_name == _last_beginned_routine_name)
+							std::string_view routine_name = line.substr(begin, i);
+							if (_last_beginned_routine_name && routine_name == *_last_beginned_routine_name)
 								elements.push_back(LineElement{LineElement::Type::ROUTINE_NAME, begin, i});
 							else
 								elements.push_back(LineElement{LineElement::Type::INVALID_ELEMENT, begin, i});

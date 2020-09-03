@@ -53,6 +53,8 @@ void Interpreter::process_stream(std::istream& stream)
 				{
 					if (!current_routine)
 						throw std::runtime_error("Impossible to end a routine which noes not exist");
+					if (current_routine->name != routine_cmd->name)
+						throw std::runtime_error("Wrong closing routine name");
 					_vm.add_routine(std::move(*current_routine));
 					current_routine.reset();
 				}
