@@ -3,6 +3,20 @@
 namespace YoloVM
 {
 
+LoadingError::LoadingError(std::string name):
+	_name(std::move(name)),
+	_message("Impossible to load the Value named :\"" + _name + "\" in the memory.")
+{}
+
+std::string_view LoadingError::get_exception_name() const noexcept
+{
+	return "YoloVM::LoadingError";
+}
+
+const char* LoadingError::what() const noexcept
+{
+	return _message.c_str();
+}
 
 void Memory::store(std::string_view name, Value value)
 {
@@ -21,7 +35,7 @@ const Value& Memory::load(std::string_view name)
 	if (it != _data.end())
 		return it->second;
 	else
-		throw std::out_of_range("Memory can't load at the name : " + std::string(name));
+		throw LoadingError(std::string(name));
 }
 
 void Memory::free(std::string_view name)
