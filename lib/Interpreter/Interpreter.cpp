@@ -88,9 +88,21 @@ void Interpreter::process_stream(std::istream& stream)
 					_vm.execute_instruction(InstructionParser::parse(line));
 			}
 		}
+		catch(YoloVM::Exception& e)
+		{
+			std::cout
+					<< "Error on line number : " << line_id << "\n"
+					<< "Line: " << line << "\n"
+					<< "Error: " << e.get_exception_name() << "\n"
+					<< "Message: " << e.what() << std::endl;
+			break;
+		}
 		catch (std::exception& e)
 		{
-			std::cout << "Error on line number : " << line_id << "\nLine: " << line << "\nError: " << e.what() << std::endl;
+			std::cout
+					<< "Error on line number : " << line_id << "\n"
+					<< "Line: " << line << "\n"
+					<< "Error: " << e.what() << std::endl;
 			break;
 		}
 	}
