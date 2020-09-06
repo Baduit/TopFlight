@@ -3,17 +3,17 @@
 namespace YoloVM
 {
 
-LoadingError::LoadingError(std::string name):
+Memory::LoadingError::LoadingError(std::string name):
 	_name(std::move(name)),
 	_message("Impossible to load the Value named :\"" + _name + "\" in the memory.")
 {}
 
-std::string_view LoadingError::get_exception_name() const noexcept
+std::string_view Memory::LoadingError::get_exception_name() const noexcept
 {
-	return "YoloVM::LoadingError";
+	return "YoloVM::Memory::LoadingError";
 }
 
-const char* LoadingError::what() const noexcept
+const char* Memory::LoadingError::what() const noexcept
 {
 	return _message.c_str();
 }

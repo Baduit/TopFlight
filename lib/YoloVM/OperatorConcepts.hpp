@@ -5,46 +5,81 @@
 namespace YoloVM
 {
 
-template <typename T>
-concept Addable = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept Addable =
+	requires(const A& a, const B& b)
 	{
-		{ a + b } -> std::same_as<T>;
+		{ a + b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a + b } -> std::same_as<B>;
 	};
 
-template <typename T>
-concept Substracable = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept Substracable =
+	requires(const A& a, const B& b)
 	{
-		{ a - b } -> std::same_as<T>;
+		{ a - b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a - b } -> std::same_as<B>;
 	};
 
-template <typename T>
-concept Multiplyable = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept Multiplyable =
+	requires(const A& a, const B& b)
 	{
-		{ a * b } -> std::same_as<T>;
+		{ a * b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a * b } -> std::same_as<B>;
 	};
 
-template <typename T>
-concept Dividable = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept Dividable =
+	requires(const A& a, const B& b)
 	{
-		{ a / b } -> std::same_as<T>;
+		{ a / b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a / b } -> std::same_as<B>;
 	};
 
-template <typename T>
-concept Modulable = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept Modulable =
+	requires(const A& a, const B& b)
 	{
-		{ a % b } -> std::same_as<T>;
+		{ a % b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a % b } -> std::same_as<B>;
 	};
 
-template <typename T>
-concept HasLogicAnd = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept HasLogicAnd =
+	requires(const A& a, const B& b)
 	{
-		{ a && b } -> std::same_as<T>;
+		{ a && b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a && b } -> std::same_as<B>;
 	};
 
-template <typename T>
-concept HasLogicOr = requires(const T& a, const T& b)
+template <typename A, typename B>
+concept HasLogicOr =
+	requires(const A& a, const B& b)
 	{
-		{ a || b } -> std::same_as<T>;
+		{ a || b } -> std::same_as<A>;
+	} ||
+	requires(const A& a, const B& b)
+	{
+		{ a || b } -> std::same_as<B>;
 	};
 
 template <typename T>

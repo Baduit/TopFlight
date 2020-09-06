@@ -15,23 +15,14 @@ Value operator+(const Value& a, const Value& b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!Addable<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("add", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!Addable<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value + b_value);
-						}
+						return Value(a_value + b_value);
 					}
 				}, b._variant);
 
@@ -48,23 +39,14 @@ Value operator-(const Value& a, const Value& b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!Substracable<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("substract", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!Substracable<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value - b_value);
-						}
+						return Value(a_value - b_value);
 					}
 				}, b._variant);
 
@@ -81,23 +63,14 @@ Value operator*(const Value& a, const Value& b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!Multiplyable<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("multiply", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!Multiplyable<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value * b_value);
-						}
+						return Value(a_value * b_value);
 					}
 				}, b._variant);
 
@@ -114,23 +87,14 @@ Value operator/(const Value& a, const Value& b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!Dividable<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("divide", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!Dividable<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value / b_value);
-						}
+						return Value(a_value / b_value);
 					}
 				}, b._variant);
 
@@ -147,23 +111,14 @@ Value operator%(const Value& a, const Value& b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!Modulable<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("modulo", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!Modulable<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value % b_value);
-						}
+						return Value(a_value % b_value);
 					}
 				}, b._variant);
 
@@ -180,23 +135,14 @@ Value operator&&(Value a, Value b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!HasLogicAnd<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("logic and", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!HasLogicAnd<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value && b_value);
-						}
+						return Value(a_value && b_value);
 					}
 				}, b._variant);
 
@@ -213,23 +159,14 @@ Value operator||(Value a, Value b)
 				[&](const auto& b_value)
 				{
 					using B = std::decay_t<decltype(b_value)>;
-
-					if constexpr (!std::same_as<A, B>)
+					if constexpr (!HasLogicOr<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("logic or", type_to_string_view<A>(), type_to_string_view<B>());
 						return Value(); // Ugly I know
 					}
 					else
 					{
-						if constexpr (!HasLogicOr<A>)
-						{
-							throw std::invalid_argument("Operation impossible for this type");
-							return Value(); // Ugly I know
-						}
-						else
-						{
-							return Value(a_value || b_value);
-						}
+						return Value(a_value || b_value);
 					}
 				}, b._variant);
 
@@ -243,9 +180,9 @@ Value Value::operator!() const
 		{
 			using A = std::decay_t<decltype(a_value)>;
 
-			if constexpr (!HasLogicAnd<A>)
+			if constexpr (!HasLogicNot<A>)
 			{
-				throw std::invalid_argument("Operation impossible for this type");
+				throw ImpossibleOperation("logic not", type_to_string_view<A>());
 				return Value(); // Ugly I know
 			}
 			else
@@ -269,7 +206,7 @@ bool operator==(const Value& a, const Value& b)
 
 					if constexpr (!std::same_as<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("check equality", type_to_string_view<A>(), type_to_string_view<B>());
 						return false; // Ugly I know
 					}
 					else
@@ -294,7 +231,7 @@ std::strong_ordering operator<=>(const Value& a, const Value& b)
 
 					if constexpr (!std::same_as<A, B>)
 					{
-						throw std::invalid_argument("Type mismatch");
+						throw ImpossibleOperation("compare", type_to_string_view<A>(), type_to_string_view<B>());
 						return std::strong_ordering::equivalent; // Ugly I know
 					}
 					else
@@ -313,6 +250,26 @@ void Value::print(std::ostream& out) const
 		{
 			value.print(out);
 		}, _variant);
+}
+
+ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type)
+{
+	_message = "Impossible to do the operation : \"" + operation + "\" on a variable of type '" + std::string(first_type) + "'";
+}
+
+ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type, std::string_view second_type)
+{
+	_message = "Impossible to do the operation : \"" + operation + "\" on a variables of type '" + std::string(first_type) + "' and '" + std::string(second_type) + "'";
+}
+
+std::string_view ImpossibleOperation::get_exception_name() const noexcept
+{
+	return "YoloVM::ImpossibleOperation";
+}
+
+const char* ImpossibleOperation::what() const noexcept
+{
+	return _message.c_str();
 }
 
 } // YoloVM

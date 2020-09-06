@@ -18,30 +18,6 @@ concept MemoryVisitor =
 		{ visitor(name, value) };
 	};
 
-class LoadingError: public Exception
-{
-	public:
-		LoadingError(std::string name);
-
-		// std::string copy is not noexcept so we disable copy
-		LoadingError(const LoadingError&) = delete;
-		LoadingError& operator=(const LoadingError&) = delete;
-
-		// std::string move is no except so we can enable it
-		// Moreover, an exception must have a copy or a move constructor
-		LoadingError(LoadingError&&) noexcept = default;
-		LoadingError& operator=(LoadingError&&) noexcept = default;
-
-		virtual ~LoadingError() = default;
-
-		virtual std::string_view get_exception_name() const noexcept;
-		virtual const char* what() const noexcept;
-
-	private:
-		std::string _name;
-		std::string _message;
-};
-
 class Memory
 {
 	public:
@@ -59,6 +35,31 @@ class Memory
 			for (const auto& [name, value]: _data)
 				visitor(name, value);
 		}
+
+		public:
+			class LoadingError: public Exception
+			{
+				public:
+					LoadingError(std::string name);
+
+					// std::string copy is not noexcept so we disable copy
+					LoadingError(const LoadingError&) = delete;
+					LoadingError& operator=(const LoadingError&) = delete;
+
+					// std::string move is no except so we can enable it
+					// Moreover, an exception must have a copy or a move constructor
+					LoadingError(LoadingError&&) noexcept = default;
+					LoadingError& operator=(LoadingError&&) noexcept = default;
+
+					virtual ~LoadingError() = default;
+
+					virtual std::string_view get_exception_name() const noexcept;
+					virtual const char* what() const noexcept;
+
+				private:
+					std::string _name;
+					std::string _message;
+			};
 
 	private:
 		std::map<std::string, Value, std::less<>> _data;

@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <compare>
+#include <string_view>
 
 namespace YoloVM
 {
@@ -175,5 +176,28 @@ using ArrayOfInteger = ArrayOf<Integer>;
 using ArrayOfNumber = ArrayOf<Number>;
 using ArrayOfString = ArrayOf<String>;
 using ArrayOfBoolean = ArrayOf<Boolean>;
+
+template <typename Type>
+constexpr std::string_view type_to_string_view()
+{
+	if constexpr (std::same_as<Type, Integer>)
+		return "INTEGER";
+	else if constexpr (std::same_as<Type, Number>)
+		return "NUMBER";
+	else if constexpr (std::same_as<Type, String>)
+		return "STRING";
+	else if constexpr (std::same_as<Type, Boolean>)
+		return "BOOLEAN";
+	else if constexpr (std::same_as<Type, ArrayOfInteger>)
+		return "ARRAY_OF_INTEGER";
+	else if constexpr (std::same_as<Type, ArrayOfNumber>)
+		return "ARRAY_OF_NUMBER";
+	else if constexpr (std::same_as<Type, ArrayOfString>)
+		return "ARRAY_OF_STRING";
+	else if constexpr (std::same_as<Type, ArrayOfBoolean>)
+		return "ARRAY_OF_BOOLEAN";
+	else
+		return "UNKNOWN";
+}
 
 } // YoloVM
