@@ -210,6 +210,15 @@ struct Instruction
 	*/
 	// TODO
 
+	// get at
+	// store at
+	// copy at
+	// Size
+	// resize
+	// insert
+	// push back
+	// concat
+
 	using InstructionTypes = brigand::list<
 				Store, Copy, Free, Print, Call, CallIf,
 				Add, Substract, Multiply, Divide, Modulo,
