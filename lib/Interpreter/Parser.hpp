@@ -21,12 +21,24 @@ namespace Impl
 {
 
 auto get_next_word(std::string_view str, char delim = ' ') -> std::pair<std::string_view, std::optional<std::string_view>>;
-int to_int(std::string_view str);
-double to_double(std::string_view str);
-std::string extract_string(std::string_view str);
-bool to_bool(std::string_view str);
 auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, std::optional<std::string_view>>;
 void check_routine_name(std::string_view routine_name);
+
+// WARNING IT DOES NOT WORK FOR ARRAY OF STRING
+template <typename Elem, typename ConversionCb>
+std::vector<Elem> split_to_array(std::string_view str, ConversionCb&& conversion_cb) 
+{
+	std::vector<Elem> elements;
+	while (true)
+	{
+		auto [word, remaining_string] = get_next_word(str, ',');
+		elements.emplace_back(conversion_cb(word));
+		if (!remaining_string)
+			break;
+		str = *remaining_string;
+	}
+	return elements;
+}
 
 } // namespace Impl
 

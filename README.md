@@ -117,7 +117,7 @@ There is an already compiled .exe in the folder `compile/windows` so you can use
 # Todo:
 - Put program arguments in an array of string
 - Make something usefull with arrays and strings (which are basically arrays of chars)
-- Make a cool interactive interpreter (WIP)
+- Make a cool interactive interpreter
 - Proper exception and not just throw some std::runtime_error like a moron
 - Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull
 - Improve the online editor (https://www.baduit.eu/topflight/)

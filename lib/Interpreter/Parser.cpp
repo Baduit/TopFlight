@@ -136,11 +136,11 @@ auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, st
 	}
 	else if (type == "ARRAY_OF_INTEGER")
 	{
-		throw std::runtime_error("Not supported yet");
+		return { YoloVM::ArrayOfInteger(split_to_array<YoloVM::Integer>(values, to_int)), remaining_string };
 	}
 	else if (type == "ARRAY_OF_NUMBER")
 	{
-		throw std::runtime_error("Not supported yet");
+		return { YoloVM::ArrayOfNumber(split_to_array<YoloVM::Number>(values, to_double)), remaining_string };
 	}
 	else if (type == "ARRAY_OF_STRING")
 	{
@@ -148,7 +148,7 @@ auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, st
 	}
 	else if (type == "ARRAY_OF_BOOLEAN")
 	{
-		throw std::runtime_error("Not supported yet");
+		return { YoloVM::ArrayOfBoolean(split_to_array<YoloVM::Boolean>(values, to_bool)), remaining_string };
 	}
 	else
 	{
