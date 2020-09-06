@@ -11,3 +11,7 @@ PRINT endline
 STORE bools ARRAY_OF_BOOLEAN(true,false,true)
 PRINT bools
 PRINT endline
+
+STORE strings ARRAY_OF_STRING("salut","cc","cool")
+PRINT strings
+PRINT endline

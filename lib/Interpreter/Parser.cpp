@@ -92,6 +92,78 @@ std::string extract_string(std::string_view str)
 	return result;
 }
 
+std::vector<YoloVM::String> to_array_of_string(std::string_view str)
+{
+	std::vector<YoloVM::String> elements;
+	std::size_t i = 0;
+	std::string actual_element;
+	bool is_in_string = false;
+	bool comma_found = true;
+	while (i < str.size())
+	{
+		char c = str[i];
+		if (is_in_string)
+		{
+			if (c != '\\')
+			{
+				if (c == '"')
+				{
+					is_in_string = false;
+					elements.emplace_back(std::move(actual_element));
+					// Because I moved actual_element it is now empty but still usable (this is required by the standard)
+				}
+				else
+				{
+					actual_element += c;
+				}
+			}
+			else
+			{
+				++i;
+				if (i >= str.size())
+					throw std::runtime_error("Invalid string format");
+				char c2 = str[i];
+				if (c2 == '\\' || c2 == '"')
+					actual_element += c2;
+				else if (c2 == '0')
+					actual_element += '\0';
+				else if (c2 == 'b')
+					actual_element += '\b';
+				else if (c2 == 'n')
+					actual_element += '\n';
+				else if (c2 == 'r')
+					actual_element += '\r';
+				else if (c2 == 't')
+					actual_element += '\t';
+				else if (c2 == 'f')
+					actual_element += '\f';
+				else if (c2 == 'v')
+					actual_element += '\v';
+				else
+					throw std::runtime_error("Invalid string format unsupported char after \\");
+			}
+		}
+		else
+		{
+			if (comma_found)
+			{
+				if (c != '"')
+					throw std::runtime_error("Missing string begining character \" separator while parsing the array of strings");
+				is_in_string = true;
+				comma_found = false;
+			}
+			else
+			{
+				if (c != ',')
+					throw std::runtime_error("Missing comma separator while parsing the array of strings");
+				comma_found = true;
+			}
+		}
+		++i;
+	}
+	return elements;
+}
+
 bool to_bool(std::string_view str)
 {
 	if (str == "true")
@@ -144,7 +216,7 @@ auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, st
 	}
 	else if (type == "ARRAY_OF_STRING")
 	{
-		throw std::runtime_error("Not supported yet");
+		return { YoloVM::ArrayOfString(to_array_of_string(values)), remaining_string };
 	}
 	else if (type == "ARRAY_OF_BOOLEAN")
 	{
