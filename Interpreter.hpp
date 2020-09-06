@@ -13,10 +13,10 @@ class Interpreter
 		Interpreter() = default;
 		Interpreter(const std::string& filename)
 		{
-			load_file(filename);
+			process_file(filename);
 		}
 
-		void load_file(const std::string& filename)
+		void process_file(const std::string& filename)
 		{
 			std::ifstream file(filename);
 			std::string line;

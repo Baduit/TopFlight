@@ -86,6 +86,7 @@ PRINT result_var
 There are more example in the folder TopFlightExamples of this repository.
 
 ## Notes
+* The arguments (after the path of the script to execute) are store into an ARRAY_OF_STRING named "args";
 * It is possible to overwrite values or routines
 * It is possible to have routine and values with the same name
 
@@ -115,8 +116,9 @@ It also works with a recent version of msvc, it works with the one shipped with 
 There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
 
 # Todo:
-- Put program arguments in an array of string
-- Make something usefull with arrays and strings (which are basically arrays of chars)
+- Make something usefull with arrays
+- Add the CHARACTER type
+- Make something usefull with strings
 - Make a cool interactive interpreter
 - Proper exception and not just throw some std::runtime_error like a moron
 - Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull

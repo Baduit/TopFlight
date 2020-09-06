@@ -9,13 +9,34 @@ Interpreter::Interpreter(std::ostream& output_stream):
 	_vm(output_stream)
 {}
 
+Interpreter::Interpreter(std::span<char*> args, std::ostream& output_stream):
+	_vm(output_stream)
+{
+	std::vector<YoloVM::String> owned_args;
+	owned_args.reserve(args.size());
+	for (const char* a: args)
+		owned_args.emplace_back(a);
+	_vm.store("args", YoloVM::ArrayOfString(std::move(owned_args)));
+}
+
 Interpreter::Interpreter(const std::string& filename, std::ostream& output_stream):
 	_vm(output_stream)
 {
-	load_file(filename);
+	process_file(filename);
 }
 
-void Interpreter::load_file(const std::string& filename)
+Interpreter::Interpreter(const std::string& filename, std::span<char*> args, std::ostream& output_stream):
+	_vm(output_stream)
+{
+	std::vector<YoloVM::String> owned_args;
+	owned_args.reserve(args.size());
+	for (const char* a: args)
+		owned_args.emplace_back(a);
+	_vm.store("args", YoloVM::ArrayOfString(std::move(owned_args)));
+	process_file(filename);
+}
+
+void Interpreter::process_file(const std::string& filename)
 {
 	std::ifstream file(filename);
 	process_stream(file);

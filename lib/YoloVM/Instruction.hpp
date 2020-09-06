@@ -205,6 +205,11 @@ struct Instruction
 		std::string dest;
 	};
 
+	/*
+	** Array operation
+	*/
+	// TODO
+
 	using InstructionTypes = brigand::list<
 				Store, Copy, Free, Print, Call, CallIf,
 				Add, Substract, Multiply, Divide, Modulo,

@@ -36,7 +36,8 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		// In this case this is the exact same as using the ugly version
-		TopFlight::Interpreter vm_interpreter(argv[1]);
+		auto script_argc = static_cast<unsigned int>(argc) - 2;
+		char** script_argv = &(argv[2]);
+		TopFlight::Interpreter vm_interpreter(argv[1], std::span<char*>(script_argv, script_argc));
 	}
 }
