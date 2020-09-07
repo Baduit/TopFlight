@@ -11,7 +11,7 @@ Empty lines are discarded without errors, but lines with spaces/tabulations are 
 The line begins with a `#` without any space or tab before
 
 ## Instruction
-Write the instruction type followed by its arguments, everything is seperated by space
+Write the instruction type followed by its arguments, everything is seperated by space, list of instruction can be seen in Instruction.hpp
 - `INSTRUCTION_TYPE ARG1 ARG2`
 
 ## Values
@@ -30,6 +30,8 @@ Examples:
 * `NUMBER(5.9)`
 * `BOOLEAN(true)`
 * `ARRAY_OF_STRING("Hello"," ","World","!\n")`
+
+The list of types availables in the file Types.hpp
 
 ## Routine
 A routine is a set of instruction you can call later. The syntaxe to declare a routine is a line with the name of the routine between <> like example:
@@ -121,6 +123,7 @@ There is an already compiled .exe in the folder `compile/windows` so you can use
 - Make something usefull with strings
 
 # Things that would be nice but I'm pretty sure I won't have the time to do it
+- A real doc for the langage instead/in addition of this readme
 - Make a cool interactive interpreter
 - Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull
 - Improve the online editor (https://www.baduit.eu/topflight/)
