@@ -252,24 +252,19 @@ void Value::print(std::ostream& out) const
 		}, _variant);
 }
 
-ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type)
+ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type):
+	Exception("Impossible to do the operation : \"" + operation + "\" on a variable of type '" + std::string(first_type) + "'")
 {
-	_message = "Impossible to do the operation : \"" + operation + "\" on a variable of type '" + std::string(first_type) + "'";
 }
 
-ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type, std::string_view second_type)
+ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type, std::string_view second_type):
+	Exception("Impossible to do the operation : \"" + operation + "\" on a variables of type '" + std::string(first_type) + "' and '" + std::string(second_type) + "'")
 {
-	_message = "Impossible to do the operation : \"" + operation + "\" on a variables of type '" + std::string(first_type) + "' and '" + std::string(second_type) + "'";
 }
 
 std::string_view ImpossibleOperation::get_exception_name() const noexcept
 {
 	return "YoloVM::ImpossibleOperation";
-}
-
-const char* ImpossibleOperation::what() const noexcept
-{
-	return _message.c_str();
 }
 
 } // YoloVM

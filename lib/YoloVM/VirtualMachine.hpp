@@ -65,6 +65,29 @@ class VirtualMachine
 		void compare_greater(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void compare_greater_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output);
 
+	public:
+		struct UnknownRoutine: public Exception
+		{
+			UnknownRoutine(std::string_view routine_name):
+				Exception("Routine named '" + std::string(routine_name) + "' not found.")
+			{}
+			virtual ~UnknownRoutine() = default;
+
+			virtual std::string_view get_exception_name() const noexcept { return "YoloVM::VirtualMachine::UnknownRoutine"; }
+		};
+
+		struct UnknownInstruction: public Exception
+		{
+			UnknownInstruction(std::string_view instruction_name):
+				Exception("Instruction named '" + std::string(instruction_name) + "' does not exist or is not implemented.")
+			{}
+			virtual ~UnknownInstruction() = default;
+
+			virtual std::string_view get_exception_name() const noexcept { return "YoloVM::VirtualMachine::UnknownInstruction"; }
+		};
+
+
+	private:
 		template <typename MethodPtr, typename Arg>
 		void call_helper(MethodPtr method_ptr, Arg&& arg)
 		{
@@ -87,6 +110,8 @@ class VirtualMachine
 			for (const auto& routine: _routines)
 				visitor(routine);
 		}
+
+
 
 	private:
 		std::ostream& _output_stream;

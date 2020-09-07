@@ -58,22 +58,10 @@ class ImpossibleOperation: public Exception
 		ImpossibleOperation(const std::string& operation, std::string_view first_type);
 		ImpossibleOperation(const std::string& operation, std::string_view first_type, std::string_view second_type);
 
-		// std::string copy is not noexcept so we disable copy
-		ImpossibleOperation(const ImpossibleOperation&) = delete;
-		ImpossibleOperation& operator=(const ImpossibleOperation&) = delete;
-
-		// std::string move is no except so we can enable it
-		// Moreover, an exception must have a copy or a move constructor
-		ImpossibleOperation(ImpossibleOperation&&) noexcept = default;
-		ImpossibleOperation& operator=(ImpossibleOperation&&) noexcept = default;
-
 		virtual ~ImpossibleOperation() = default;
 
 		virtual std::string_view get_exception_name() const noexcept;
-		virtual const char* what() const noexcept;
 
-	private:
-		std::string _message;
 };
 
 } // YoloVM

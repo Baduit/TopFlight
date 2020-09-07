@@ -6,16 +6,12 @@
 namespace YoloVM
 {
 
-class Exception: public std::exception
+class Exception: public std::runtime_error
 {
 	public:
-		Exception() noexcept = default;
-
-		Exception(const Exception&) noexcept = default;
-		Exception& operator=(const Exception&) noexcept = default;
-
-		Exception(Exception&&) noexcept = default;
-		Exception& operator=(Exception&&) noexcept = default;
+		Exception(std::string_view message):
+			std::runtime_error(std::string(message))
+		{}
 
 		virtual ~Exception() = default;
 
@@ -23,11 +19,6 @@ class Exception: public std::exception
 		virtual std::string_view get_exception_name() const noexcept
 		{
 			return "YoloVM::Exception";
-		}
-
-		virtual const char* what() const noexcept
-		{
-			return get_exception_name().data();
 		}
 };
 

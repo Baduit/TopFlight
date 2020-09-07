@@ -99,7 +99,7 @@ void VirtualMachine::execute_instruction(Instruction instruction)
 			}
 			else
 			{
-				throw std::runtime_error("Instruction unknown or not implemented.");
+				throw UnknownInstruction(T::NAME);
 			}
 			
 		});
@@ -164,7 +164,7 @@ void VirtualMachine::execute_routine(std::string_view routine_name)
 			return r.name == routine_name;
 		});
 	if (it == _routines.end())
-		throw std::runtime_error("Routine not found");
+		throw UnknownRoutine(routine_name);
 	
 	for (const auto& instruction: it->instructions)
 		execute_instruction(instruction);
