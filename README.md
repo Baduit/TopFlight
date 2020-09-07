@@ -116,13 +116,12 @@ It also works with a recent version of msvc, it works with the one shipped with 
 There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
 
 # Todo:
-- Rework this dummy parser with something cleaner Lexer/Parser (archi already done)
-- Rework a bit to be able to pass variable name or directly values to some instruction (example be able to do ADD INTEGER(1) other_int c)
 - Make something usefull with arrays
 - Add the CHARACTER type
 - Make something usefull with strings
+
+# Things that would be nice but I'm pretty sure I won't have the time to do it
 - Make a cool interactive interpreter
 - Add functionnal tests would be nice, less boring to do than unit test (I know I know I should also do unit tests) and still usefull
 - Improve the online editor (https://www.baduit.eu/topflight/)
-- ???
-- Profit
+
