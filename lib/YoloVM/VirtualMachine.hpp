@@ -65,6 +65,16 @@ class VirtualMachine
 		void compare_greater(std::string_view input_a, std::string_view input_b, std::string_view output);
 		void compare_greater_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output);
 
+		//GetAt, StoreAt, CopyAt, Size, Resize, Insert, PushBack, Concat
+		void get_at(std::string_view array_input, std::string_view index, std::string_view output);
+		void store_at(std::string_view array_output, std::string_view index, Value value);
+		void copy_at(std::string_view array_output, std::string_view index, std::string_view input);
+		void size(std::string_view array_input, std::string_view output);
+		void resize(std::string_view array_input, std::string_view new_size);
+		void insert(std::string_view array_output, std::string_view index, std::string_view input);
+		void push_back(std::string_view array_output, std::string_view input);
+		void concat(std::string_view input_a, std::string_view input_b, std::string_view dest);
+
 	public:
 		struct UnknownRoutine: public Exception
 		{

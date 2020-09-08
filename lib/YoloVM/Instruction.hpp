@@ -209,21 +209,82 @@ struct Instruction
 	** Array operation
 	*/
 	// TODO
+	struct GetAt
+	{
+		static constexpr std::string_view NAME = "GET_AT";
+		
+		std::string array_input;
+		std::string index;
+		std::string output;
+	};
+	
+	struct StoreAt
+	{
+		static constexpr std::string_view NAME = "STORE_AT";
+		
+		std::string array_output;
+		std::string index;
+		Value value;
+	};
 
-	// get at
-	// store at
-	// copy at
-	// Size
-	// resize
-	// insert
-	// push back
-	// concat
+	struct CopyAt
+	{
+		static constexpr std::string_view NAME = "COPY_AT";
+		
+		std::string array_output;
+		std::string index;
+		std::string input;
+	};
+
+
+	struct Size
+	{
+		static constexpr std::string_view NAME = "SIZE";
+		
+		std::string array_input;
+		std::string output;
+	};
+
+	struct Resize
+	{
+		static constexpr std::string_view NAME = "RESIZE";
+		
+		std::string array_input;
+		std::string new_size;
+	};
+
+	struct Insert
+	{
+		static constexpr std::string_view NAME = "INSERT";
+		
+		std::string array_output;
+		std::string index;
+		std::string input;
+	};
+
+	struct PushBack
+	{
+		static constexpr std::string_view NAME = "PUSH_BACK";
+		
+		std::string array_output;
+		std::string input;
+	};
+	
+	struct Concat
+	{
+		static constexpr std::string_view NAME = "CONCAT";
+		
+		std::string input_a;
+		std::string input_b;
+		std::string dest;
+	};
 
 	using InstructionTypes = brigand::list<
 				Store, Copy, Free, Print, Call, CallIf,
 				Add, Substract, Multiply, Divide, Modulo,
 				LogicalAnd, LogicalOr, LogicalNot,
-				CompareEqual, CompareDifferent, CompareLess, CompareLessOrEqual, CompareGreater, CompareGreaterOrEqual
+				CompareEqual, CompareDifferent, CompareLess, CompareLessOrEqual, CompareGreater, CompareGreaterOrEqual,
+				GetAt, StoreAt, CopyAt, Size, Resize, Insert, PushBack, Concat
 			>;
 
 	using Variant = brigand_list_as_variant<InstructionTypes>;

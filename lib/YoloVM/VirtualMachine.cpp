@@ -97,6 +97,38 @@ void VirtualMachine::execute_instruction(Instruction instruction)
 			{
 				call_helper(&VirtualMachine::compare_greater_or_equal, std::move(i));
 			}
+			else if constexpr (std::same_as<T, Instruction::GetAt>)
+			{
+				call_helper(&VirtualMachine::get_at, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::StoreAt>)
+			{
+				call_helper(&VirtualMachine::store_at, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::CopyAt>)
+			{
+				call_helper(&VirtualMachine::copy_at, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::Size>)
+			{
+				call_helper(&VirtualMachine::size, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::Resize>)
+			{
+				call_helper(&VirtualMachine::resize, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::Insert>)
+			{
+				call_helper(&VirtualMachine::insert, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::PushBack>)
+			{
+				call_helper(&VirtualMachine::push_back, std::move(i));
+			}
+			else if constexpr (std::same_as<T, Instruction::Concat>)
+			{
+				call_helper(&VirtualMachine::concat, std::move(i));
+			}
 			else
 			{
 				throw UnknownInstruction(T::NAME);
@@ -248,5 +280,44 @@ void VirtualMachine::compare_greater_or_equal(std::string_view input_a, std::str
 	_memory.store(output, Boolean(_memory.load(input_a) >= _memory.load(input_b)));
 }
 
+void VirtualMachine::get_at(std::string_view array_input, std::string_view index, std::string_view output)
+{
+
+}
+
+void VirtualMachine::store_at(std::string_view array_output, std::string_view index, Value value)
+{
+
+}
+
+void VirtualMachine::copy_at(std::string_view array_output, std::string_view index, std::string_view input)
+{
+
+}
+
+void VirtualMachine::size(std::string_view array_input, std::string_view output)
+{
+
+}
+
+void VirtualMachine::resize(std::string_view array_input, std::string_view new_size)
+{
+
+}
+
+void VirtualMachine::insert(std::string_view array_output, std::string_view index, std::string_view input)
+{
+
+}
+
+void VirtualMachine::push_back(std::string_view array_output, std::string_view input)
+{
+
+}
+
+void VirtualMachine::concat(std::string_view input_a, std::string_view input_b, std::string_view dest)
+{
+
+}
 
 } // YoloVM
