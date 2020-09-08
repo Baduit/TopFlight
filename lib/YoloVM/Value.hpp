@@ -20,7 +20,7 @@ class Value
 	using Variant = std::variant<Integer, Number, String, Boolean, ArrayOfInteger, ArrayOfNumber, ArrayOfString, ArrayOfBoolean>;
 	public:
 		template <typename T>
-		Value(T value):
+		explicit Value(T value):
 			_variant(std::move(value))
 		{}
 

@@ -204,7 +204,7 @@ void VirtualMachine::execute_routine(std::string_view routine_name)
 
 void VirtualMachine::execute_routine_if(std::string_view routine_name, std::string_view boolean_input)
 {
-	if (load(boolean_input) != Boolean(true))
+	if (load(boolean_input) != Value(Boolean(true)))
 		return;
 
 	execute_routine(routine_name);
@@ -252,32 +252,32 @@ void VirtualMachine::logical_not(std::string_view input, std::string_view output
 
 void VirtualMachine::compare_equal(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
-	_memory.store(output, Boolean(_memory.load(input_a) == _memory.load(input_b)));
+	_memory.store(output, Value(Boolean(_memory.load(input_a) == _memory.load(input_b))));
 }
 
 void VirtualMachine::compare_different(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
-	_memory.store(output, Boolean(_memory.load(input_a) != _memory.load(input_b)));
+	_memory.store(output, Value(Boolean(_memory.load(input_a) != _memory.load(input_b))));
 }
 
 void VirtualMachine::compare_less(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
-	_memory.store(output, Boolean(_memory.load(input_a) < _memory.load(input_b)));
+	_memory.store(output, Value(Boolean(_memory.load(input_a) < _memory.load(input_b))));
 }
 
 void VirtualMachine::compare_less_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
-	_memory.store(output, Boolean(_memory.load(input_a) <= _memory.load(input_b)));
+	_memory.store(output, Value(Boolean(_memory.load(input_a) <= _memory.load(input_b))));
 }
 
 void VirtualMachine::compare_greater(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
-	_memory.store(output, Boolean(_memory.load(input_a) > _memory.load(input_b)));
+	_memory.store(output, Value(Boolean(_memory.load(input_a) > _memory.load(input_b))));
 }
 
 void VirtualMachine::compare_greater_or_equal(std::string_view input_a, std::string_view input_b, std::string_view output)
 {
-	_memory.store(output, Boolean(_memory.load(input_a) >= _memory.load(input_b)));
+	_memory.store(output, Value(Boolean(_memory.load(input_a) >= _memory.load(input_b))));
 }
 
 void VirtualMachine::get_at(std::string_view array_input, std::string_view index, std::string_view output)

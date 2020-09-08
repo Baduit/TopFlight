@@ -192,35 +192,35 @@ auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, st
 
 	if (type == "INTEGER")
 	{
-		return { YoloVM::Integer(to_int(values)), remaining_string };
+		return { YoloVM::Value(YoloVM::Integer(to_int(values))), remaining_string };
 	}
 	else if (type == "NUMBER")
 	{
-		return { YoloVM::Number(to_double(values)), remaining_string };
+		return { YoloVM::Value(YoloVM::Number(to_double(values))), remaining_string };
 	}
 	else if (type == "STRING")
 	{
-		return { YoloVM::String(extract_string(values)), remaining_string };
+		return { YoloVM::Value(YoloVM::String(extract_string(values))), remaining_string };
 	}
 	else if (type == "BOOLEAN")
 	{
-		return { YoloVM::Boolean(to_bool(values)), remaining_string };
+		return { YoloVM::Value(YoloVM::Boolean(to_bool(values))), remaining_string };
 	}
 	else if (type == "ARRAY_OF_INTEGER")
 	{
-		return { YoloVM::ArrayOfInteger(split_to_array<YoloVM::Integer>(values, to_int)), remaining_string };
+		return { YoloVM::Value(YoloVM::ArrayOfInteger(split_to_array<YoloVM::Integer>(values, to_int))), remaining_string };
 	}
 	else if (type == "ARRAY_OF_NUMBER")
 	{
-		return { YoloVM::ArrayOfNumber(split_to_array<YoloVM::Number>(values, to_double)), remaining_string };
+		return { YoloVM::Value(YoloVM::ArrayOfNumber(split_to_array<YoloVM::Number>(values, to_double))), remaining_string };
 	}
 	else if (type == "ARRAY_OF_STRING")
 	{
-		return { YoloVM::ArrayOfString(to_array_of_string(values)), remaining_string };
+		return { YoloVM::Value(YoloVM::ArrayOfString(to_array_of_string(values))), remaining_string };
 	}
 	else if (type == "ARRAY_OF_BOOLEAN")
 	{
-		return { YoloVM::ArrayOfBoolean(split_to_array<YoloVM::Boolean>(values, to_bool)), remaining_string };
+		return { YoloVM::Value(YoloVM::ArrayOfBoolean(split_to_array<YoloVM::Boolean>(values, to_bool))), remaining_string };
 	}
 	else
 	{
