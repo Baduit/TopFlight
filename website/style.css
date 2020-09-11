@@ -43,11 +43,24 @@ body {
 	min-height: 100px;
   }
   
+  #outputCanvas {
+	transition: background-color 1s;
+	min-height: 100px;
+	width: 100%;
+	background-color: black;
+  }
+
   #yololOutput {
-	flex: 3;
-	padding: 10px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 20px;
+	transition: background-color 1s;
+	width: 100%;
+	min-height: 300px;
+  }
+
+  #output {
+	flex: 3;
+	padding: 10px;
 	overflow: auto;
 	transition: background-color 1s;
 	min-height: 100px;
