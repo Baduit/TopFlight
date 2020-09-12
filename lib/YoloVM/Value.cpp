@@ -252,6 +252,41 @@ void Value::print(std::ostream& out) const
 		}, _variant);
 }
 
+const Value& Value::get_at(Value index) const
+{
+
+}
+
+void Value::store_at(Value index, Value value)
+{
+
+}
+
+Value Value::size() const
+{
+
+}
+
+void Value::resize(Value new_size)
+{
+
+}
+
+void Value::insert(Value index, const Value& input)
+{
+
+}
+
+void Value::push_back(const Value& input)
+{
+
+}
+
+Value Value::concat(const Value& other) const
+{
+	
+}
+
 ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type):
 	Exception("Impossible to do the operation : \"" + operation + "\" on a variable of type '" + std::string(first_type) + "'")
 {

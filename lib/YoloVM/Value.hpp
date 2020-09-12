@@ -15,6 +15,7 @@
 namespace YoloVM
 {
 
+// Note: a Value is passed by const& by default, except if it is known that the value is an Integer, Number or Boolean
 class Value
 {
 	using Variant = std::variant<Integer, Number, String, Boolean, ArrayOfInteger, ArrayOfNumber, ArrayOfString, ArrayOfBoolean>;
@@ -47,6 +48,14 @@ class Value
 		friend std::strong_ordering operator<=>(const Value& a, const Value& b);
 
 		void print(std::ostream& out) const;
+
+		const Value& get_at(Value index) const;
+		void store_at(Value index, Value value);
+		Value size() const;
+		void resize(Value new_size);
+		void insert(Value index, const Value& input);
+		void push_back(const Value& input);
+		Value concat(const Value& other) const;
 
 	private:
 		Variant _variant;
