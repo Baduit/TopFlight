@@ -169,6 +169,53 @@ struct ArrayOf
 		out << ']';
 	}
 
+	const T& get_at(Integer index) const
+	{
+		if (index.value < 0)
+			throw std::out_of_range("Index can't be negative");
+		return values.at(index.value);
+	}
+
+	void store_at(Integer index, T value)
+	{
+		if (index.value < 0)
+			throw std::out_of_range("Index can't be negative");
+		values.at(index.value) = std::move(value);
+	}
+
+	Integer size() const
+	{
+		return Integer(values.size());
+	}
+
+	void resize(Integer new_size)
+	{
+		if (new_size.value < 0)
+			throw std::out_of_range("New size can't be negative");
+		values.resize(new_size.value);
+	}
+
+	void insert(Integer index, const T& input)
+	{
+		if (index.value < 0)
+			throw std::out_of_range("Index can't be negative");
+		if (static_cast<std::size_t>(index.value) > values.size())
+			throw std::out_of_range("Index is out of range");
+		values.insert(values.begin() + index.value, std::move(input));
+	}
+
+	void push_back(const T& input)
+	{
+		values.push_back(std::move(input));
+	}
+
+	ArrayOf concat(const ArrayOf& other) const
+	{
+		ArrayOf new_array = (*this);
+		new_array.insert(new_array.end(), other.values.cbegin(), other.values.cend());
+		return new_array;
+	}
+
 	std::vector<T> values;
 };
 
