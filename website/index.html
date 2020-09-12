@@ -3,7 +3,7 @@
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <meta content="utf-8" http-equiv="encoding" />
-    <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
     <link rel="stylesheet" href="style.css" type="text/css" />
     <title>TopFlight Online</title>
   </head>
@@ -14,11 +14,20 @@
           id="yololInput"
 		  placeholder="Type your TopFlight code here"
 		  spellcheck="false"
-        ></textarea>
-		<textarea
-		  id="yololOutput"
-		  readonly
-        ></textarea>
+		></textarea>
+		<div id="output">
+			<div id="yololOutputContainer">
+				<textarea
+				id="yololOutput"
+				readonly
+				></textarea>
+			</div>
+			<div id="outputCanvasContainer">
+				<canvas
+					id="outputCanvas">
+				</canvas>
+			</div>
+		</div>
 		<a
 			onclick="ask_nicely_the_api_to_run_the_code()"
           	><img id="runButton" width="100px" src="assets/icons/run.png"
@@ -45,7 +54,22 @@
 				})
 				.then(function (myText) {
 					console.log(myText);
-					document.getElementById("yololOutput").value = myText
+
+					var lines = myText.split("\n");
+					var output_text = "";
+					for (var i = 0; i < lines.length; ++i)
+					{
+						if (!lines[i].startsWith("__PIXEL__ "))
+						{
+							output_text += lines[i] + "\n";
+						}
+						else
+						{
+							// TODO
+						}
+					}
+
+					document.getElementById("yololOutput").value = output_text;
 				})
 				.catch(function (error) {
 					console.log("Error: " + error);
