@@ -1,6 +1,8 @@
 #include <typeinfo>
 
 #include <YoloVM/Value.hpp>
+#include <YoloVM/MethodConcepts.hpp>
+#include <YoloVM/OperatorConcepts.hpp>
 
 namespace YoloVM
 {
@@ -252,39 +254,188 @@ void Value::print(std::ostream& out) const
 		}, _variant);
 }
 
-const Value& Value::get_at(Value index) const
+Value Value::get_at(Value index) const
 {
+	return std::visit(
+		[&](const auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
 
+			if constexpr (!HasGetAt<A>)
+			{
+				throw ImpossibleOperation("get_at", type_to_string_view<A>());
+				return Value(); // Ugly I know
+			}
+			else
+			{
+				if (auto* ptr = std::get_if<Integer>(&(index._variant)); ptr)
+				{
+					return Value(a_value.get_at(*ptr));
+				}
+				else
+				{
+					throw ImpossibleOperation("get_at", type_to_string_view<A>());
+				}
+			}
+
+		}, _variant);
 }
 
 void Value::store_at(Value index, Value value)
 {
+	std::visit(
+		[&](auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
+			std::visit(
+				[&](const auto& b_value)
+				{
+					using B = std::decay_t<decltype(b_value)>;
 
+					if constexpr (!HasStoreAt<A, B>)
+					{
+						throw ImpossibleOperation("store_at", type_to_string_view<A>(), type_to_string_view<B>());
+					}
+					else
+					{
+						if (auto* ptr = std::get_if<Integer>(&(index._variant)); ptr)
+						{
+							a_value.store_at(*ptr, b_value);
+						}
+						else
+						{
+							throw ImpossibleOperation("store_at", type_to_string_view<A>());
+						}
+					}
+				}, value._variant);
+
+		}, _variant);
 }
 
 Value Value::size() const
 {
+	return std::visit(
+		[&](const auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
 
+			if constexpr (!HasSize<A>)
+			{
+				throw ImpossibleOperation("size", type_to_string_view<A>());
+				return Value(); // Ugly I know
+			}
+			else
+			{
+				return Value(a_value.size());
+			}
+
+		}, _variant);
 }
 
 void Value::resize(Value new_size)
 {
+	std::visit(
+		[&](auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
 
+			if constexpr (!HasResize<A>)
+			{
+				throw ImpossibleOperation("resize", type_to_string_view<A>());
+			}
+			else
+			{
+				if (auto* ptr = std::get_if<Integer>(&(new_size._variant)); ptr)
+				{
+					a_value.resize(*ptr);
+				}
+				else
+				{
+					throw ImpossibleOperation("resize", type_to_string_view<A>());
+				}
+			}
+
+		}, _variant);
 }
 
 void Value::insert(Value index, const Value& input)
 {
+	std::visit(
+		[&](auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
+			std::visit(
+				[&](const auto& b_value)
+				{
+					using B = std::decay_t<decltype(b_value)>;
 
+					if constexpr (!HasInsert<A, B>)
+					{
+						throw ImpossibleOperation("insert", type_to_string_view<A>(), type_to_string_view<B>());
+					}
+					else
+					{
+						if (auto* ptr = std::get_if<Integer>(&(index._variant)); ptr)
+						{
+							a_value.insert(*ptr, b_value);
+						}
+						else
+						{
+							throw ImpossibleOperation("insert", type_to_string_view<A>());
+						}
+					}
+				}, input._variant);
+
+		}, _variant);
 }
 
 void Value::push_back(const Value& input)
 {
+	std::visit(
+		[&](auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
+			std::visit(
+				[&](const auto& b_value)
+				{
+					using B = std::decay_t<decltype(b_value)>;
 
+					if constexpr (!HasPushBack<A, B>)
+					{
+						throw ImpossibleOperation("push_back", type_to_string_view<A>(), type_to_string_view<B>());
+					}
+					else
+					{
+						a_value.push_back(b_value);
+					}
+				}, input._variant);
+
+		}, _variant);
 }
 
 Value Value::concat(const Value& other) const
 {
-	
+	return std::visit(
+		[&](const auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
+			return std::visit(
+				[&](const auto& b_value)
+				{
+					using B = std::decay_t<decltype(b_value)>;
+
+					if constexpr (!HasConcat<A, B>)
+					{
+						throw ImpossibleOperation("concat", type_to_string_view<A>(), type_to_string_view<B>());
+						return Value(); // Ugly I know
+					}
+					else
+					{
+						return Value(a_value.concat(b_value));
+					}
+				}, other._variant);
+
+		}, _variant);	
 }
 
 ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type):

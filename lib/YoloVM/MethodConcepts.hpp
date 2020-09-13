@@ -49,9 +49,9 @@ concept HasPushBack =
 		{ t.push_back(std::move(v)) };
 	};
 
-template <typename T>
+template <typename T, typename U>
 concept HasConcat =
-	requires(T t, const T& other)
+	requires(const T& t, const U& other)
 	{
 		{ t.concat(other) };
 	};

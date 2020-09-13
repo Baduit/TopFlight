@@ -9,7 +9,6 @@
 #include <optional>
 
 #include <YoloVM/Types.hpp>
-#include <YoloVM/OperatorConcepts.hpp>
 #include <YoloVM/Exception.hpp>
 
 namespace YoloVM
@@ -49,7 +48,7 @@ class Value
 
 		void print(std::ostream& out) const;
 
-		const Value& get_at(Value index) const;
+		Value get_at(Value index) const;
 		void store_at(Value index, Value value);
 		Value size() const;
 		void resize(Value new_size);

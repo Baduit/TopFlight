@@ -142,6 +142,8 @@ struct Boolean
 template <typename T>
 struct ArrayOf
 {
+	using ElementType = T;
+
 	ArrayOf(std::vector<T> v):
 		values(std::move(v))
 	{}
@@ -173,26 +175,26 @@ struct ArrayOf
 	{
 		if (index.value < 0)
 			throw std::out_of_range("Index can't be negative");
-		return values.at(index.value);
+		return values.at(static_cast<std::size_t>(index.value));
 	}
 
 	void store_at(Integer index, T value)
 	{
 		if (index.value < 0)
 			throw std::out_of_range("Index can't be negative");
-		values.at(index.value) = std::move(value);
+		values.at(static_cast<std::size_t>(index.value)) = std::move(value);
 	}
 
 	Integer size() const
 	{
-		return Integer(values.size());
+		return Integer(static_cast<std::size_t>(values.size()));
 	}
 
 	void resize(Integer new_size)
 	{
 		if (new_size.value < 0)
 			throw std::out_of_range("New size can't be negative");
-		values.resize(new_size.value);
+		values.resize(static_cast<std::size_t>(new_size.value));
 	}
 
 	void insert(Integer index, const T& input)
@@ -212,7 +214,7 @@ struct ArrayOf
 	ArrayOf concat(const ArrayOf& other) const
 	{
 		ArrayOf new_array = (*this);
-		new_array.insert(new_array.end(), other.values.cbegin(), other.values.cend());
+		new_array.values.insert(new_array.values.end(), other.values.cbegin(), other.values.cend());
 		return new_array;
 	}
 
