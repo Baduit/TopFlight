@@ -55,6 +55,7 @@ class Value
 		void insert(Value index, const Value& input);
 		void push_back(const Value& input);
 		Value concat(const Value& other) const;
+		void erase(Value index);
 
 	private:
 		Variant _variant;

@@ -178,6 +178,11 @@ struct String
 		return new_array;
 	}
 
+	void erase(Integer index)
+	{
+		value.erase(value.begin() + index.value);
+	}
+
 	std::string value;
 };
 
@@ -288,6 +293,11 @@ struct ArrayOf
 		ArrayOf new_array = (*this);
 		new_array.values.insert(new_array.values.end(), other.values.cbegin(), other.values.cend());
 		return new_array;
+	}
+
+	void erase(Integer index)
+	{
+		values.erase(values.begin() + index.value);
 	}
 
 	std::vector<T> values;

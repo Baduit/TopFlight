@@ -56,6 +56,12 @@ concept HasConcat =
 		{ t.concat(other) };
 	};
 
-// TODO
+template <typename T>
+concept HasErase =
+	requires(const T& t, Integer i)
+	{
+		{ t.erase(i) };
+	};
+
 
 }

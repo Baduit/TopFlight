@@ -129,6 +129,10 @@ void VirtualMachine::execute_instruction(Instruction instruction)
 			{
 				call_helper(&VirtualMachine::concat, std::move(i));
 			}
+			else if constexpr (std::same_as<T, Instruction::Erase>)
+			{
+				call_helper(&VirtualMachine::erase, std::move(i));
+			}
 			else
 			{
 				throw UnknownInstruction(T::NAME);
@@ -318,6 +322,11 @@ void VirtualMachine::push_back(std::string_view array_output, std::string_view i
 void VirtualMachine::concat(std::string_view input_a, std::string_view input_b, std::string_view dest)
 {
 	_memory.store(dest, _memory.load(input_a).concat(_memory.load(input_b)));
+}
+
+void VirtualMachine::erase(std::string_view array_input, std::string_view index)
+{
+	_memory.load(array_input).erase(_memory.load(index));
 }
 
 } // YoloVM

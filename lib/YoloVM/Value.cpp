@@ -438,6 +438,32 @@ Value Value::concat(const Value& other) const
 		}, _variant);	
 }
 
+void Value::erase(Value index)
+{
+	std::visit(
+		[&](const auto& a_value)
+		{
+			using A = std::decay_t<decltype(a_value)>;
+
+			if constexpr (!HasErase<A>)
+			{
+				throw ImpossibleOperation("erase", type_to_string_view<A>());
+			}
+			else
+			{
+				if (auto* ptr = std::get_if<Integer>(&(index._variant)); ptr)
+				{
+					Value(a_value.erase(*ptr));
+				}
+				else
+				{
+					throw ImpossibleOperation("erase", type_to_string_view<A>());
+				}
+			}
+
+		}, _variant);
+}
+
 ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::string_view first_type):
 	Exception("Impossible to do the operation : \"" + operation + "\" on a variable of type '" + std::string(first_type) + "'")
 {

@@ -208,7 +208,6 @@ struct Instruction
 	/*
 	** Array operation
 	*/
-	// TODO
 	struct GetAt
 	{
 		static constexpr std::string_view NAME = "GET_AT";
@@ -279,12 +278,20 @@ struct Instruction
 		std::string dest;
 	};
 
+	struct Erase
+	{
+		static constexpr std::string_view NAME = "ERASE";
+		
+		std::string array_input;
+		std::string index;
+	};
+
 	using InstructionTypes = brigand::list<
 				Store, Copy, Free, Print, Call, CallIf,
 				Add, Substract, Multiply, Divide, Modulo,
 				LogicalAnd, LogicalOr, LogicalNot,
 				CompareEqual, CompareDifferent, CompareLess, CompareLessOrEqual, CompareGreater, CompareGreaterOrEqual,
-				GetAt, StoreAt, CopyAt, Size, Resize, Insert, PushBack, Concat
+				GetAt, StoreAt, CopyAt, Size, Resize, Insert, PushBack, Concat, Erase
 			>;
 
 	using Variant = brigand_list_as_variant<InstructionTypes>;

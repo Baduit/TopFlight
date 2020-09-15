@@ -73,6 +73,7 @@ class VirtualMachine
 		void insert(std::string_view array_output, std::string_view index, std::string_view input);
 		void push_back(std::string_view array_output, std::string_view input);
 		void concat(std::string_view input_a, std::string_view input_b, std::string_view dest);
+		void erase(std::string_view array_input, std::string_view index);
 
 	public:
 		struct UnknownRoutine: public Exception
