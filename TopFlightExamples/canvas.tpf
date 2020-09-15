@@ -1,0 +1,13 @@
+# The canvas is only available online
+STORE str STRING("__CANVAS_RESIZE__ 150 150\n")
+PRINT str
+
+STORE str STRING("__PIXEL_PUT__ 100 50 red\n")
+PRINT str
+
+STORE str STRING("__PIXEL_PUT__ 102 50 green\n")
+PRINT str
+
+STORE str STRING("__PIXEL_PUT__ 101 50 red\n")
+PRINT str
+

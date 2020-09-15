@@ -117,8 +117,13 @@ It also works with a recent version of msvc, it works with the one shipped with 
 # Play with it wihtout the toolchain
 There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
 
-# Todo:
-- Finish the tricks to be able to play with the canvas online
+# Play with it online:
+You can play with it online at: https://www.baduit.eu/topflight/
+
+You can put a colored pixel in the canvas if you print a string looking like this `__PIXEL_PUT__ x y color` where x and y are numbers and colors and string which is a valid color for the web canvas.
+And if you print a string looking like this `__CANVAS_RESIZE__ x y` it resizes the canvas.
+
+There is an example in the file _canvas.tpf_.
 
 # Things that would be nice but I'm pretty sure I won't have the time to do it
 - A real doc for the langage instead/in addition of this readme
