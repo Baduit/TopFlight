@@ -131,6 +131,53 @@ struct String
 		out << value;
 	}
 
+	Char get_at(Integer index) const
+	{
+		if (index.value < 0)
+			throw std::out_of_range("Index can't be negative");
+		return value.at(static_cast<std::size_t>(index.value));
+	}
+
+	void store_at(Integer index, Char c)
+	{
+		if (index.value < 0)
+			throw std::out_of_range("Index can't be negative");
+		value.at(static_cast<std::size_t>(index.value)) = c.value;
+	}
+
+	Integer size() const
+	{
+		return Integer(static_cast<int>(value.size()));
+	}
+
+	void resize(Integer new_size)
+	{
+		if (new_size.value < 0)
+			throw std::out_of_range("New size can't be negative");
+		value.resize(static_cast<std::size_t>(new_size.value));
+	}
+
+	void insert(Integer index, Char input)
+	{
+		if (index.value < 0)
+			throw std::out_of_range("Index can't be negative");
+		if (static_cast<std::size_t>(index.value) > value.size())
+			throw std::out_of_range("Index is out of range");
+		value.insert(value.begin() + index.value, input.value);
+	}
+
+	void push_back(Char input)
+	{
+		value.push_back(input.value);
+	}
+
+	String concat(const String& other) const
+	{
+		String new_array = (*this);
+		new_array.value.insert(new_array.value.end(), other.value.cbegin(), other.value.cend());
+		return new_array;
+	}
+
 	std::string value;
 };
 

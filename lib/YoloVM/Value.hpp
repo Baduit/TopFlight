@@ -17,7 +17,7 @@ namespace YoloVM
 // Note: a Value is passed by const& by default, except if it is known that the value is an Integer, Number or Boolean
 class Value
 {
-	using Variant = std::variant<Integer, Number, String, Boolean, ArrayOfInteger, ArrayOfNumber, ArrayOfString, ArrayOfBoolean>;
+	using Variant = std::variant<Integer, Number, Char, String, Boolean, ArrayOfInteger, ArrayOfNumber, ArrayOfString, ArrayOfBoolean>;
 	public:
 		template <typename T>
 		explicit Value(T value):

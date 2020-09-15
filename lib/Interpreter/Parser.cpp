@@ -248,7 +248,7 @@ auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, st
 	}
 	else if (type == "CHAR")
 	{
-		return { YoloVM::Value(YoloVM::Number(to_char(values))), remaining_string };
+		return { YoloVM::Value(YoloVM::Char(to_char(values))), remaining_string };
 	}
 	else if (type == "STRING")
 	{
