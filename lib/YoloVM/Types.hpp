@@ -187,7 +187,7 @@ struct ArrayOf
 
 	Integer size() const
 	{
-		return Integer(static_cast<std::size_t>(values.size()));
+		return Integer(static_cast<int>(values.size()));
 	}
 
 	void resize(Integer new_size)

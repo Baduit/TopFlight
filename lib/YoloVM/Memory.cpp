@@ -22,7 +22,17 @@ void Memory::store(std::string_view name, Value value)
 		_data.insert(std::pair(name, std::move(value)));
 }
 
-const Value& Memory::load(std::string_view name)
+const Value& Memory::load(std::string_view name) const
+{
+	using namespace std::string_literals;
+	auto it = _data.find(name);
+	if (it != _data.end())
+		return it->second;
+	else
+		throw LoadingError(std::string(name));
+}
+
+Value& Memory::load(std::string_view name)
 {
 	using namespace std::string_literals;
 	auto it = _data.find(name);

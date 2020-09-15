@@ -26,7 +26,8 @@ class Memory
 		Memory() = default;
 
 		void store(std::string_view name, Value value);
-		const Value& load(std::string_view name);
+		const Value& load(std::string_view name) const;
+		Value& load(std::string_view name);
 		void free(std::string_view name);
 
 		template <MemoryVisitor Visitor>

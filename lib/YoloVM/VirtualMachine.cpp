@@ -282,42 +282,42 @@ void VirtualMachine::compare_greater_or_equal(std::string_view input_a, std::str
 
 void VirtualMachine::get_at(std::string_view array_input, std::string_view index, std::string_view output)
 {
-
+	_memory.store(output, _memory.load(array_input).get_at(_memory.load(index)));
 }
 
 void VirtualMachine::store_at(std::string_view array_output, std::string_view index, Value value)
 {
-
+	_memory.load(array_output).store_at(_memory.load(index), value);
 }
 
 void VirtualMachine::copy_at(std::string_view array_output, std::string_view index, std::string_view input)
 {
-
+	_memory.load(array_output).store_at(_memory.load(index), _memory.load(input));
 }
 
 void VirtualMachine::size(std::string_view array_input, std::string_view output)
 {
-
+	_memory.store(output, _memory.load(array_input).size());
 }
 
 void VirtualMachine::resize(std::string_view array_input, std::string_view new_size)
 {
-
+	_memory.load(array_input).resize(_memory.load(new_size));
 }
 
 void VirtualMachine::insert(std::string_view array_output, std::string_view index, std::string_view input)
 {
-
+	_memory.load(array_output).insert(_memory.load(index), _memory.load(input));
 }
 
 void VirtualMachine::push_back(std::string_view array_output, std::string_view input)
 {
-
+	_memory.load(array_output).push_back(_memory.load(input));
 }
 
 void VirtualMachine::concat(std::string_view input_a, std::string_view input_b, std::string_view dest)
 {
-
+	_memory.store(dest, _memory.load(input_a).concat(_memory.load(input_b)));
 }
 
 } // YoloVM
