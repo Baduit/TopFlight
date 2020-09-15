@@ -274,7 +274,7 @@ Value Value::get_at(Value index) const
 				}
 				else
 				{
-					throw ImpossibleOperation("get_at", type_to_string_view<A>());
+					throw InvalidIndexType("get_at");
 				}
 			}
 
@@ -304,7 +304,7 @@ void Value::store_at(Value index, Value value)
 						}
 						else
 						{
-							throw ImpossibleOperation("store_at", type_to_string_view<A>());
+							throw InvalidIndexType("store_at");
 						}
 					}
 				}, value._variant);
@@ -351,7 +351,7 @@ void Value::resize(Value new_size)
 				}
 				else
 				{
-					throw ImpossibleOperation("resize", type_to_string_view<A>());
+					throw InvalidIndexType("resize");
 				}
 			}
 
@@ -381,7 +381,7 @@ void Value::insert(Value index, const Value& input)
 						}
 						else
 						{
-							throw ImpossibleOperation("insert", type_to_string_view<A>());
+							throw InvalidIndexType("insert");
 						}
 					}
 				}, input._variant);
@@ -457,7 +457,7 @@ void Value::erase(Value index)
 				}
 				else
 				{
-					throw ImpossibleOperation("erase", type_to_string_view<A>());
+					throw InvalidIndexType("erase");
 				}
 			}
 
@@ -477,6 +477,16 @@ ImpossibleOperation::ImpossibleOperation(const std::string& operation, std::stri
 std::string_view ImpossibleOperation::get_exception_name() const noexcept
 {
 	return "YoloVM::ImpossibleOperation";
+}
+
+InvalidIndexType::InvalidIndexType(const std::string& operation):
+	Exception("Impossible to do the operation : \"" + operation + "\" because the index is not an INTEGER")
+{
+}
+
+std::string_view InvalidIndexType::get_exception_name() const noexcept
+{
+	return "YoloVM::InvalidIndexType";
 }
 
 } // YoloVM

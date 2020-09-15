@@ -73,4 +73,13 @@ class ImpossibleOperation: public Exception
 
 };
 
+struct InvalidIndexType: public Exception
+{
+	InvalidIndexType(const std::string& operation);
+
+	virtual ~InvalidIndexType() = default;
+
+	virtual std::string_view get_exception_name() const noexcept;
+};
+
 } // YoloVM
