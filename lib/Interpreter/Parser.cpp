@@ -174,6 +174,54 @@ bool to_bool(std::string_view str)
 		throw std::runtime_error("Invalid bool parameter");
 }
 
+char to_char(std::string_view str)
+{
+	if (str.size() < 2 || str.front() != '\'' || str.back() != '\'')
+		throw std::runtime_error("Invalid char format, needs ''");
+
+	std::string_view chars = str.substr(1, str.size() - 2);			
+	if (chars.size() == 1)
+	{
+		return chars[0];
+	}
+	else if (chars.size() == 2)
+	{
+		if (chars[0] == '\\')
+		{
+			if (chars[1] == '\\' || chars[1] == '\'')
+				return chars[1];
+			else if (chars[1] == '0')
+				return '\0';
+			else if (chars[1] == 'b')
+				return '\b';
+			else if (chars[1] == 'n')
+				return '\n';
+			else if (chars[1] == 'r')
+				return '\r';
+			else if (chars[1] == 't')
+				return '\t';
+			else if (chars[1] == 'f')
+				return '\f';
+			else if (chars[1] == 'v')
+				return '\v';
+			else
+				throw std::runtime_error("Invalid string format unsupported char after \\");
+		}
+		else
+		{
+			throw std::runtime_error("Invalid char format, there are more than one character");
+		}
+	}
+	else if (chars.size() == 0)
+	{
+		throw std::runtime_error("Invalid char format, there are no character");
+	}
+	else
+	{
+		throw std::runtime_error("Invalid char format, there are more than one character");
+	}
+}
+
 auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, std::optional<std::string_view>>
 {
 	auto [type, remaning_after_type] = get_next_word(str, '(');
@@ -197,6 +245,10 @@ auto parse_and_create_value(std::string_view str) -> std::pair<YoloVM::Value, st
 	else if (type == "NUMBER")
 	{
 		return { YoloVM::Value(YoloVM::Number(to_double(values))), remaining_string };
+	}
+	else if (type == "CHAR")
+	{
+		return { YoloVM::Value(YoloVM::Number(to_char(values))), remaining_string };
 	}
 	else if (type == "STRING")
 	{

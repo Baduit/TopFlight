@@ -84,6 +84,31 @@ struct Number
 	double value = 0.0;
 };
 
+struct Char
+{
+	constexpr Char(char v):
+		value(std::move(v))
+	{}
+
+	constexpr Char() = default;
+
+	constexpr Char(const Char&) = default;
+	constexpr Char& operator=(const Char&) = default;
+
+	constexpr Char(Char&&) = default;
+	constexpr Char& operator=(Char&&) = default;
+
+	void print(std::ostream& out) const
+	{
+		out << value;
+	}
+
+	friend constexpr bool operator==(Char a, Char b) = default;
+	friend constexpr std::strong_ordering operator<=>(Char a, Char b) = default;
+
+	char value = '\0';
+};
+
 struct String
 {
 	String(std::string v):
