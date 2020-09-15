@@ -45,8 +45,6 @@ body {
   
   #outputCanvas {
 	transition: background-color 1s;
-	min-height: 100px;
-	width: 100%;
 	background-color: black;
   }
 

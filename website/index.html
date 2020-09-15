@@ -59,13 +59,36 @@
 					var output_text = "";
 					for (var i = 0; i < lines.length; ++i)
 					{
-						if (!lines[i].startsWith("__PIXEL__ "))
+						if (lines[i].startsWith("__PIXEL_PUT__ "))
 						{
-							output_text += lines[i] + "\n";
+							
+						}
+						else if (lines[i].startsWith("__CANVAS_RESIZE__ "))
+						{
+							var resize_info = lines[i].split(" ");
+							if (resize_info.length == 3)
+							{
+								var size_x = parseInt(resize_info[1], 10)
+								var size_y = parseInt(resize_info[2], 10)
+								if (size_x && size_y)
+								{
+									console.log(size_x + " " + size_y)
+									document.getElementById("outputCanvas").width = size_x;
+									document.getElementById("outputCanvas").height = size_y;
+								}
+								else
+								{
+									console.log("Invalid size to resize the canvas");	
+								}
+							}
+							else
+							{
+								console.log("Invalid syntaxe to resize the canvas ");
+							}
 						}
 						else
 						{
-							// TODO
+							output_text += lines[i] + "\n";
 						}
 					}
 
