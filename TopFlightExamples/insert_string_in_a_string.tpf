@@ -1,0 +1,27 @@
+# Implementation details for insert_string
+<insert_string_loop>
+GET_AT insert_string_input insert_string_i insert_string_char
+ADD insert_string_i insert_string_pos insert_string_actual_pos
+INSERT insert_string_base insert_string_actual_pos insert_string_char
+ADD insert_string_i insert_string_one insert_string_i
+COMPARE_LESS insert_string_i insert_string_input_size insert_string_keep_going
+CALL_IF insert_string_loop insert_string_keep_going
+</insert_string_loop>
+
+
+# String used as base string must be store in insert_string_base
+# String to insert must be stored in insert_string_input
+# Position of the string to insert must be in insert_string_pos
+<insert_string>
+SIZE insert_string_input insert_string_input_size
+STORE insert_string_i INTEGER(0)
+STORE insert_string_one INTEGER(1)
+CALL insert_string_loop
+</insert_string>
+
+STORE insert_string_base STRING("I'm cool!\n")
+STORE insert_string_input STRING("so ")
+STORE insert_string_pos INTEGER(4)
+CALL insert_string
+PRINT insert_string_base
+
