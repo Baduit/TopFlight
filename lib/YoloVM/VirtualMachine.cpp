@@ -203,7 +203,20 @@ void VirtualMachine::execute_routine(std::string_view routine_name)
 		throw UnknownRoutine(routine_name);
 	
 	for (const auto& instruction: it->instructions)
-		execute_instruction(instruction);
+	{
+		try
+		{
+			execute_instruction(instruction);
+		}
+		catch (Exception& e)
+		{
+			throw ExceptionInRoutine(it->name, e.get_exception_name(), e.what(), instruction);
+		}
+		catch (std::exception& e)
+		{
+			throw ExceptionInRoutine(it->name, "std exception", e.what(), instruction);
+		}
+	}
 }
 
 void VirtualMachine::execute_routine_if(std::string_view routine_name, std::string_view boolean_input)

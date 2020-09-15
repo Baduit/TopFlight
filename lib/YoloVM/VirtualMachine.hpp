@@ -96,6 +96,16 @@ class VirtualMachine
 			virtual std::string_view get_exception_name() const noexcept { return "YoloVM::VirtualMachine::UnknownInstruction"; }
 		};
 
+		struct ExceptionInRoutine: public Exception
+		{
+			ExceptionInRoutine(const std::string& routine_name, std::string_view exception_name, std::string_view exception_what, const Instruction& instruction):
+				Exception("In the routine '" + routine_name + "' error of type '" + std::string(exception_name) + "'during the instruction:\n\t" + instruction.to_string() + "\nwith the message:\n\t" + std::string(exception_what))
+			{}
+			virtual ~ExceptionInRoutine() = default;
+
+			virtual std::string_view get_exception_name() const noexcept { return "YoloVM::VirtualMachine::ExceptionInRoutine"; }
+		};
+
 
 	private:
 		template <typename MethodPtr, typename Arg>

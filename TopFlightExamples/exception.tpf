@@ -1,0 +1,11 @@
+# This file is invalid on purpose to show how the errors are printed inside a routine
+
+<subroutine>
+PRINT does_not_exist
+</subroutine>
+
+<routine>
+CALL subroutine
+</routine>
+
+CALL routine

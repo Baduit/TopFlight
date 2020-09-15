@@ -348,6 +348,13 @@ struct Instruction
 			});
 		return os;
 	}
+
+	std::string to_string() const
+	{
+		std::stringstream ss;
+		ss << *this;
+		return ss.str();
+	}
 };
 
 
