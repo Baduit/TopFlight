@@ -118,7 +118,6 @@ It also works with a recent version of msvc, it works with the one shipped with 
 There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
 
 # Todo:
-- Add a erase instruction for array
 - Finish the tricks to be able to play with the canvas online
 
 # Things that would be nice but I'm pretty sure I won't have the time to do it
