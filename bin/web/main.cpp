@@ -29,5 +29,5 @@ int main()
 			res.set_header("Access-Control-Allow-Origin", "*");
 		});
 
-	server.listen("localhost", 7890);
+	server.listen("0.0.0.0", 7890);
 }
