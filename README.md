@@ -118,9 +118,7 @@ It also works with a recent version of msvc, it works with the one shipped with 
 There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
 
 # Todo:
-- Make something usefull with arrays
-- Add the CHARACTER type
-- Make something usefull with strings
+- Add a erase instruction for array
 
 # Things that would be nice but I'm pretty sure I won't have the time to do it
 - A real doc for the langage instead/in addition of this readme
