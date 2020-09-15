@@ -129,7 +129,7 @@ body {
   
   @font-face {
 	font-family: "JetBrainsMono-Medium";
-	src: url("assets/fonts/JetBrainsMono-Medium.TTF");
+	src: url("assets/fonts/JetBrainsMono-Medium.ttf");
 	font-variant-ligatures: common-ligatures;
   }
   
