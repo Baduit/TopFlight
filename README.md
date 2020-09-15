@@ -119,6 +119,7 @@ There is an already compiled .exe in the folder `compile/windows` so you can use
 
 # Todo:
 - Add a erase instruction for array
+- Finish the tricks to be able to play with the canvas online
 
 # Things that would be nice but I'm pretty sure I won't have the time to do it
 - A real doc for the langage instead/in addition of this readme
