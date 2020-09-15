@@ -23,6 +23,7 @@
 				></textarea>
 			</div>
 			<div id="outputCanvasContainer">
+				<p>Canvas output:</p>
 				<canvas
 					id="outputCanvas">
 				</canvas>
@@ -53,6 +54,11 @@
 					return response.text();
 				})
 				.then(function (myText) {
+					var canvas = document.getElementById("outputCanvas")
+					var canvas_context = canvas.getContext("2d");
+					canvas_context.clearRect(0, 0, canvas.width, canvas.height);
+					canvas_context.beginPath()
+
 					console.log(myText);
 
 					var lines = myText.split("\n");
@@ -61,18 +67,37 @@
 					{
 						if (lines[i].startsWith("__PIXEL_PUT__ "))
 						{
-							
+							var put_pixel_info = lines[i].split(" ");
+							if (put_pixel_info.length == 4)
+							{
+								var pos_x = parseInt(put_pixel_info[1], 10);
+								var pos_y = parseInt(put_pixel_info[2], 10);
+								var pixel_color = put_pixel_info[3];
+								if (pos_x && pos_y)
+								{
+									//canvas_context.strokeStyle  = pixel_color
+									canvas_context.fillStyle = pixel_color
+									canvas_context.fillRect(pos_x, pos_y, 1, 1)
+								}
+								else
+								{
+									console.log("Invalid size to put a pixel on the canvas");	
+								}
+							}
+							else
+							{
+								console.log("Invalid syntaxe to put a pixel on the canvas ");
+							}
 						}
 						else if (lines[i].startsWith("__CANVAS_RESIZE__ "))
 						{
 							var resize_info = lines[i].split(" ");
 							if (resize_info.length == 3)
 							{
-								var size_x = parseInt(resize_info[1], 10)
-								var size_y = parseInt(resize_info[2], 10)
+								var size_x = parseInt(resize_info[1], 10);
+								var size_y = parseInt(resize_info[2], 10);
 								if (size_x && size_y)
 								{
-									console.log(size_x + " " + size_y)
 									document.getElementById("outputCanvas").width = size_x;
 									document.getElementById("outputCanvas").height = size_y;
 								}
