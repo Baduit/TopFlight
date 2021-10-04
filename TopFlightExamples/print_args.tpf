@@ -1,0 +1,5 @@
+# Program argument (after the filename) are stored into an ARRAY_OF_STRING named args
+PRINT args
+
+STORE endline STRING("\n")
+PRINT endline

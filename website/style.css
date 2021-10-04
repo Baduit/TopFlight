@@ -1,0 +1,135 @@
+body {
+	background-color: #505964;
+	color: white;
+	display: flex;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	flex-direction: column;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+  }
+  
+  #app {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	padding-right: 100px;
+	padding-left: 100px;
+	overflow: auto;
+  }
+  
+  #yololText {
+	display: flex;
+	flex: 1;
+	padding-bottom: 20px;
+	overflow: hidden;
+	min-height: 100px;
+  }
+  
+  #yololInput {
+	flex: 3;
+	background-color: rgba(0, 0, 0, 0.1);
+	color: white;
+	font-family: JetBrainsMono-Medium;
+	padding: 10px;
+	font-size: 20px;
+	border-style: none;
+	resize: none;
+	overflow: auto;
+	min-height: 100px;
+  }
+  
+  #outputCanvas {
+	transition: background-color 1s;
+	background-color: black;
+  }
+
+  #yololOutput {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	transition: background-color 1s;
+	width: 100%;
+	min-height: 300px;
+  }
+
+  #output {
+	flex: 3;
+	padding: 10px;
+	overflow: auto;
+	transition: background-color 1s;
+	min-height: 100px;
+  }
+  
+  #runButton {
+	width: 40px;
+	height: 40px;
+	border-style: none;
+	background-color: #222222;
+	font-size: 20px;
+	cursor: pointer;
+	padding: 10px;
+  }
+  
+  #runButton:hover {
+	background-color: #333333;
+  }
+  #runButton:active {
+	color: #aaaaaa;
+  }
+  
+  @media only screen and (max-width: 600px) {
+	#app {
+	  padding: 5px;
+	}
+	#runButton {
+	  height: 0px;
+	  width: 0px;
+	  padding: 0;
+	}
+	#title {
+	  max-height: 20px;
+	  justify-content: center;
+	}
+	#yololInput {
+	  font-size: 14px;
+	}
+	#yololOutput {
+	  font-size: 14px;
+	}
+  }
+  
+  #footer {
+	max-height: 50px;
+	background-color: #222222;
+	height: 50px;
+	flex: 1;
+	font-size: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  }
+  
+  a {
+	color: white;
+  }
+  
+  .noselect {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently
+									  supported by Chrome and Opera */
+  }
+  
+  @font-face {
+	font-family: "JetBrainsMono-Medium";
+	src: url("assets/fonts/JetBrainsMono-Medium.ttf");
+	font-variant-ligatures: common-ligatures;
+  }
+  

@@ -1,0 +1,17 @@
+STORE endline STRING("\n")
+
+STORE integers ARRAY_OF_INTEGER(1,2,3)
+PRINT integers
+PRINT endline
+
+STORE numbers ARRAY_OF_NUMBER(1.1,2.3,3)
+PRINT numbers
+PRINT endline
+
+STORE bools ARRAY_OF_BOOLEAN(true,false,true)
+PRINT bools
+PRINT endline
+
+STORE strings ARRAY_OF_STRING("salut","cc","cool")
+PRINT strings
+PRINT endline

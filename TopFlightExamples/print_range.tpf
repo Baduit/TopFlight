@@ -1,0 +1,15 @@
+# Print range 0 to 9
+STORE i INTEGER(0)
+STORE one INTEGER(1)
+STORE nine INTEGER(9)
+STORE line_return STRING("\n")
+
+<LoopContent>
+PRINT i
+PRINT line_return
+ADD i one i
+COMPARE_LESS_OR_EQUAL i nine keep_going
+CALL_IF LoopContent keep_going
+</LoopContent>
+
+CALL LoopContent

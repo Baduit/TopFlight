@@ -1,0 +1,19 @@
+# My awesome basic program
+STORE a NUMBER(7.3)
+STORE b NUMBER(8.333)
+ADD a b c
+FREE a
+FREE b
+PRINT c
+
+COPY c copied
+FREE c
+
+STORE str STRING("\nthis is a string\n")
+PRINT str
+
+PRINT copied
+FREE copied
+
+PRINT str
+FREE str

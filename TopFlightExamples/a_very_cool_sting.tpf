@@ -1,0 +1,15 @@
+# Make a cool string
+STORE endline CHAR('\n')
+STORE a_very_cool_string STRING("I'm cool")
+PUSH_BACK a_very_cool_string endline
+PRINT a_very_cool_string
+
+# Make it cooler
+STORE exclamation CHAR('!')
+SIZE a_very_cool_string string_size
+STORE one INTEGER(1)
+SUBSTRACT string_size one exclamation_pos
+INSERT a_very_cool_string exclamation_pos exclamation
+PRINT a_very_cool_string
+
+
