@@ -52,13 +52,3 @@ target_compile_options(webTopflight
 target_link_libraries(webTopflight PRIVATE YoloVM Threads::Threads)
 target_include_directories(webTopflight PUBLIC ${cpp_httplib_SOURCE_DIR})
 
-if (PRETTY_INTERPERTER)
-    add_executable(prettytopflight ./bin/PrettyTopFlight/main.cpp)
-    target_compile_features(prettytopflight PRIVATE cxx_std_20)
-    target_compile_options(prettytopflight
-                        PRIVATE
-                        $<$<CXX_COMPILER_ID:MSVC>:/W3 /permissive- /TP>
-                        $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wextra -Wall -Wsign-conversion -Wfloat-equal -pedantic -Wredundant-decls -Wshadow -Wpointer-arith -O3>)
-    target_link_libraries(prettytopflight PRIVATE YoloVM)
-    target_link_libraries(prettytopflight PRIVATE replxx)
-endif()

@@ -35,3 +35,5 @@ build_msvc
 gcc_build
 mscv_build
 clang_build
+em_build
+embuild
