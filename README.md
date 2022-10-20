@@ -107,9 +107,6 @@ Both library are header-only and already in the repos
 And 1 dependency for the web api:
 * [cpp-httplib](https://github.com/yhirose/cpp-httplib): a very simple http library without any dependency, it is already contained in the repo
 
-Also 1 dependecy for the cmdtpf (the command line interpreter with pretty colors):
-* [replxx](https://github.com/AmokHuginnsson/replxx): A small, portable GNU readline replacement for Linux, Windows and MacOS which is capable of handling UTF-8 characters. It is not contained in the library but it is simple to compile and install.
-
 # Portability
 I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and gcc 10.1.0.
 It also works with a recent version of msvc, it works with the one shipped with Visual Studio 16.7.1 and a cmake version 3.18.1
