@@ -5,7 +5,7 @@
 
 #include <Interpreter/Interpreter.hpp>
 
-int main()
+int main(int argc, char** argv)
 {
 	httplib::Server server;
 
