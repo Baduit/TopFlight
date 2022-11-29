@@ -29,11 +29,11 @@ int main(int argc, char** argv)
 			res.set_header("Access-Control-Allow-Origin", "*");
 		});
 
-	auto mount_point = (argc > 1) ? argv[1] : "./public";
+	auto mount_point = (argc > 1) ? argv[1] : "./website";
 	auto ret = server.set_mount_point("/", mount_point);
 	if (!ret)
 	{
-		std::cout << "Error while mouting ./public as /" << std::endl;
+		std::cout << "Error while mouting ./website as /" << std::endl;
 	}
 
 	server.listen("0.0.0.0", 7890);
