@@ -9,7 +9,7 @@ int main()
 {
 	httplib::Server server;
 
-	server.Get("/",
+	server.Get("/help",
 		[&](const httplib::Request&, httplib::Response& res)
 		{
 			res.set_content("Make a POST request on /execute with your code as a raw text in the body to execute your program", "text/plain");
@@ -28,6 +28,13 @@ int main()
 			res.set_content(program_output.str(), "text/plain");
 			res.set_header("Access-Control-Allow-Origin", "*");
 		});
+
+	auto mount_point = (argc > 1) ? argv[1] : "./public";
+	auto ret = server.set_mount_point("/", mount_point);
+	if (!ret)
+	{
+		std::cout << "Error while mouting ./public as /" << std::endl;
+	}
 
 	server.listen("0.0.0.0", 7890);
 }
