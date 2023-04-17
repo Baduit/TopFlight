@@ -9,10 +9,10 @@ pub struct Memory {
 
 #[derive(Error, Debug)]
 pub enum VMError {
-    #[error("Variable does not exist")]
-    VariableDoesNotExist,
-    #[error("Routine does not exist")]
-    RoutineDoesNotExist,
+    #[error("Variable `{0}` does not exist")]
+    VariableDoesNotExist(String),
+    #[error("Routine `{0}` does not exist")]
+    RoutineDoesNotExist(String),
     #[error("A boolean was expected but not received")]
     ExpectedBoolean,
     #[error("Type are mismatching")]
@@ -32,7 +32,7 @@ impl Memory {
 
     pub fn free(&mut self, name: &str) -> Result<(), VMError> {
         match self.values.remove(name) {
-            None => Err(VMError::VariableDoesNotExist),
+            None => Err(VMError::VariableDoesNotExist(String::from(name))),
             _ => Ok(()),
         }
     }
@@ -40,14 +40,14 @@ impl Memory {
     pub fn load(&self, name: &str) -> Result<&Value, VMError> {
         match self.values.get(name) {
             Some(value) => Ok(value),
-            None => Err(VMError::VariableDoesNotExist),
+            None => Err(VMError::VariableDoesNotExist(String::from(name))),
         }
     }
 
     pub fn load_mut(&mut self, name: &str) -> Result<&mut Value, VMError> {
         match self.values.get_mut(name) {
             Some(value) => Ok(value),
-            None => Err(VMError::VariableDoesNotExist),
+            None => Err(VMError::VariableDoesNotExist(String::from(name))),
         }
     }
 
@@ -419,7 +419,7 @@ fn call_routine(
 ) -> Result<(), VMError> {
     let routine = routines.get(routine_name);
     let routine = match routine {
-        None => return Err(VMError::RoutineDoesNotExist),
+        None => return Err(VMError::RoutineDoesNotExist(String::from(routine_name))),
         Some(routine) => routine,
     };
 

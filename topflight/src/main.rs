@@ -15,12 +15,13 @@ where
 #[derive(Debug)]
 struct Error {
     wrapped_error: topflight_core::Error,
-    line: usize,
+    line_number: usize,
+	line: String,
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Error at line {}: {}", self.line, self.wrapped_error)
+        write!(f, "Error at line {}: {}\n\t{}", self.line_number, self.wrapped_error, self.line)
     }
 }
 
@@ -34,7 +35,8 @@ where
         if let Err(error) = topflight_core::handle_line(line.as_str()) {
             return Err(Error {
                 wrapped_error: error,
-                line: i,
+                line_number: i + 1,
+				line: line,
             });
         }
     }
