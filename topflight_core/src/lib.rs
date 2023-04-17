@@ -12,14 +12,14 @@ pub enum Error {
     VMError(#[from] VMError),
     #[error("Invalid routine format")]
     InvalidRoutineFormat,
-    #[error("It is not possible to define a routine inside a routine")]
-    SubRoutineFound,
+    #[error("Found, in the subroutine `{0}` another routine start `{1}`")]
+    SubRoutineFound(String, String),
     #[error("It is not possible to define an unamed routine")]
     EmptyRoutineName,
-    #[error("End of a subroutine found without start.")]
-    UnexpectedEndSubroutine,
-    #[error("End of a subroutine found without start.")]
-    MismatchingEndSubroutine,
+    #[error("End of a routine `{0}` found without start.")]
+    UnexpectedEndSubroutine(String),
+    #[error("Current routine `{0}`, but found end of routine `{1}`")]
+    MismatchingEndSubroutine(String, String),
 }
 
 pub fn handle_line(str: &str, memory: &mut Memory, routines: &mut Routines) -> Result<(), Error> {
@@ -51,7 +51,7 @@ fn start_routine(
 ) -> Result<(), Error> {
     match routine_in_construction {
         None => routine_in_construction.replace(Routine::new(routine_name)),
-        _ => return Err(Error::SubRoutineFound),
+        Some(routine_in_construction) => return Err(Error::SubRoutineFound(routine_in_construction.name.clone(), routine_name)),
     };
     Ok(())
 }
@@ -61,9 +61,9 @@ fn end_routine(
     routines: &mut Routines,
 ) -> Result<(), Error> {
     if routine_in_construction.is_none() {
-        Err(Error::UnexpectedEndSubroutine)
+        Err(Error::UnexpectedEndSubroutine(routine_name))
     } else if routine_name != routine_in_construction.as_ref().unwrap().name {
-        Err(Error::MismatchingEndSubroutine)
+        Err(Error::MismatchingEndSubroutine(routine_in_construction.as_ref().unwrap().name.clone(), routine_name))
     } else {
         routines.insert(routine_name, routine_in_construction.take().unwrap());
         Ok(())
@@ -80,20 +80,20 @@ fn parse_line(str: &str) -> Result<Line, Error> {
     if str.starts_with("</") {
         if !str.ends_with(">") {
             Err(Error::InvalidRoutineFormat)
-        } else if str.len() <= 2 {
+        } else if str.len() <= 3 {
             Err(Error::EmptyRoutineName)
         } else {
-            Ok(Line::RoutineStart(String::from(get_routine_name_at_start(
+            Ok(Line::RoutineEnd(String::from(get_routine_name_at_end(
                 str,
             ))))
         }
     } else if str.starts_with("<") {
         if !str.ends_with(">") {
             Err(Error::InvalidRoutineFormat)
-        } else if str.len() <= 3 {
+        } else if str.len() <= 2 {
             Err(Error::EmptyRoutineName)
         } else {
-            Ok(Line::RoutineEnd(String::from(get_routine_name_at_end(str))))
+            Ok(Line::RoutineStart(String::from(get_routine_name_at_start(str))))
         }
     } else {
         Ok(Line::Instruction(Instruction::parse(str)?))
