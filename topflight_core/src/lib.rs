@@ -1,7 +1,8 @@
 use thiserror::Error;
 
 use topflight_definitions::{Instruction, ParseError, Routine};
-use topflight_vm::{execute, Memory, Routines, VMError};
+use topflight_vm::{execute, VMError};
+pub use topflight_vm::{Memory, Routines};
 
 #[derive(Error, Debug)]
 pub enum Error {
@@ -21,13 +22,11 @@ pub enum Error {
     MismatchingEndSubroutine,
 }
 
-pub fn handle_line(str: &str) -> Result<(), Error> {
+pub fn handle_line(str: &str, memory: &mut Memory, routines: &mut Routines) -> Result<(), Error> {
     if str.is_empty() || str.starts_with("#") {
         return Ok(());
     }
 
-    let mut memory = Memory::default();
-    let mut routines = Routines::new();
     let mut routine_in_construction: Option<Routine> = Option::None;
 
     match parse_line(str)? {
@@ -35,14 +34,12 @@ pub fn handle_line(str: &str) -> Result<(), Error> {
             start_routine(routine_name, &mut routine_in_construction)?
         }
         Line::RoutineEnd(routine_name) => {
-            end_routine(routine_name, &mut routine_in_construction, &mut routines)?
+            end_routine(routine_name, &mut routine_in_construction, routines)?
         }
-        Line::Instruction(instruction) => {
-            match routine_in_construction.as_mut() {
-                None => execute(&mut memory, &mut routines, &instruction)?,
-                Some(routine) => routine.instructions.push(instruction),
-            }
-        }
+        Line::Instruction(instruction) => match routine_in_construction.as_mut() {
+            None => execute(memory, routines, &instruction)?,
+            Some(routine) => routine.instructions.push(instruction),
+        },
     };
 
     Ok(())

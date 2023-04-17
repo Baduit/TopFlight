@@ -29,10 +29,12 @@ fn execute_file<P>(filename: P) -> Result<(), Error>
 where
     P: AsRef<Path>,
 {
+	let mut memory = topflight_core::Memory::default();
+    let mut routines = topflight_core::Routines::new();
     let lines = read_lines(filename).expect("Error while opening the file");
     for (i, line) in lines.enumerate() {
         let line = line.expect("Error while reading a line");
-        if let Err(error) = topflight_core::handle_line(line.as_str()) {
+        if let Err(error) = topflight_core::handle_line(line.as_str(), &mut memory, &mut routines) {
             return Err(Error {
                 wrapped_error: error,
                 line_number: i + 1,
