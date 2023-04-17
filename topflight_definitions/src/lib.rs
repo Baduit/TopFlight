@@ -82,15 +82,15 @@ impl Instruction {
             PushBack::NAME => Ok(PushBack::parse(chars.as_str())?),
             Concat::NAME => Ok(Concat::parse(chars.as_str())?),
             Erase::NAME => Ok(Erase::parse(chars.as_str())?),
-            _ => Err(ParseError::InstructionDoesNotExist),
+            _ => Err(ParseError::InstructionDoesNotExist(name)),
         }
     }
 }
 
 #[derive(Error, Debug)]
 pub enum ParseError {
-    #[error("Instruction does not exist")]
-    InstructionDoesNotExist,
+    #[error("Instruction `{0}` does not exist")]
+    InstructionDoesNotExist(String),
     #[error("{0}")]
     ValueParsingError(#[from] value::ParseError),
 }
