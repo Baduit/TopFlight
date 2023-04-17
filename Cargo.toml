@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "topflight",
+	"topflight_core",
+	"topflight_definitions",
+	"topflight_macro_utils",
+	"topflight_vm",
+]
+
