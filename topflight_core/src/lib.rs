@@ -22,6 +22,10 @@ pub enum Error {
 }
 
 pub fn handle_line(str: &str) -> Result<(), Error> {
+    if str.is_empty() || str.starts_with("#") {
+        return Ok(());
+    }
+
     let mut memory = Memory::default();
     let mut routines = Routines::new();
     let mut routine_in_construction: Option<Routine> = Option::None;
