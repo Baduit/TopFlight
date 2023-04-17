@@ -1,6 +1,7 @@
 use thiserror::Error;
 
-use topflight_definitions::{Instruction, ParseError, Routine};
+use topflight_definitions::{Instruction, ParseError};
+pub use topflight_definitions::Routine;
 use topflight_vm::{execute, VMError};
 pub use topflight_vm::{Memory, Routines};
 
@@ -22,19 +23,20 @@ pub enum Error {
     MismatchingEndSubroutine(String, String),
 }
 
-pub fn handle_line(str: &str, memory: &mut Memory, routines: &mut Routines) -> Result<(), Error> {
+pub fn handle_line(
+    str: &str,
+    memory: &mut Memory,
+    routines: &mut Routines,
+    routine_in_construction: &mut Option<Routine>,
+) -> Result<(), Error> {
     if str.is_empty() || str.starts_with("#") {
         return Ok(());
     }
 
-    let mut routine_in_construction: Option<Routine> = Option::None;
-
     match parse_line(str)? {
-        Line::RoutineStart(routine_name) => {
-            start_routine(routine_name, &mut routine_in_construction)?
-        }
+        Line::RoutineStart(routine_name) => start_routine(routine_name, routine_in_construction)?,
         Line::RoutineEnd(routine_name) => {
-            end_routine(routine_name, &mut routine_in_construction, routines)?
+            end_routine(routine_name, routine_in_construction, routines)?
         }
         Line::Instruction(instruction) => match routine_in_construction.as_mut() {
             None => execute(memory, routines, &instruction)?,
@@ -51,7 +53,12 @@ fn start_routine(
 ) -> Result<(), Error> {
     match routine_in_construction {
         None => routine_in_construction.replace(Routine::new(routine_name)),
-        Some(routine_in_construction) => return Err(Error::SubRoutineFound(routine_in_construction.name.clone(), routine_name)),
+        Some(routine_in_construction) => {
+            return Err(Error::SubRoutineFound(
+                routine_in_construction.name.clone(),
+                routine_name,
+            ))
+        }
     };
     Ok(())
 }
@@ -63,7 +70,10 @@ fn end_routine(
     if routine_in_construction.is_none() {
         Err(Error::UnexpectedEndSubroutine(routine_name))
     } else if routine_name != routine_in_construction.as_ref().unwrap().name {
-        Err(Error::MismatchingEndSubroutine(routine_in_construction.as_ref().unwrap().name.clone(), routine_name))
+        Err(Error::MismatchingEndSubroutine(
+            routine_in_construction.as_ref().unwrap().name.clone(),
+            routine_name,
+        ))
     } else {
         routines.insert(routine_name, routine_in_construction.take().unwrap());
         Ok(())
@@ -83,9 +93,7 @@ fn parse_line(str: &str) -> Result<Line, Error> {
         } else if str.len() <= 3 {
             Err(Error::EmptyRoutineName)
         } else {
-            Ok(Line::RoutineEnd(String::from(get_routine_name_at_end(
-                str,
-            ))))
+            Ok(Line::RoutineEnd(String::from(get_routine_name_at_end(str))))
         }
     } else if str.starts_with("<") {
         if !str.ends_with(">") {
@@ -93,7 +101,9 @@ fn parse_line(str: &str) -> Result<Line, Error> {
         } else if str.len() <= 2 {
             Err(Error::EmptyRoutineName)
         } else {
-            Ok(Line::RoutineStart(String::from(get_routine_name_at_start(str))))
+            Ok(Line::RoutineStart(String::from(get_routine_name_at_start(
+                str,
+            ))))
         }
     } else {
         Ok(Line::Instruction(Instruction::parse(str)?))

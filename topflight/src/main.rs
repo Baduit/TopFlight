@@ -31,10 +31,11 @@ where
 {
 	let mut memory = topflight_core::Memory::default();
     let mut routines = topflight_core::Routines::new();
+	let mut routine_in_construction: Option<topflight_core::Routine> = Option::None;
     let lines = read_lines(filename).expect("Error while opening the file");
     for (i, line) in lines.enumerate() {
         let line = line.expect("Error while reading a line");
-        if let Err(error) = topflight_core::handle_line(line.as_str(), &mut memory, &mut routines) {
+        if let Err(error) = topflight_core::handle_line(line.as_str(), &mut memory, &mut routines, &mut routine_in_construction) {
             return Err(Error {
                 wrapped_error: error,
                 line_number: i + 1,
