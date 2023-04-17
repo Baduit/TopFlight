@@ -12,7 +12,10 @@ pub struct Routine {
 
 impl Routine {
     pub fn new(name: String) -> Routine {
-        Routine { name: name, instructions: Vec::new() }
+        Routine {
+            name: name,
+            instructions: Vec::new(),
+        }
     }
 }
 
@@ -311,6 +314,33 @@ mod tests {
     #[test]
     fn test_get_name() {
         assert_eq!("STORE", Store::NAME);
+        assert_eq!("COPY", Copy::NAME);
+        assert_eq!("FREE", Free::NAME);
+        assert_eq!("PRINT", Print::NAME);
+        assert_eq!("CALL", Call::NAME);
+        assert_eq!("CALL_IF", CallIf::NAME);
+        assert_eq!("ADD", Add::NAME);
+        assert_eq!("SUBSTRACT", Substract::NAME);
+        assert_eq!("MULTIPLY", Multiply::NAME);
+        assert_eq!("DIVIDE", Divide::NAME);
+        assert_eq!("MODULO", Modulo::NAME);
+        assert_eq!("LOGICAL_AND", LogicalAnd::NAME);
+        assert_eq!("LOGICAL_OR", LogicalOr::NAME);
+        assert_eq!("LOGICAL_NOT", LogicalNot::NAME);
+        assert_eq!("COMPARE_EQUAL", CompareEqual::NAME);
+        assert_eq!("COMPARE_DIFFERENT", CompareDifferent::NAME);
+        assert_eq!("COMPARE_LESS", CompareLess::NAME);
+        assert_eq!("COMPARE_LESS_OR_EQUAL", CompareLessOrEqual::NAME);
+        assert_eq!("COMPARE_GREATER", CompareGreater::NAME);
+        assert_eq!("COMPARE_GREATER_OR_EQUAL", CompareGreaterOrEqual::NAME);
+        assert_eq!("GET_AT", GetAt::NAME);
+        assert_eq!("STORE_AT", StoreAt::NAME);
+        assert_eq!("COPY_AT", CopyAt::NAME);
+        assert_eq!("SIZE", Size::NAME);
+        assert_eq!("RESIZE", Resize::NAME);
+        assert_eq!("INSERT", Insert::NAME);
+        assert_eq!("PUSH_BACK", PushBack::NAME);
+        assert_eq!("CONCAT", Concat::NAME);
     }
 
     #[test]

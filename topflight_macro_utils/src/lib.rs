@@ -12,7 +12,7 @@ pub fn generic_instruction_derive(input: TokenStream) -> TokenStream {
 
 fn impl_generic_instriction(ast: &syn::DeriveInput) -> TokenStream {
     let name = &ast.ident;
-    let uppercase_name = name.to_string().to_uppercase();
+    let screaming_snake_case_name = camel_to_screaming_snake_case(name.to_string().as_str());
 
     let fields = match &ast.data {
         syn::Data::Struct(syn::DataStruct {
@@ -53,9 +53,27 @@ fn impl_generic_instriction(ast: &syn::DeriveInput) -> TokenStream {
         }
 
         impl #name {
-            const NAME : &str = #uppercase_name;
+            const NAME : &str = #screaming_snake_case_name;
         }
 
     };
     gen.into()
+}
+
+fn camel_to_screaming_snake_case(str: &str) -> String {
+    if str.is_empty() {
+        return String::new();
+    }
+
+    let mut screaming = String::new();
+    let mut chars = str.chars();
+    screaming.push(chars.next().unwrap());
+
+    for c in chars {
+        if c.is_uppercase() {
+            screaming.push('_');
+        }
+        screaming.push(c);
+    }
+    screaming.to_ascii_uppercase()
 }
