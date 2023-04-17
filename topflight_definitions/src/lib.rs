@@ -19,6 +19,7 @@ impl Routine {
     }
 }
 
+#[derive(Debug)]
 pub enum Instruction {
     Store(Store),
     Copy(Copy),
@@ -106,34 +107,34 @@ pub trait GenericInstruction {
 /*
 ** Misc
 */
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Store {
     pub dest: String,
     pub value: Value,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Copy {
     pub input: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Free {
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Print {
     pub input: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Call {
     pub routine_name: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CallIf {
     pub routine_name: String,
     pub boolean_input_name: String,
@@ -142,35 +143,35 @@ pub struct CallIf {
 /*
 ** Arithmetic
 */
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Add {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Substract {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Multiply {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Divide {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Modulo {
     pub input_a: String,
     pub input_b: String,
@@ -180,21 +181,21 @@ pub struct Modulo {
 /*
 ** Logical
 */
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct LogicalAnd {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct LogicalOr {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct LogicalNot {
     pub input: String,
     pub dest: String,
@@ -203,42 +204,42 @@ pub struct LogicalNot {
 /*
 ** Comparaison
 */
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CompareEqual {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CompareDifferent {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CompareLess {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CompareLessOrEqual {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CompareGreater {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CompareGreaterOrEqual {
     pub input_a: String,
     pub input_b: String,
@@ -248,60 +249,60 @@ pub struct CompareGreaterOrEqual {
 ** Array operations
 ** Note: "index" are String because it will load a variable at this location
 */
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct GetAt {
     pub array_input: String,
     pub index: String,
     pub output: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct StoreAt {
     pub array_output: String,
     pub index: String,
     pub value: Value,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct CopyAt {
     pub array_output: String,
     pub index: String,
     pub input: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Size {
     pub array_input: String,
     pub output: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Resize {
     pub array_input: String,
     pub new_size: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Insert {
     pub array_output: String,
     pub index: String,
     pub input: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct PushBack {
     pub array_output: String,
     pub input: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Concat {
     pub input_a: String,
     pub input_b: String,
     pub dest: String,
 }
 
-#[derive(GenericInstruction)]
+#[derive(GenericInstruction, Debug)]
 pub struct Erase {
     pub array_input: String,
     pub index: String,

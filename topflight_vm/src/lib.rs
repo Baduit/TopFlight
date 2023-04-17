@@ -17,8 +17,12 @@ pub enum VMError {
     ExpectedBoolean,
     #[error("Type are mismatching")]
     MismatchingTypes,
-    #[error("Index is out of bound")]
-    IndexOutOfBound,
+    #[error("Expected an array but got {0}")]
+    ExpectedArray(Value),
+    #[error("Expected an arithmetic type but bot `{0}` and `{1}` for instruction `{2}`")]
+    ExpectedArithmeticTypes(Value, Value, String),
+    #[error("Index, with value `{index:?}`, is out of bound. Array size is `{index:?}`")]
+    IndexOutOfBound { array_size: usize, index: usize },
     #[error("Index is negative")]
     NegativeIndex,
     #[error("Index must be an integer")]
@@ -113,7 +117,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a + b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a + b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("ADD"))),
             };
             memory.store(dest.as_str(), result);
         }
@@ -127,7 +131,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a - b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a - b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("SUBSTRACT"))),
             };
             memory.store(dest.as_str(), result);
         }
@@ -141,7 +145,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a * b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a * b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("MULTIPLY"))),
             };
             memory.store(dest.as_str(), result);
         }
@@ -155,7 +159,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a / b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a / b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("DIVIDE"))),
             };
             memory.store(dest.as_str(), result);
         }
@@ -168,7 +172,7 @@ pub fn execute(
             let b = memory.load(input_b.as_str())?;
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a % b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("MODULO"))),
             };
             memory.store(dest.as_str(), result);
         }
@@ -305,7 +309,7 @@ pub fn execute(
                 Value::ArrayOfBoolean(array_input) => {
                     Value::Boolean(vector_get_copy_at(array_input, index)?)
                 }
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArray(array_input.clone())),
             };
             memory.store(output.as_str(), result);
         }
@@ -335,7 +339,7 @@ pub fn execute(
                 Value::ArrayOfNumber(array) => array.len(),
                 Value::ArrayOfString(array) => array.len(),
                 Value::ArrayOfBoolean(array) => array.len(),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArray(array.clone())),
             };
             memory.store(output.as_str(), Value::Integer(size as i64));
         }
@@ -350,7 +354,7 @@ pub fn execute(
                 Value::ArrayOfNumber(array) => array.resize(size, 0.0),
                 Value::ArrayOfString(array) => array.resize(size, String::new()),
                 Value::ArrayOfBoolean(array) => array.resize(size, false),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArray(array.clone())),
             };
         }
         Instruction::Insert(Insert {
@@ -393,6 +397,7 @@ pub fn execute(
                 (Value::String(input_a), Value::String(input_b)) => {
                     Value::String(format!("{}{}", input_a, input_b))
                 }
+                // todo concat arrays
                 _ => return Err(VMError::MismatchingTypes),
             };
             memory.store(dest.as_str(), result);
@@ -405,7 +410,7 @@ pub fn execute(
                 Value::ArrayOfNumber(array) => vector_remove(array, index)?,
                 Value::ArrayOfString(array) => vector_remove(array, index)?,
                 Value::ArrayOfBoolean(array) => vector_remove(array, index)?,
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedArray(array.clone())),
             };
         }
     };
@@ -435,7 +440,10 @@ where
 {
     match vec.get(index) {
         Some(value) => Ok(value.clone()),
-        None => Err(VMError::IndexOutOfBound),
+        None => Err(VMError::IndexOutOfBound {
+            array_size: vec.len(),
+            index: index,
+        }),
     }
 }
 
@@ -445,7 +453,10 @@ fn vector_set_at<T>(vec: &mut Vec<T>, new_value: T, index: usize) -> Result<(), 
             *old_value = new_value;
             Ok(())
         }
-        None => Err(VMError::IndexOutOfBound),
+        None => Err(VMError::IndexOutOfBound {
+            array_size: vec.len(),
+            index: index,
+        }),
     }
 }
 
@@ -453,7 +464,10 @@ fn vector_insert<T>(vec: &mut Vec<T>, new_value: T, index: usize) -> Result<(), 
     if vec.len() > index {
         Ok(vec.insert(index, new_value))
     } else {
-        Err(VMError::IndexOutOfBound)
+        Err(VMError::IndexOutOfBound {
+            array_size: vec.len(),
+            index: index,
+        })
     }
 }
 
@@ -462,7 +476,10 @@ fn vector_remove<T>(vec: &mut Vec<T>, index: usize) -> Result<(), VMError> {
         vec.remove(index);
         Ok(())
     } else {
-        Err(VMError::IndexOutOfBound)
+        Err(VMError::IndexOutOfBound {
+            array_size: vec.len(),
+            index: index,
+        })
     }
 }
 
