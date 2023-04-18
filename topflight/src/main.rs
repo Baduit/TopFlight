@@ -34,13 +34,16 @@ where
 	let mut routine_in_construction: Option<topflight_core::Routine> = Option::None;
     let lines = read_lines(filename).expect("Error while opening the file");
     for (i, line) in lines.enumerate() {
+        let mut output = String::new();
         let line = line.expect("Error while reading a line");
-        if let Err(error) = topflight_core::handle_line(line.as_str(), &mut memory, &mut routines, &mut routine_in_construction) {
+        if let Err(error) = topflight_core::handle_line(line.as_str(), &mut memory, &mut routines, &mut routine_in_construction, &mut output) {
             return Err(Error {
                 wrapped_error: error,
                 line_number: i + 1,
 				line: line,
             });
+        } else if !output.is_empty() {
+            print!("{}", output);
         }
     }
     Ok(())

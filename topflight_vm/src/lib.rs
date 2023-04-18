@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::fmt::Write;
 use thiserror::Error;
 use topflight_definitions::*;
 
@@ -27,6 +28,8 @@ pub enum VMError {
     NegativeIndex,
     #[error("Index must be an integer")]
     NonIntegerIndex,
+    #[error("Error while adding something to the output buffer")]
+    OutputBufferError(#[from] std::fmt::Error)
 }
 
 impl Memory {
@@ -77,6 +80,7 @@ pub fn execute(
     memory: &mut Memory,
     routines: &Routines,
     instruction: &Instruction,
+    output: &mut String,
 ) -> Result<(), VMError> {
     // Todo: refactor this shit enormous match
     match instruction {
@@ -88,10 +92,10 @@ pub fn execute(
         Instruction::Free(Free { dest }) => memory.free(dest.as_str())?,
         Instruction::Print(Print { input }) => {
             let value = memory.load(input.as_str())?;
-            print!("{}", value);
+            write!(output, "{}", value)?;
         }
         Instruction::Call(Call { routine_name }) => {
-            call_routine(memory, routines, routine_name.as_str())?;
+            call_routine(memory, routines, routine_name.as_str(), output)?;
         }
         Instruction::CallIf(CallIf {
             routine_name,
@@ -104,7 +108,7 @@ pub fn execute(
             };
 
             if call {
-                call_routine(memory, routines, routine_name.as_str())?;
+                call_routine(memory, routines, routine_name.as_str(), output)?;
             }
         }
         Instruction::Add(Add {
@@ -421,6 +425,7 @@ fn call_routine(
     memory: &mut Memory,
     routines: &Routines,
     routine_name: &str,
+    output: &mut String,
 ) -> Result<(), VMError> {
     let routine = routines.get(routine_name);
     let routine = match routine {
@@ -429,7 +434,7 @@ fn call_routine(
     };
 
     for i in routine.instructions.iter() {
-        execute(memory, &routines, &i)?;
+        execute(memory, &routines, &i, output)?;
     }
     Ok(())
 }

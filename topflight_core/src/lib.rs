@@ -28,6 +28,7 @@ pub fn handle_line(
     memory: &mut Memory,
     routines: &mut Routines,
     routine_in_construction: &mut Option<Routine>,
+    output: &mut String,
 ) -> Result<(), Error> {
     if str.is_empty() || str.starts_with("#") {
         return Ok(());
@@ -39,7 +40,7 @@ pub fn handle_line(
             end_routine(routine_name, routine_in_construction, routines)?
         }
         Line::Instruction(instruction) => match routine_in_construction.as_mut() {
-            None => execute(memory, routines, &instruction)?,
+            None => execute(memory, routines, &instruction, output)?,
             Some(routine) => routine.instructions.push(instruction),
         },
     };
