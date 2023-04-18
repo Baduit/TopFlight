@@ -13,14 +13,14 @@ pub enum VMError {
     VariableDoesNotExist(String),
     #[error("Routine `{0}` does not exist")]
     RoutineDoesNotExist(String),
-    #[error("A boolean was expected but not received")]
-    ExpectedBoolean,
-    #[error("Type are mismatching")]
-    MismatchingTypes,
+    #[error("A boolean was expected but instead got `{0}`")]
+    ExpectedBoolean(Value),
+    #[error("Type are mismatching, got `{0}` and `{1}`")]
+    MismatchingTypes(Value, Value),
     #[error("Expected an array but got {0}")]
     ExpectedArray(Value),
-    #[error("Expected an arithmetic type but bot `{0}` and `{1}` for instruction `{2}`")]
-    ExpectedArithmeticTypes(Value, Value, String),
+    #[error("Expected an arithmetic type but bot `{0}` and `{1}`")]
+    ExpectedArithmeticTypes(Value, Value),
     #[error("Index, with value `{index:?}`, is out of bound. Array size is `{index:?}`")]
     IndexOutOfBound { array_size: usize, index: usize },
     #[error("Index is negative")]
@@ -100,7 +100,7 @@ pub fn execute(
             let value = memory.load(boolean_input_name.as_str())?;
             let call = match value {
                 Value::Boolean(b) => *b,
-                _ => return Err(VMError::ExpectedBoolean),
+                _ => return Err(VMError::ExpectedBoolean(value.clone())),
             };
 
             if call {
@@ -117,7 +117,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a + b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a + b),
-                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("ADD"))),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -131,7 +131,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a - b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a - b),
-                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("SUBSTRACT"))),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -145,7 +145,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a * b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a * b),
-                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("MULTIPLY"))),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -159,7 +159,7 @@ pub fn execute(
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a / b),
                 (Value::Number(a), Value::Number(b)) => Value::Number(a / b),
-                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("DIVIDE"))),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -172,7 +172,7 @@ pub fn execute(
             let b = memory.load(input_b.as_str())?;
             let result = match (a, b) {
                 (Value::Integer(a), Value::Integer(b)) => Value::Integer(a % b),
-                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone(), String::from("MODULO"))),
+                _ => return Err(VMError::ExpectedArithmeticTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -185,7 +185,7 @@ pub fn execute(
             let b = memory.load(input_b.as_str())?;
             let result = match (a, b) {
                 (Value::Boolean(a), Value::Boolean(b)) => Value::Boolean(*a && *b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::MismatchingTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -198,7 +198,7 @@ pub fn execute(
             let b = memory.load(input_b.as_str())?;
             let result = match (a, b) {
                 (Value::Boolean(a), Value::Boolean(b)) => Value::Boolean(*a || *b),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::MismatchingTypes(a.clone(), b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -206,7 +206,7 @@ pub fn execute(
             let a = memory.load(input.as_str())?;
             let result = match a {
                 Value::Boolean(a) => Value::Boolean(!*a),
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::ExpectedBoolean(a.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -217,8 +217,8 @@ pub fn execute(
         }) => {
             let a = memory.load(input_a.as_str())?;
             let b = memory.load(input_b.as_str())?;
-            if std::mem::discriminant(a) == std::mem::discriminant(b) {
-                return Err(VMError::MismatchingTypes);
+            if std::mem::discriminant(a) != std::mem::discriminant(b) {
+                return Err(VMError::MismatchingTypes(a.clone(), b.clone()));
             }
             let result = Value::Boolean(a == b);
             memory.store(dest.as_str(), result);
@@ -230,8 +230,8 @@ pub fn execute(
         }) => {
             let a = memory.load(input_a.as_str())?;
             let b = memory.load(input_b.as_str())?;
-            if std::mem::discriminant(a) == std::mem::discriminant(b) {
-                return Err(VMError::MismatchingTypes);
+            if std::mem::discriminant(a) != std::mem::discriminant(b) {
+                return Err(VMError::MismatchingTypes(a.clone(), b.clone()));
             }
             let result = Value::Boolean(a != b);
             memory.store(dest.as_str(), result);
@@ -243,8 +243,8 @@ pub fn execute(
         }) => {
             let a = memory.load(input_a.as_str())?;
             let b = memory.load(input_b.as_str())?;
-            if std::mem::discriminant(a) == std::mem::discriminant(b) {
-                return Err(VMError::MismatchingTypes);
+            if std::mem::discriminant(a) != std::mem::discriminant(b) {
+                return Err(VMError::MismatchingTypes(a.clone(), b.clone()));
             }
             let result = Value::Boolean(a < b);
             memory.store(dest.as_str(), result);
@@ -256,8 +256,8 @@ pub fn execute(
         }) => {
             let a = memory.load(input_a.as_str())?;
             let b = memory.load(input_b.as_str())?;
-            if std::mem::discriminant(a) == std::mem::discriminant(b) {
-                return Err(VMError::MismatchingTypes);
+            if std::mem::discriminant(a) != std::mem::discriminant(b) {
+                return Err(VMError::MismatchingTypes(a.clone(), b.clone()));
             }
             let result = Value::Boolean(a <= b);
             memory.store(dest.as_str(), result);
@@ -269,8 +269,8 @@ pub fn execute(
         }) => {
             let a = memory.load(input_a.as_str())?;
             let b = memory.load(input_b.as_str())?;
-            if std::mem::discriminant(a) == std::mem::discriminant(b) {
-                return Err(VMError::MismatchingTypes);
+            if std::mem::discriminant(a) != std::mem::discriminant(b) {
+                return Err(VMError::MismatchingTypes(a.clone(), b.clone()));
             }
             let result = Value::Boolean(a > b);
             memory.store(dest.as_str(), result);
@@ -282,8 +282,8 @@ pub fn execute(
         }) => {
             let a = memory.load(input_a.as_str())?;
             let b = memory.load(input_b.as_str())?;
-            if std::mem::discriminant(a) == std::mem::discriminant(b) {
-                return Err(VMError::MismatchingTypes);
+            if std::mem::discriminant(a) != std::mem::discriminant(b) {
+                return Err(VMError::MismatchingTypes(a.clone(), b.clone()));
             }
             let result = Value::Boolean(a >= b);
             memory.store(dest.as_str(), result);
@@ -383,7 +383,7 @@ pub fn execute(
                 (Value::ArrayOfBoolean(array_output), Value::Boolean(value)) => {
                     array_output.push(value);
                 }
-                _ => return Err(VMError::MismatchingTypes),
+                (a, b) => return Err(VMError::MismatchingTypes(a.clone(), b)),
             };
         }
         Instruction::Concat(Concat {
@@ -398,7 +398,7 @@ pub fn execute(
                     Value::String(format!("{}{}", input_a, input_b))
                 }
                 // todo concat arrays
-                _ => return Err(VMError::MismatchingTypes),
+                _ => return Err(VMError::MismatchingTypes(input_a.clone(), input_b.clone())),
             };
             memory.store(dest.as_str(), result);
         }
@@ -504,7 +504,7 @@ fn store_at(
         (Value::ArrayOfBoolean(array_output), Value::Boolean(value)) => {
             vector_set_at(array_output, value, index)?;
         }
-        _ => return Err(VMError::MismatchingTypes),
+        _ => return Err(VMError::MismatchingTypes(Value::Boolean(true), Value::Boolean(true))),
     };
     Ok(())
 }
@@ -531,7 +531,7 @@ fn insert(
         (Value::ArrayOfBoolean(array_output), Value::Boolean(value)) => {
             vector_insert(array_output, value, index)?;
         }
-        _ => return Err(VMError::MismatchingTypes),
+        (a, b) => return Err(VMError::MismatchingTypes(a.clone(), b)),
     };
     Ok(())
 }
