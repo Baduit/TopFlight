@@ -1,9 +1,9 @@
 use thiserror::Error;
-
 use topflight_definitions::{Instruction, ParseError};
-pub use topflight_definitions::{Routine, Value};
 use topflight_vm::{execute, VMError};
+
 pub use topflight_vm::{Memory, Routines};
+pub use topflight_definitions::{Routine, Value};
 
 #[derive(Error, Debug)]
 pub enum Error {
