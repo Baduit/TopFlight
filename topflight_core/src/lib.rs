@@ -30,7 +30,7 @@ pub fn handle_line(
     routine_in_construction: &mut Option<Routine>,
     output: &mut String,
 ) -> Result<(), Error> {
-    if str.is_empty() || str.starts_with("#") {
+    if str.is_empty() || str.starts_with('#') {
         return Ok(());
     }
 
@@ -89,15 +89,15 @@ enum Line {
 
 fn parse_line(str: &str) -> Result<Line, Error> {
     if str.starts_with("</") {
-        if !str.ends_with(">") {
+        if !str.ends_with('>') {
             Err(Error::InvalidRoutineFormat)
         } else if str.len() <= 3 {
             Err(Error::EmptyRoutineName)
         } else {
             Ok(Line::RoutineEnd(String::from(get_routine_name_at_end(str))))
         }
-    } else if str.starts_with("<") {
-        if !str.ends_with(">") {
+    } else if str.starts_with('<') {
+        if !str.ends_with('>') {
             Err(Error::InvalidRoutineFormat)
         } else if str.len() <= 2 {
             Err(Error::EmptyRoutineName)

@@ -54,7 +54,7 @@ where
             return Err(Error {
                 wrapped_error: error,
                 line_number: i + 1,
-                line: line,
+                line
             });
         } else if !output.is_empty() {
             print!("{}", output);
@@ -65,7 +65,7 @@ where
 
 fn main() {
     let mut args: Vec<String> = env::args().skip(1).collect();
-    if args.len() > 0 {
+    if !args.is_empty() {
         let filename = args.remove(0);
         println!("{}", filename);
         if let Err(error) = execute_file(filename, args) {

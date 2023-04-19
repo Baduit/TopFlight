@@ -96,7 +96,7 @@ where
     match maybe_i {
         Ok(i) => Ok(ParseSuccess {
             value: i,
-            is_last_value: is_last_value,
+            is_last_value,
         }),
         _ => Err(ParseError::NativeParseError),
     }
@@ -117,11 +117,11 @@ fn parse_boolean(input: &mut Chars) -> ParseResult<bool> {
     match important_chars.as_str() {
         "true" => Ok(ParseSuccess {
             value: true,
-            is_last_value: is_last_value,
+            is_last_value,
         }),
         "false" => Ok(ParseSuccess {
             value: false,
-            is_last_value: is_last_value,
+            is_last_value,
         }),
         _ => Err(ParseError::InvalidFormat),
     }

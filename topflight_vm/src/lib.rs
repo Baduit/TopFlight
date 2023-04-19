@@ -434,7 +434,7 @@ fn call_routine(
     };
 
     for i in routine.instructions.iter() {
-        execute(memory, &routines, &i, output)?;
+        execute(memory, routines, i, output)?;
     }
     Ok(())
 }
@@ -447,7 +447,7 @@ where
         Some(value) => Ok(value.clone()),
         None => Err(VMError::IndexOutOfBound {
             array_size: vec.len(),
-            index: index,
+            index,
         }),
     }
 }
@@ -460,18 +460,19 @@ fn vector_set_at<T>(vec: &mut Vec<T>, new_value: T, index: usize) -> Result<(), 
         }
         None => Err(VMError::IndexOutOfBound {
             array_size: vec.len(),
-            index: index,
+            index,
         }),
     }
 }
 
 fn vector_insert<T>(vec: &mut Vec<T>, new_value: T, index: usize) -> Result<(), VMError> {
     if vec.len() > index {
-        Ok(vec.insert(index, new_value))
+        vec.insert(index, new_value);
+        Ok(())
     } else {
         Err(VMError::IndexOutOfBound {
             array_size: vec.len(),
-            index: index,
+            index,
         })
     }
 }
@@ -483,19 +484,19 @@ fn vector_remove<T>(vec: &mut Vec<T>, index: usize) -> Result<(), VMError> {
     } else {
         Err(VMError::IndexOutOfBound {
             array_size: vec.len(),
-            index: index,
+            index,
         })
     }
 }
 
 fn store_at(
     memory: &mut Memory,
-    array_output: &String,
-    index: &String,
+    array_output: &str,
+    index: &str,
     value: Value,
 ) -> Result<(), VMError> {
-    let index = memory.load_index(index.as_str())?;
-    let array_output = memory.load_mut(array_output.as_str())?;
+    let index = memory.load_index(index)?;
+    let array_output = memory.load_mut(array_output)?;
     match (array_output, value) {
         (Value::ArrayOfInteger(array_output), Value::Integer(value)) => {
             vector_set_at(array_output, value, index)?;
@@ -516,13 +517,13 @@ fn store_at(
 
 fn insert(
     memory: &mut Memory,
-    array_output: &String,
-    index: &String,
-    value: &String,
+    array_output: &str,
+    index: &str,
+    value: &str,
 ) -> Result<(), VMError> {
-    let value = memory.load(value.as_str())?.clone();
-    let index = memory.load_index(index.as_str())?;
-    let array_output = memory.load_mut(array_output.as_str())?;
+    let value = memory.load(value)?.clone();
+    let index = memory.load_index(index)?;
+    let array_output = memory.load_mut(array_output)?;
     match (array_output, value) {
         (Value::ArrayOfInteger(array_output), Value::Integer(value)) => {
             vector_insert(array_output, value, index)?;

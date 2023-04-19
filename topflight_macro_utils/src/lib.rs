@@ -1,7 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use quote::ToTokens;
-use syn;
 
 #[proc_macro_derive(GenericInstruction)]
 pub fn generic_instruction_derive(input: TokenStream) -> TokenStream {

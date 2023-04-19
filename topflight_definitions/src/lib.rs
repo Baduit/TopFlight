@@ -13,7 +13,7 @@ pub struct Routine {
 impl Routine {
     pub fn new(name: String) -> Routine {
         Routine {
-            name: name,
+            name,
             instructions: Vec::new(),
         }
     }
