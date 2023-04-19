@@ -18,7 +18,7 @@ impl fmt::Display for Error {
     }
 }
 
-fn execute_file_impl(code: String) -> Result<String, Error> {
+fn execute_code_impl(code: String) -> Result<String, Error> {
     let mut output = String::new();
     let mut memory = topflight_core::Memory::default();
     let mut routines = topflight_core::Routines::new();
@@ -43,8 +43,8 @@ fn execute_file_impl(code: String) -> Result<String, Error> {
 }
 
 #[wasm_bindgen]
-pub fn execute_file(code: String) -> String {
-    match execute_file_impl(code) {
+pub fn execute_code(code: String) -> String {
+    match execute_code_impl(code) {
         Ok(str) => str,
         Err(error) => format!("{}", error),
     }

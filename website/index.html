@@ -30,7 +30,7 @@
 		<a href="https://github.com/Baduit/TopFlight"><img width="30px" src="assets/icons/github.svg" /></a>
 	</div>
 	<script type="module">
-		import init, { execute_file } from "./pkg/topflight_wasm.js";
+		import init, { execute_code } from "./pkg/topflight_wasm.js";
 
 		init().then(() => {
 			window.run_code = run_code;
@@ -39,7 +39,7 @@
 		function run_code() {
 			console.log("lol");
 			let code = document.getElementById("yololInput").value;
-			let output = execute_file(code);
+			let output = execute_code(code);
 
 			var canvas = document.getElementById("outputCanvas")
 			var canvas_context = canvas.getContext("2d");
