@@ -1,128 +1,99 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <meta content="utf-8" http-equiv="encoding" />
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="stylesheet" href="style.css" type="text/css" />
-    <title>TopFlight Online</title>
-  </head>
-  <body>
-    <div id="app" tabindex="0">
-      <div id="yololText">
-        <textarea
-          id="yololInput"
-		  placeholder="Type your TopFlight code here"
-		  spellcheck="false"
-		></textarea>
-		<div id="output">
-			<div id="yololOutputContainer">
-				<textarea
-				id="yololOutput"
-				readonly
-				></textarea>
+
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+	<meta content="utf-8" http-equiv="encoding" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+	<link rel="stylesheet" href="style.css" type="text/css" />
+	<title>TopFlight Online</title>
+</head>
+
+<body>
+	<div id="app" tabindex="0">
+		<div id="yololText">
+			<textarea id="yololInput" placeholder="Type your TopFlight code here" spellcheck="false"></textarea>
+			<div id="output">
+				<div id="yololOutputContainer">
+					<textarea id="yololOutput" readonly></textarea>
+				</div>
+				<div id="outputCanvasContainer">
+					<p>Canvas output:</p>
+					<canvas id="outputCanvas">
+					</canvas>
+				</div>
 			</div>
-			<div id="outputCanvasContainer">
-				<p>Canvas output:</p>
-				<canvas
-					id="outputCanvas">
-				</canvas>
-			</div>
+			<a onclick="window.run_code()"><img id="runButton" width="100px" src="assets/icons/run.png" /></a>
 		</div>
-		<a
-			onclick="ask_nicely_the_api_to_run_the_code()"
-          	><img id="runButton" width="100px" src="assets/icons/run.png"
-        /></a>
-      </div>
-    </div>
-    <div id="footer" class="noselect">
-      <a href="https://github.com/Baduit/TopFlight"
-        ><img width="30px" src="assets/icons/github.svg"
-      /></a>
 	</div>
-	<script>
-		function ask_nicely_the_api_to_run_the_code() {
-			const options = {
-				method: 'POST',
-				body: document.getElementById("yololInput").value,
-				headers: {
-					'Content-Type': 'text/plain'
-				}
-			}
-			fetch("https://topflightonline.baduit.eu/execute", options)
-				.then(function (response) {
-					return response.text();
-				})
-				.then(function (myText) {
-					var canvas = document.getElementById("outputCanvas")
-					var canvas_context = canvas.getContext("2d");
-					canvas_context.clearRect(0, 0, canvas.width, canvas.height);
-					canvas_context.beginPath()
+	<div id="footer" class="noselect">
+		<a href="https://github.com/Baduit/TopFlight"><img width="30px" src="assets/icons/github.svg" /></a>
+	</div>
+	<script type="module">
+		import init, { execute_file } from "./pkg/topflight_wasm.js";
 
-					console.log(myText);
+		init().then(() => {
+			window.run_code = run_code;
+		});
 
-					var lines = myText.split("\n");
-					var output_text = "";
-					for (var i = 0; i < lines.length; ++i)
-					{
-						if (lines[i].startsWith("__PIXEL_PUT__ "))
-						{
-							var put_pixel_info = lines[i].split(" ");
-							if (put_pixel_info.length == 4)
-							{
-								var pos_x = parseInt(put_pixel_info[1], 10);
-								var pos_y = parseInt(put_pixel_info[2], 10);
-								var pixel_color = put_pixel_info[3];
-								if (pos_x && pos_y)
-								{
-									//canvas_context.strokeStyle  = pixel_color
-									canvas_context.fillStyle = pixel_color
-									canvas_context.fillRect(pos_x, pos_y, 1, 1)
-								}
-								else
-								{
-									console.log("Invalid size to put a pixel on the canvas");	
-								}
-							}
-							else
-							{
-								console.log("Invalid syntaxe to put a pixel on the canvas ");
-							}
+		function run_code() {
+			console.log("lol");
+			let code = document.getElementById("yololInput").value;
+			let output = execute_file(code);
+
+			var canvas = document.getElementById("outputCanvas")
+			var canvas_context = canvas.getContext("2d");
+			canvas_context.clearRect(0, 0, canvas.width, canvas.height);
+			canvas_context.beginPath()
+
+			console.log(output);
+
+			var lines = output.split("\n");
+			var output_text = "";
+			for (var i = 0; i < lines.length; ++i) {
+				if (lines[i].startsWith("__PIXEL_PUT__ ")) {
+					var put_pixel_info = lines[i].split(" ");
+					if (put_pixel_info.length == 4) {
+						var pos_x = parseInt(put_pixel_info[1], 10);
+						var pos_y = parseInt(put_pixel_info[2], 10);
+						var pixel_color = put_pixel_info[3];
+						if (pos_x && pos_y) {
+							canvas_context.fillStyle = pixel_color
+							canvas_context.fillRect(pos_x, pos_y, 1, 1)
 						}
-						else if (lines[i].startsWith("__CANVAS_RESIZE__ "))
-						{
-							var resize_info = lines[i].split(" ");
-							if (resize_info.length == 3)
-							{
-								var size_x = parseInt(resize_info[1], 10);
-								var size_y = parseInt(resize_info[2], 10);
-								if (size_x && size_y)
-								{
-									document.getElementById("outputCanvas").width = size_x;
-									document.getElementById("outputCanvas").height = size_y;
-								}
-								else
-								{
-									console.log("Invalid size to resize the canvas");	
-								}
-							}
-							else
-							{
-								console.log("Invalid syntaxe to resize the canvas ");
-							}
-						}
-						else
-						{
-							output_text += lines[i] + "\n";
+						else {
+							console.log("Invalid size to put a pixel on the canvas");
 						}
 					}
+					else {
+						console.log("Invalid syntaxe to put a pixel on the canvas ");
+					}
+				}
+				else if (lines[i].startsWith("__CANVAS_RESIZE__ ")) {
+					var resize_info = lines[i].split(" ");
+					if (resize_info.length == 3) {
+						var size_x = parseInt(resize_info[1], 10);
+						var size_y = parseInt(resize_info[2], 10);
+						if (size_x && size_y) {
+							document.getElementById("outputCanvas").width = size_x;
+							document.getElementById("outputCanvas").height = size_y;
+						}
+						else {
+							console.log("Invalid size to resize the canvas");
+						}
+					}
+					else {
+						console.log("Invalid syntaxe to resize the canvas ");
+					}
+				}
+				else {
+					output_text += lines[i] + "\n";
+				}
+			}
 
-					document.getElementById("yololOutput").value = output_text;
-				})
-				.catch(function (error) {
-					console.log("Error: " + error);
-				});
+			document.getElementById("yololOutput").value = output_text;
 		}
 	</script>
-  </body>
+</body>
+
 </html>
