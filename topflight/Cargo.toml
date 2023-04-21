@@ -1,0 +1,12 @@
+[package]
+name = "topflight"
+version = "0.1.0"
+edition = "2021"
+authors = ["Athlena"]
+description = "Top Flight: the language making you a Top Flight developper."
+repository = "https://github.com/Baduit/TopFlight"
+homepage = "https://topflightonline.baduit.eu/"
+
+[dependencies]
+thiserror = "1.0.40"
+topflight_core = { path = "../topflight_core" }

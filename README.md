@@ -1,6 +1,6 @@
 # TopFlight
-Top Flight langage implementation and the virtual machine YoloVM. Learn it to become a Top Flight developer. The langage is very basic, not really coherent but I'm having a lot of fun creating it.
-It does not aim to be fast or usable in a real project, it has only an entertaining purpose.
+Top Flight langage implementation and the virtual machine YoloVM. Learn it to become a Top Flight developer. The langage is very basic, not really coherent but I'm having a lot of fun creating it.  
+It does not aim to be fast or usable in a real project, quite the opposite, this language is literally a joke a bit inspired by the [Rockstar language](https://github.com/RockstarLang/rockstar).
 
 # Top flight overview
 ## Misc
@@ -92,27 +92,8 @@ There are more example in the folder TopFlightExamples of this repository.
 * It is possible to overwrite values or routines
 * It is possible to have routine and values with the same name
 
-## Fun fact
-Because the instruction and arguments are seprated by only 1 space, a space can be a valid variable name, same for a tabulation.
-
-## Why is there no unit tests ?
+## Why is there so few unit tests ?
 It is a pet project for fun, unit tests are very important but not fun to write most of the time and I want to have fun during my free time else there's no point doing my pet projects.
-
-# Dependencies
-There are 2 dependencies for the VM part:
-* [Aggreget](https://github.com/Baduit/Aggreget): my own library to use aggregates types as tuple
-* [Brigand](https://github.com/edouarda/brigand): a meta programmation library I use to compute list of types
-Both library are header-only and already in the repos
-
-And 1 dependency for the web api:
-* [cpp-httplib](https://github.com/yhirose/cpp-httplib): a very simple http library without any dependency, it is already contained in the repo
-
-# Portability
-I'am actually developping on Ubuntu running with the WSL with cmake 3.16.1 and gcc 10.1.0.
-It also works with a recent version of msvc, it works with the one shipped with Visual Studio 16.7.1 and a cmake version 3.18.1
-
-# Play with it wihtout the toolchain
-There is an already compiled .exe in the folder `compile/windows` so you can use the interpreter even if you don't have the toolchain
 
 # Play with it online:
 You can play with it online at: https://topflightonline.baduit.eu/
@@ -122,7 +103,12 @@ And if you print a string looking like this `__CANVAS_RESIZE__ x y` it resizes t
 
 There is an example in the file _canvas.tpf_.
 
-You can also start your own topflight web server for an online editor with the docker image : https://hub.docker.com/r/baduit/topflight
+# How to build
+## How to build the interpreter ?
+`cargo build`
+
+## How to build the wasm code for the website
+`wasm-pack build topflight_wasm  --target web --out-dir ../website/pkg`
 
 # Things that would be nice but I'm pretty sure I won't have the time to do it
 - A real doc for the langage instead/in addition of this readme
